@@ -1,0 +1,58 @@
+// Gene browser
+//
+// Expected arguments:
+//	- ref: Ref		- a reference to the raw counts PColumn
+//
+// Output:
+//	- normCounts: p-frame	- normalized counts p-frame
+//	- logCounts: p-frame	- log transformed normalized counts p-frame
+//
+
+
+
+wf := import("@platforma-sdk/workflow-tengo:workflow")
+exec := import("@platforma-sdk/workflow-tengo:exec")
+normCountsPfconvParamsLib := import(":normCountsPfconvParams")
+xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
+pframes := import("@platforma-sdk/workflow-tengo:pframes")
+
+wf.prepare(func(args){
+	return{
+		resolvedInput: wf.resolve(args.countsRef, { errIfMissing: true })
+	}
+})
+
+wf.body(func(args) {
+
+	blockId := wf.blockId().getDataAsJson()
+	
+	rawCounts := args.resolvedInput
+	inputSpec := rawCounts.spec
+	species := inputSpec.domain["pl7.app/species"]
+	
+	// convert PColumn to csv
+
+	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
+
+	countNorm := exec.builder().
+		cmd("Rscript").
+		arg("/Users/aiturbide/Blocks/gene-browser/scripts/normalize_counts.R").
+		arg("rawCounts.csv").arg(".").arg(species).
+		addFile("rawCounts.csv", csvCounts).
+		saveFile("normalized_counts.csv").
+		//saveFile("lognormalized_counts.csv").
+		printErrStreamToStdout().
+		saveStdoutContent().
+		cache(24 * 60 * 60 * 1000).
+		run()
+
+	normCountsImportParams := normCountsPfconvParamsLib.getColumns(blockId, inputSpec)
+	topTablePf := xsv.importFile(countNorm.getFile("normalized_counts.csv"), "csv", normCountsImportParams)
+
+	return {
+		outputs: {
+			topTablePf: pframes.exportFrame(topTablePf)
+		},
+		exports: {}
+	}
+})
