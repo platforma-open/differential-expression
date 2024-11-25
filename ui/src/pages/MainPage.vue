@@ -1,42 +1,19 @@
-<script
-  setup
-  lang="ts"
->
+<script setup lang="ts">
 import {
-  PlDataTableSettings,
+  PlAgDataTable,
   PlBlockPage,
   PlBtnGhost,
-  PlMaskIcon24,
-  PlSlideModal,
-  PlDropdownRef,
+  PlDataTableSettings,
   PlDropdown,
-  PlAgDataTable,
-  PlCheckbox,
   PlDropdownMulti,
-  PlNumberField
+  PlDropdownRef,
+  PlMaskIcon24,
+  PlSlideModal
 } from '@platforma-sdk/ui-vue';
-import { GraphMakerSettings } from '@milaboratories/graph-maker';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
 
 const app = useApp();
-
-if (app.ui === undefined) {
-  app.model.ui = {
-    tableState: {
-      gridState: {},
-      pTableParams: {
-        sorting: [],
-        filters: []
-      }
-    },
-    graphState: {
-      title: "Gene expression",
-      chartType: "discrete",
-      template: "box"
-    } satisfies GraphMakerSettings
-  }
-};
 
 const tableSettings = computed<PlDataTableSettings>(() => ({
   sourceType: "ptable",
@@ -51,11 +28,32 @@ function showAlert() {
   alert('close item');
 }
 
-const covariatesOptions = [
-  { text: "Covariate 1", value: "covariateTest1" },
-  { text: "Covariate 2", value: "covariateTest2" },
-  { text: "Covariate 3", value: "covariateTest3" },
-];
+const metadataOptions = computed(() => {
+  return app.model.outputs.covariateOptions?.map(v => ({
+    value: v.ref,
+    label: v.label
+  })) ?? []
+})
+
+
+
+const contrastFactorOptions = computed(() => {
+  return app.model.args.metadataRefs.map((ref) => ({
+    value: ref,
+    label: metadataOptions.value.find((m) => m.value.name === ref.name)?.label ?? ""
+  }))
+})
+
+const numeratorOptions = computed(() => {
+  return app.model.outputs.denominatorOptions?.map(v => ({
+    value: v,
+    label: v
+  }));
+})
+
+const denominatorOptions = computed(() => {
+  return numeratorOptions.value?.filter(op => op.value !== app.model.args.numerator);
+})
 
 </script>
 
@@ -73,16 +71,19 @@ const covariatesOptions = [
 
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
-      <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions ?? []"
+      <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
         label="Select dataset" />
-      <PlDropdownMulti v-model="app.model.args.covariates" :options="covariatesOptions" label="Design formula"
+
+      <PlDropdownMulti v-model="app.model.args.metadataRefs" :options="metadataOptions" label="Design formula"
         placeholder="Select covariates" />
-      <PlDropdown v-model="app.model.args.contrastFactor" :options="covariatesOptions"
+
+      <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions"
         placeholder="Select contrast factor" label="Contrast factor" />
-      <PlDropdown v-model="app.model.args.denominator" :options="covariatesOptions" placeholder="Select contrast factor"
-        label="Contrast factor" />
-      <PlDropdown v-model="app.model.args.numerator" :options="covariatesOptions" placeholder="Select contrast factor"
-        label="Contrast factor" />
+
+      <PlDropdown v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
+
+      <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
+
     </PlSlideModal>
 
     <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" />

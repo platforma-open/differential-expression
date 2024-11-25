@@ -1,14 +1,14 @@
 import { GraphMakerSettings } from '@milaboratories/graph-maker';
-import { 
-  BlockModel, 
+import {
+  BlockModel,
+  createPlDataTable,
   InferOutputsType,
   isPColumn,
-  createPlDataTable,
+  isPColumnSpec,
+  PFrameHandle,
   PlDataTableState,
   Ref,
-  ValueType,
-  isPColumnSpec,
-  PFrameHandle
+  ValueType
 } from '@platforma-sdk/model';
 
 export type UiState = {
@@ -18,9 +18,8 @@ export type UiState = {
 
 export type BlockArgs = {
   countsRef?: Ref;
-  metadataRef?: Ref;
-  covariates: string[];
-  contrastFactor?: String;
+  metadataRefs: Ref[];
+  contrastFactor?: Ref;
   denominator?: String;
   numerator?: String;
 };
@@ -28,10 +27,23 @@ export type BlockArgs = {
 export const model = BlockModel.create()
 
   .withArgs<BlockArgs>({
-    covariates: [],
+    metadataRefs: []
   })
 
-  .withUiState<UiState>({})
+  .withUiState<UiState>({
+    tableState: {
+      gridState: {},
+      pTableParams: {
+        sorting: [],
+        filters: []
+      }
+    },
+    graphState: {
+      title: 'Gene expression',
+      chartType: 'discrete',
+      template: 'box'
+    }
+  })
 
   .output('countsOptions', (ctx) =>
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')
@@ -44,6 +56,18 @@ export const model = BlockModel.create()
   .output('contrastFactorOptions', (ctx) =>
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'pl7.app/metadata')
   )
+
+  .output('denominatorOptions', (ctx) => {
+    if (!ctx.args.contrastFactor) return undefined;
+
+    const data = ctx.resultPool.getDataByRef(ctx.args.contrastFactor)?.data;
+
+    // @TODO need a convenient method in API
+    const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
+    if (!values) return undefined;
+
+    return [...new Set(Object.values(values))];
+  })
 
   .output('datasetSpec', (ctx) => {
     if (ctx.args.countsRef) return ctx.resultPool.getSpecByRef(ctx.args.countsRef);
@@ -58,7 +82,6 @@ export const model = BlockModel.create()
 
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
   })
-
 
   .output('ColumnId', (ctx) => {
     const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
@@ -91,8 +114,7 @@ export const model = BlockModel.create()
   .sections([
     { type: 'link', href: '/', label: 'Contrast' },
     { type: 'link', href: '/graph', label: 'Volcano plot' }
-  ]
-)
+  ])
 
   .done();
 
