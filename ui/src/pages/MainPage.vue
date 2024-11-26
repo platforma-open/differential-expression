@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 import {
   PlAgDataTable,
   PlBlockPage,
@@ -38,7 +41,7 @@ const metadataOptions = computed(() => {
 
 
 const contrastFactorOptions = computed(() => {
-  return app.model.args.metadataRefs.map((ref) => ({
+  return app.model.args.covariateRefs.map((ref) => ({
     value: ref,
     label: metadataOptions.value.find((m) => m.value.name === ref.name)?.label ?? ""
   }))
@@ -59,7 +62,7 @@ const denominatorOptions = computed(() => {
 
 <template>
   <PlBlockPage>
-    <template #title>Gene Browser</template>
+    <template #title>Differential Gene Expression</template>
     <template #append>
       <PlBtnGhost @click.stop="showSettings">
         Settings
@@ -73,17 +76,10 @@ const denominatorOptions = computed(() => {
       <template #title>Settings</template>
       <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
         label="Select dataset" />
-
-      <PlDropdownMulti v-model="app.model.args.metadataRefs" :options="metadataOptions" label="Design formula"
-        placeholder="Select covariates" />
-
-      <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions"
-        placeholder="Select contrast factor" label="Contrast factor" />
-
+      <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="metadataOptions" label="Design formula" />
+      <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions" label="Contrast factor" />
       <PlDropdown v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
-
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
-
     </PlSlideModal>
 
     <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" />

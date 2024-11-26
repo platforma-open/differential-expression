@@ -1,53 +1,106 @@
-// Gene browser
+// Differential Expression
 //
 // Expected arguments:
-//	- ref: Ref		- a reference to the raw counts PColumn
+//	- ref: Ref				- a reference to the raw counts PColumn
 //
 // Output:
-//	- normCounts: p-frame	- normalized counts p-frame
-//	- logCounts: p-frame	- log transformed normalized counts p-frame
+//	- topTable: p-frame		- DESeq2 results toptable with gene symbol annotation p-frame
 //
 
 
 
 wf := import("@platforma-sdk/workflow-tengo:workflow")
 exec := import("@platforma-sdk/workflow-tengo:exec")
-normCountsPfconvParamsLib := import(":normCountsPfconvParams")
+topTablePfconvParamsLib := import(":topTablePfconvParams")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
+text := import("text")
+
 
 wf.prepare(func(args){
-	return{
-		resolvedInput: wf.resolve(args.countsRef, { errIfMissing: true })
+
+	// below solution not working currently
+	// metaRefs := {}
+
+	// i := 0
+	// for metaRef in args.covariateRefs {
+	// 	metaRefs["metaRef" + i ] = wf.resolve(metaRef, { errIfMissing: true })
+	// 	i = i + 1
+	// }
+
+	// return {
+	// 	resolvedInput: wf.resolve(args.countsRef, { errIfMissing: true }),
+	// 	metaRefs: metaRefs 
+	// }
+
+	result := {}
+
+	result.resolvedInput = wf.resolve(args.countsRef, { errIfMissing: true })
+
+	i := 0
+	for metaRef in args.covariateRefs {
+		result["resolvedMetaRef" + i ] = wf.resolve(metaRef, { errIfMissing: true })
+		i = i + 1
 	}
+
+	return result
+
 })
 
 wf.body(func(args) {
 
-	blockId := wf.blockId().getDataAsJson()
-	
+	//blockId := wf.blockId().getDataAsJson()
+
 	rawCounts := args.resolvedInput
-	inputSpec := rawCounts.spec
-	species := inputSpec.domain["pl7.app/species"]
+	countsSpec := rawCounts.spec
+
+	// covariates := args.metaRefs
+	contrastFactor := args.contrastFactor
+	numerator := args.numerator
+	denominator := args.denominator
+
+	species := countsSpec.domain["pl7.app/species"]
+
 	
-	// convert PColumn to csv
+	covariates := []
 
+	// Future solution
+	// for _, v in args.metaRefs {
+	// 	covariates = append(covariates, v)
+	// }
+
+	for arg, v in args {
+		if text.has_prefix(arg, "resolvedMetaRef") {
+		covariates = append(covariates, v)
+		}
+	}
+
+
+
+	// convert PColumns to csv
 	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
+	csvCovariates := xsv.exportFrame(covariates, "csv", {})
 
-	countNorm := exec.builder().
+	diffExpression := exec.builder().
 		cmd("Rscript").
-		arg("/Users/aiturbide/Blocks/gene-browser/scripts/normalize_counts.R").
-		arg("rawCounts.csv").arg(".").arg(species).
+		arg("/Users/aiturbide/Blocks/differential-expression/scripts/run_DESeq2.R").
+		arg("-c").arg("rawCounts.csv").
+		arg("-m").arg("covariates.csv").
+		arg("-t").arg(contrastFactor).
+		arg("-n").arg(numerator).
+		arg("-d").arg(denominator).
+		arg("-s").arg(species).
+		arg("-o").arg("topTable.csv").
 		addFile("rawCounts.csv", csvCounts).
-		saveFile("normalized_counts.csv").
-		//saveFile("lognormalized_counts.csv").
+		addFile("covariates.csv", csvCovariates).
+		saveFile("topTable.csv").
 		printErrStreamToStdout().
 		saveStdoutContent().
 		cache(24 * 60 * 60 * 1000).
 		run()
 
-	normCountsImportParams := normCountsPfconvParamsLib.getColumns(blockId, inputSpec)
-	topTablePf := xsv.importFile(countNorm.getFile("normalized_counts.csv"), "csv", normCountsImportParams)
+	topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec)
+	topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams)
 
 	return {
 		outputs: {

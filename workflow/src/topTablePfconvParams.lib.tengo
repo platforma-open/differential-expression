@@ -1,0 +1,116 @@
+ll := import("@platforma-sdk/workflow-tengo:ll")
+
+getColumns := func(countsSpec) {
+	return {
+		"axes": [
+			{
+				"column": "Geneid",
+				"spec": countsSpec.axesSpec[1]
+			}
+			],
+		"columns": [
+			{
+				"column": "SYMBOL",
+				"id": "genesymbol",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/genesymbol",
+					"valueType": "String",
+					"annotations": {
+						"pl7.app/label": "Gene symbol"
+					}
+				}
+			},
+			{
+				"column": "baseMean",
+				"id": "basemean",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/basemean",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "Base mean"
+					}
+				}
+			},
+			{
+				"column": "log2FoldChange",
+				"id": "log2foldchange",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/log2foldchange",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "Log2FC"
+					}
+				}
+			},
+			{
+				"column": "lfcSE",
+				"id": "lfcse",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/lfcse",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "Log2FC SE"
+					}
+				}
+			},
+			{
+				"column": "stat",
+				"id": "waldstat",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/waldstat",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "Stat"
+					}
+				}
+			},
+			{
+				"column": "pvalue",
+				"id": "pvalue",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/pvalue",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "P-value"
+					}
+				}
+			},
+			{
+				"column": "padj",
+				"id": "padj",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/padj",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "Adjusted p-value"
+					}
+				}
+			},
+			{
+				"column": "minlog10padj",
+				"id": "minlog10padj",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/minlog10padj",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "-log10 adjusted p-value"
+					}
+				}
+			}
+			],
+		"storageFormat": "Binary",
+		"partitionKeyLength": 1
+	}
+}
+
+export ll.toStrict({
+	getColumns: getColumns
+})

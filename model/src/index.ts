@@ -18,7 +18,7 @@ export type UiState = {
 
 export type BlockArgs = {
   countsRef?: Ref;
-  metadataRefs: Ref[];
+  covariateRefs: Ref[];
   contrastFactor?: Ref;
   denominator?: String;
   numerator?: String;
@@ -27,7 +27,7 @@ export type BlockArgs = {
 export const model = BlockModel.create()
 
   .withArgs<BlockArgs>({
-    metadataRefs: []
+    covariateRefs: []
   })
 
   .withUiState<UiState>({
@@ -39,9 +39,9 @@ export const model = BlockModel.create()
       }
     },
     graphState: {
-      title: 'Gene expression',
-      chartType: 'discrete',
-      template: 'box'
+      title: 'Differential gene expression',
+      chartType: 'scatterplot',
+      template: 'dots'
     }
   })
 
