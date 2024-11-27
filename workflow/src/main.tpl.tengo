@@ -15,36 +15,25 @@ topTablePfconvParamsLib := import(":topTablePfconvParams")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
 text := import("text")
+ll := import("@platforma-sdk/workflow-tengo:ll")
 
 
 wf.prepare(func(args){
 
 	// below solution not working currently
-	// metaRefs := {}
-
-	// i := 0
-	// for metaRef in args.covariateRefs {
-	// 	metaRefs["metaRef" + i ] = wf.resolve(metaRef, { errIfMissing: true })
-	// 	i = i + 1
-	// }
-
-	// return {
-	// 	resolvedInput: wf.resolve(args.countsRef, { errIfMissing: true }),
-	// 	metaRefs: metaRefs 
-	// }
-
-	result := {}
-
-	result.resolvedInput = wf.resolve(args.countsRef, { errIfMissing: true })
+	metaRefs := {}
 
 	i := 0
 	for metaRef in args.covariateRefs {
-		result["resolvedMetaRef" + i ] = wf.resolve(metaRef, { errIfMissing: true })
+		metaRefs["metaRef" + i ] = wf.resolve(metaRef, { errIfMissing: true })
 		i = i + 1
 	}
 
-	return result
-
+	return {
+		resolvedInput: wf.resolve(args.countsRef, { errIfMissing: true }),
+		resolvedContrastFactor: wf.resolve(args.contrastFactor),
+		metaRefs: metaRefs 
+	}
 })
 
 wf.body(func(args) {
@@ -54,28 +43,17 @@ wf.body(func(args) {
 	rawCounts := args.resolvedInput
 	countsSpec := rawCounts.spec
 
-	// covariates := args.metaRefs
-	contrastFactor := args.contrastFactor
+	contrastFactor := args.resolvedContrastFactor
 	numerator := args.numerator
 	denominator := args.denominator
 
 	species := countsSpec.domain["pl7.app/species"]
-
 	
 	covariates := []
 
-	// Future solution
-	// for _, v in args.metaRefs {
-	// 	covariates = append(covariates, v)
-	// }
-
-	for arg, v in args {
-		if text.has_prefix(arg, "resolvedMetaRef") {
+	for _, v in args.metaRefs {
 		covariates = append(covariates, v)
-		}
 	}
-
-
 
 	// convert PColumns to csv
 	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
@@ -86,7 +64,7 @@ wf.body(func(args) {
 		arg("/Users/aiturbide/Blocks/differential-expression/scripts/run_DESeq2.R").
 		arg("-c").arg("rawCounts.csv").
 		arg("-m").arg("covariates.csv").
-		arg("-t").arg(contrastFactor).
+		arg("-t").arg(contrastFactor.spec.annotations["pl7.app/label"]). // ??
 		arg("-n").arg(numerator).
 		arg("-d").arg(denominator).
 		arg("-s").arg(species).
