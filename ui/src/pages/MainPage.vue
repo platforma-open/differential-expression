@@ -31,7 +31,7 @@ function showAlert() {
   alert('close item');
 }
 
-const metadataOptions = computed(() => {
+const covariateOptions = computed(() => {
   return app.model.outputs.covariateOptions?.map(v => ({
     value: v.ref,
     label: v.label
@@ -43,7 +43,7 @@ const metadataOptions = computed(() => {
 const contrastFactorOptions = computed(() => {
   return app.model.args.covariateRefs.map((ref) => ({
     value: ref,
-    label: metadataOptions.value.find((m) => m.value.name === ref.name)?.label ?? ""
+    label: covariateOptions.value.find((m) => m.value.name === ref.name)?.label ?? ""
   }))
 })
 
@@ -76,7 +76,7 @@ const denominatorOptions = computed(() => {
       <template #title>Settings</template>
       <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
         label="Select dataset" />
-      <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="metadataOptions" label="Design formula" />
+      <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="covariateOptions" label="Design formula" />
       <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions" label="Contrast factor" />
       <PlDropdown v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />

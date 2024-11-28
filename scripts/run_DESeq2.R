@@ -4,6 +4,8 @@
 library(DESeq2)
 library(optparse)
 library(AnnotationDbi)
+library(tidyr)
+library(dplyr)
 
 # Function to load species specific annotation package
 load_annotation_package <- function(species) {
@@ -18,7 +20,8 @@ load_annotation_package <- function(species) {
     "caenorhabditis-elegans" = "org.Ce.eg.db",
     "gallus-gallus" = "org.Gg.eg.db",
     "bos-taurus" = "org.Bt.eg.db",
-    "sus-scrofa" = "org.Ss.eg.db"
+    "sus-scrofa" = "org.Ss.eg.db",
+    "test-species" = "org.Mm.eg.db"
   )
   
   if (!(species %in% names(species_to_package))) {
@@ -102,7 +105,7 @@ if (is.null(opt$count_matrix) || is.null(opt$metadata) || is.null(opt$contrast_f
 }
 
 # Load count matrix and covariates metadata
-count_matrix <- read.csv(opt$count_matrix, row.names = 1, check.names = FALSE)
+count_long <- read.csv(opt$count_matrix, check.names = FALSE)
 metadata <- read.csv(opt$metadata, row.names = 1, check.names = FALSE)
 
 # Validate contrast factor
@@ -116,6 +119,16 @@ if (!(opt$denominator %in% metadata[[opt$contrast_factor]])) {
   stop("Denominator not found in contrast factor column")
 }
 
+colnames(metadata) <- make.names(colnames(metadata))
+
+# Transform long format to wide format
+count_matrix <- count_long %>%
+  pivot_wider(names_from = Sample, values_from = `Expression level`) %>%
+  as.data.frame()
+
+rownames(count_matrix) <- count_matrix$`Ensembl Id`
+count_matrix <- count_matrix[, -1] 
+
 # Prepare DESeq2 dataset
 dds <- DESeqDataSetFromMatrix(
   countData = count_matrix,
@@ -124,8 +137,9 @@ dds <- DESeqDataSetFromMatrix(
 )
 dds <- DESeq(dds)
 
+
 # Extract topTable
-res <- results(dds, contrast = c(opt$contrast_factor, opt$numerator, opt$denominator))
+res <- results(dds, contrast = c(make.names(opt$contrast_factor), opt$numerator, opt$denominator))
 res_df <- as.data.frame(res)
 
 # Annotate genes and reorder columns
