@@ -1,11 +1,27 @@
 #!/usr/bin/env Rscript
 
+# Functions to install libraries
+# Unified function to install and load packages
+install_and_load <- function(package_name) {
+  if (!requireNamespace(package_name, quietly = TRUE)) {
+    if (package_name %in% rownames(available.packages())) {
+      install.packages(package_name, repos = "http://cran.us.r-project.org")
+    } else {
+      if (!requireNamespace("BiocManager", quietly = TRUE)) {
+        install.packages("BiocManager", repos = "http://cran.us.r-project.org")
+      }
+      BiocManager::install(package_name)
+    }
+  }
+  library(package_name, character.only = TRUE)
+}
+
 # Load libraries
-library(DESeq2)
-library(optparse)
-library(AnnotationDbi)
-library(tidyr)
-library(dplyr)
+install_and_load("optparse")
+install_and_load("tidyr")
+install_and_load("dplyr")
+install_and_load("DESeq2")
+install_and_load("AnnotationDbi")
 
 # Function to load species specific annotation package
 load_annotation_package <- function(species) {
@@ -128,6 +144,13 @@ count_matrix <- count_long %>%
 
 rownames(count_matrix) <- count_matrix$`Ensembl Id`
 count_matrix <- count_matrix[, -1] 
+
+# Filter lowly expressed genes
+filter_threshold <- 10
+min_samples <- floor(ncol(count_matrix) / 2)
+
+# Apply the filter
+count_matrix <- count_matrix[rowSums(count_matrix >= filter_threshold) >= min_samples, ]
 
 # Prepare DESeq2 dataset
 dds <- DESeqDataSetFromMatrix(
