@@ -6,8 +6,8 @@ import { useApp } from "../app";
 const app = useApp();
 
 const settings = {
-  chartType: 'discrete',
-  template: 'box',
+  chartType: 'scatterplot',
+  template: 'dots',
   title: 'Gene expression',
    } as GraphMakerSettings;
 </script>
