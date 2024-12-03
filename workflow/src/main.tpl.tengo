@@ -61,7 +61,7 @@ wf.body(func(args) {
 
 	diffExpression := exec.builder().
 		cmd("Rscript").
-		arg("/Users/aiturbide/Blocks/differential-expression/scripts/run_DESeq2.R").
+		arg("/Users/poslavskysv/Projects/milab/platforma/blocks/differential-expression/scripts/run_DESeq2.R").
 		arg("-c").arg("rawCounts.csv").
 		arg("-m").arg("covariates.csv").
 		arg("-t").arg(contrastFactor.spec.annotations["pl7.app/label"]). // ??

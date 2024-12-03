@@ -4,7 +4,7 @@ getColumns := func(countsSpec) {
 	return {
 		"axes": [
 			{
-				"column": "Geneid",
+				"column": "EnsemblId",
 				"spec": countsSpec.axesSpec[1]
 			}
 			],
@@ -17,7 +17,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/genesymbol",
 					"valueType": "String",
 					"annotations": {
-						"pl7.app/label": "Gene symbol"
+						"pl7.app/label": "Gene symbol",
+						"pl7.app/table/orderPriority": "80"
 					}
 				}
 			},
@@ -29,7 +30,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/basemean",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "Base mean"
+						"pl7.app/label": "Base mean",
+						"pl7.app/table/orderPriority": "70"
 					}
 				}
 			},
@@ -41,7 +43,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/log2foldchange",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "Log2FC"
+						"pl7.app/label": "Log2FC",
+						"pl7.app/table/orderPriority": "60"
 					}
 				}
 			},
@@ -53,7 +56,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/lfcse",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "Log2FC SE"
+						"pl7.app/label": "Log2FC SE",
+						"pl7.app/table/orderPriority": "50"
 					}
 				}
 			},
@@ -65,7 +69,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/waldstat",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "Stat"
+						"pl7.app/label": "Stat",
+						"pl7.app/table/orderPriority": "40"
 					}
 				}
 			},
@@ -77,7 +82,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/pvalue",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "P-value"
+						"pl7.app/label": "P-value",
+						"pl7.app/table/orderPriority": "30"
 					}
 				}
 			},
@@ -89,7 +95,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/padj",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "Adjusted p-value"
+						"pl7.app/label": "Adjusted p-value",
+						"pl7.app/table/orderPriority": "20"
 					}
 				}
 			},
@@ -101,7 +108,8 @@ getColumns := func(countsSpec) {
 					"name": "pl7.app/rna-seq/minlog10padj",
 					"valueType": "Double",
 					"annotations": {
-						"pl7.app/label": "-log10 adjusted p-value"
+						"pl7.app/label": "-log10 adjusted p-value",
+						"pl7.app/table/orderPriority": "10"
 					}
 				}
 			}
