@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import {
   PlAgDataTable,
   PlBlockPage,
@@ -81,4 +81,4 @@ const denominatorOptions = computed(() => {
 
     <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" />
   </PlBlockPage>
-</template>
+</template> -->
