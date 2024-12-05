@@ -1,4 +1,4 @@
-import { GraphMakerSettings } from '@milaboratories/graph-maker';
+import { GraphMakerState } from '@milaboratories/graph-maker';
 import {
   BlockModel,
   createPlDataTable,
@@ -7,19 +7,19 @@ import {
   isPColumnSpec,
   PFrameHandle,
   PlDataTableState,
-  Ref,
+  PlRef,
   ValueType
 } from '@platforma-sdk/model';
 
 export type UiState = {
   tableState?: PlDataTableState;
-  graphState?: GraphMakerSettings;
+  graphState?: GraphMakerState;
 };
 
 export type BlockArgs = {
-  countsRef?: Ref;
-  covariateRefs: Ref[];
-  contrastFactor?: Ref;
+  countsRef?: PlRef;
+  covariateRefs: PlRef[];
+  contrastFactor?: PlRef;
   denominator?: String;
   numerator?: String;
 };
@@ -40,7 +40,6 @@ export const model = BlockModel.create()
     },
     graphState: {
       title: 'Differential gene expression',
-      chartType: 'scatterplot',
       template: 'dots'
     }
   })
@@ -82,17 +81,6 @@ export const model = BlockModel.create()
 
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
   })
-
-  .output('ColumnId', (ctx) => {
-    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
-    if (pCols?.length !== 1) {
-      return undefined;
-    }
-
-    return pCols[0].id;
-  })
-
-  .output('newoutput', (ctx) => ctx.outputs?.resolve('topTablePf')?.listInputFields())
 
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
     const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
