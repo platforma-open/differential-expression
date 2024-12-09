@@ -12,22 +12,34 @@ import {
 } from '@platforma-sdk/model';
 
 export type UiState = {
-  tableState?: PlDataTableState;
-  graphState?: GraphMakerState;
+  tableState: PlDataTableState;
+  graphState: GraphMakerState;
 };
 
-export type BlockArgs = {
-  countsRef?: PlRef;
+export type Formula = {
+  // we put formula label in the arg as it will be used
+  // in the annotations to re-use in the downstream blocks
+  label: string;
   covariateRefs: PlRef[];
   contrastFactor?: PlRef;
   denominator?: String;
   numerator?: String;
 };
 
+export type BlockArgs = {
+  countsRef?: PlRef;
+  formulas: Formula[];
+};
+
 export const model = BlockModel.create()
 
   .withArgs<BlockArgs>({
-    covariateRefs: []
+    formulas: [
+      {
+        label: 'Formula',
+        covariateRefs: []
+      }
+    ]
   })
 
   .withUiState<UiState>({
@@ -48,31 +60,36 @@ export const model = BlockModel.create()
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')
   )
 
-  .output('covariateOptions', (ctx) =>
+  .output('metadataOptions', (ctx) =>
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'pl7.app/metadata')
   )
-
-  .output('contrastFactorOptions', (ctx) =>
-    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'pl7.app/metadata')
-  )
-
-  .output('denominatorOptions', (ctx) => {
-    if (!ctx.args.contrastFactor) return undefined;
-
-    const data = ctx.resultPool.getDataByRef(ctx.args.contrastFactor)?.data;
-
-    // @TODO need a convenient method in API
-    const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
-    if (!values) return undefined;
-
-    return [...new Set(Object.values(values))];
-  })
 
   .output('datasetSpec', (ctx) => {
     if (ctx.args.countsRef) return ctx.resultPool.getSpecByRef(ctx.args.countsRef);
     else return undefined;
   })
 
+  /**
+   * Returns array of options, i-th element of the array contains list of options for i-th formula
+   */
+  .output('denominatorOptions', (ctx) => {
+    return ctx.args.formulas.map((f) => {
+      if (!f.contrastFactor) return undefined;
+      const data = ctx.resultPool.getDataByRef(f.contrastFactor)?.data;
+
+      // @TODO need a convenient method in API
+      // @TODO also should be filtered ONLY to the data existing in the dataset
+      const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
+
+      if (!values) return undefined;
+
+      return [...new Set(Object.values(values))];
+    });
+  })
+
+  /**
+   * Returns a map of results
+   */
   .output('pt', (ctx) => {
     const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
@@ -99,10 +116,17 @@ export const model = BlockModel.create()
     return ctx.createPFrame([...pCols, ...upstream]);
   })
 
-  .sections([
-    { type: 'link', href: '/', label: 'Contrast' },
-    { type: 'link', href: '/graph', label: 'Volcano plot' }
-  ])
+  .sections((ctx) => {
+    return [
+      ...ctx.args.formulas.map((f, i) => ({
+        type: 'link' as const,
+        href: `/formula?id=${i}` as const,
+        label: f.label
+      })),
+      { type: 'delimiter' },
+      { type: 'link', href: '/graph', label: 'Volcano plot' }
+    ];
+  })
 
   .done();
 
