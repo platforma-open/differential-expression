@@ -3,44 +3,18 @@
   "version": "1.0.0",
   "scripts": {
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,vue}\"",
-    "build": "rm -rf ./block-pack && block-tools pack"
-  },
-  "files": [
-    "index.d.ts",
-    "index.js"
-  ],
-  "dependencies": {
-    "@platforma-open/milaboratories.differential-expression.workflow": "workspace:*",
-    "@platforma-open/milaboratories.differential-expression.model": "workspace:*",
-    "@platforma-open/milaboratories.differential-expression.ui": "workspace:*"
-  },
-  "block": {
-    "components": {
-      "workflow": "@platforma-open/milaboratories.differential-expression.workflow/dist/tengo/tpl/main.plj.gz",
-      "model": "@platforma-open/milaboratories.differential-expression.model/dist/model.json",
-      "ui": "@platforma-open/milaboratories.differential-expression.ui/dist"
-    },
-    "meta": {
-      "title": "Differential Expression",
-      "logo": "file:logos/block-logo.png",
-      "url": "https://github.com/milaboratory/platforma-differential-expression",
-      "docs": "https://github.com/milaboratory/platforma-differential-expression/docs",
-      "support": "mailto:support@milaboratories.com",
-      "description": "Identify differentially expressed genes between conditions.",
-      "longDescription": "file:./docs/description.md",
-      "changelog": "file:CHANGELOG.md",
-      "tags": ["rna-seq"],
-      "organization": {
-        "name": "MiLaboratories Inc",
-        "url": "https://milaboratories.com/",
-        "logo": "file:logos/organization-logo.png"
-      }
-    }
+    "build": "turbo run build",
+    "test": "turbo run test --concurrency 1 --env-mode=loose",
+    "mark-stable": "turbo run mark-stable",
+    "watch": "turbo watch build",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
   },
   "devDependencies": {
-    "@changesets/cli": "catalog:",
-    "@platforma-sdk/block-tools": "catalog:"
+    "turbo": "catalog:",
+    "@changesets/cli": "catalog:"
   },
+  "packageManager": "pnpm@9.12.0",
   "//": {
     "overrides": {
       "@milaboratories/pl-model-common": "file:/Users/poslavskysv/Projects/milab/platforma/platforma-sdk/lib/model/common/package.tgz",
