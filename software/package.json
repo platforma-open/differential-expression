@@ -1,0 +1,35 @@
+{
+  "name": "@platforma-open/milaboratories.run-deseq2-r.software",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Block Software: Run DESeq2 with R",
+  "scripts": {
+    "build": "pl-pkg build",
+    "build:dev": "pl-pkg build --dev=local",
+    "test": "true",
+    "prepublishOnly": "pl-pkg build; pl-pkg publish packages"
+  },
+  "block-software": {
+    "entrypoints": {
+      "main": {
+        "binary": {
+          "artifact": {
+            "type": "R",
+            "registry": "platforma-open",
+            "environment": "@platforma-open/milaboratories.runenv-r:4.4.1",
+            "dependencies": {
+              "toolset": "renv",
+              "lockFile": "renv.lock"
+            },
+            "root": "./src"
+          },
+          "cmd": [ "Rscript", "{pkg}/run_DESeq2.R" ]
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "@platforma-open/milaboratories.runenv-r": "catalog:",
+    "@platforma-sdk/package-builder": "catalog:"
+  }
+}
