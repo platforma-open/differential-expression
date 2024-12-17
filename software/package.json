@@ -1,6 +1,6 @@
 {
   "name": "@platforma-open/milaboratories.run-deseq2-r.software",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Block Software: Run DESeq2 with R",
   "scripts": {
@@ -22,7 +22,10 @@
             },
             "root": "./src"
           },
-          "cmd": [ "Rscript", "{pkg}/run_DESeq2.R" ]
+          "cmd": [
+            "Rscript",
+            "{pkg}/run_DESeq2.R"
+          ]
         }
       }
     }
