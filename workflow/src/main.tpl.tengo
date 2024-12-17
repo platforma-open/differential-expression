@@ -13,6 +13,7 @@ wf := import("@platforma-sdk/workflow-tengo:workflow")
 exec := import("@platforma-sdk/workflow-tengo:exec")
 topTablePfconvParamsLib := import(":topTablePfconvParams")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
+assets := import("@platforma-sdk/workflow-tengo:assets")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
 text := import("text")
 ll := import("@platforma-sdk/workflow-tengo:ll")
@@ -60,8 +61,7 @@ wf.body(func(args) {
 	csvCovariates := xsv.exportFrame(covariates, "csv", {})
 
 	diffExpression := exec.builder().
-		cmd("Rscript").
-		arg("/Users/poslavskysv/Projects/milab/platforma/blocks/differential-expression/scripts/run_DESeq2.R").
+		software(assets.importSoftware("@platforma-open/milaboratories.run-deseq2-r.software:main")).
 		arg("-c").arg("rawCounts.csv").
 		arg("-m").arg("covariates.csv").
 		arg("-t").arg(contrastFactor.spec.annotations["pl7.app/label"]). // ??
