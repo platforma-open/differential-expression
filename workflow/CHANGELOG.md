@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [b0f1ad9]
+  - @platforma-open/milaboratories.run-deseq2-r.software@1.0.2
+
 ## 1.1.0
 
 ### Minor Changes
