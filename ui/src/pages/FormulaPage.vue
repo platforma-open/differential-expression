@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import {
     PlAgDataTable,
     PlBlockPage,
@@ -119,14 +119,14 @@ const deleteModalOpen = ref(false);
         </PlSlideModal>
 
         <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" />
-    </PlBlockPage>
+    </PlBlockPage> -->
 
     <!-- Delete dataset confirmation dialog -->
-    <PlDialogModal v-model="deleteModalOpen">
+    <!-- <PlDialogModal v-model="deleteModalOpen">
         <div :style="{ marginBottom: '10px' }">Are you sure?</div>
         <div class="d-flex gap-4">
             <PlBtnPrimary @click="deleteFormula">Delete</PlBtnPrimary>
             <PlBtnSecondary @click="() => (deleteModalOpen = false)">Cancel</PlBtnSecondary>
         </div>
     </PlDialogModal>
-</template>
+</template> -->

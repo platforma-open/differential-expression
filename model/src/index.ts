@@ -16,30 +16,35 @@ export type UiState = {
   graphState: GraphMakerState;
 };
 
-export type Formula = {
-  // we put formula label in the arg as it will be used
-  // in the annotations to re-use in the downstream blocks
-  label: string;
+// export type Formula = {
+//   // we put formula label in the arg as it will be used
+//   // in the annotations to re-use in the downstream blocks
+//   label: string;
+//   covariateRefs: PlRef[];
+//   contrastFactor?: PlRef;
+//   denominator?: String;
+//   numerator?: String;
+// };
+
+export type BlockArgs = {
+  countsRef?: PlRef;
+  // formulas: Formula[];
   covariateRefs: PlRef[];
   contrastFactor?: PlRef;
   denominator?: String;
   numerator?: String;
 };
 
-export type BlockArgs = {
-  countsRef?: PlRef;
-  formulas: Formula[];
-};
-
 export const model = BlockModel.create()
 
   .withArgs<BlockArgs>({
-    formulas: [
-      {
-        label: 'Formula',
-        covariateRefs: []
-      }
-    ]
+    // formulas: [
+    //   {
+    //     label: 'Formula',
+    //     covariateRefs: []
+    //   }
+    // ]
+    covariateRefs: []
   })
 
   .withUiState<UiState>({
@@ -69,23 +74,35 @@ export const model = BlockModel.create()
     else return undefined;
   })
 
+  .output('denominatorOptions', (ctx) => {
+    if (!ctx.args.contrastFactor) return undefined;
+
+    const data = ctx.resultPool.getDataByRef(ctx.args.contrastFactor)?.data;
+
+    // @TODO need a convenient method in API
+    const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
+    if (!values) return undefined;
+
+    return [...new Set(Object.values(values))];
+  })
+
   /**
    * Returns array of options, i-th element of the array contains list of options for i-th formula
    */
-  .output('denominatorOptions', (ctx) => {
-    return ctx.args.formulas.map((f) => {
-      if (!f.contrastFactor) return undefined;
-      const data = ctx.resultPool.getDataByRef(f.contrastFactor)?.data;
+  // .output('denominatorOptions', (ctx) => {
+  //   return ctx.args.formulas.map((f) => {
+  //     if (!f.contrastFactor) return undefined;
+  //     const data = ctx.resultPool.getDataByRef(f.contrastFactor)?.data;
 
-      // @TODO need a convenient method in API
-      // @TODO also should be filtered ONLY to the data existing in the dataset
-      const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
+  //     // @TODO need a convenient method in API
+  //     // @TODO also should be filtered ONLY to the data existing in the dataset
+  //     const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
 
-      if (!values) return undefined;
+  //     if (!values) return undefined;
 
-      return [...new Set(Object.values(values))];
-    });
-  })
+  //     return [...new Set(Object.values(values))];
+  //   });
+  // })
 
   /**
    * Returns a map of results
@@ -116,17 +133,22 @@ export const model = BlockModel.create()
     return ctx.createPFrame([...pCols, ...upstream]);
   })
 
-  .sections((ctx) => {
-    return [
-      ...ctx.args.formulas.map((f, i) => ({
-        type: 'link' as const,
-        href: `/formula?id=${i}` as const,
-        label: f.label
-      })),
-      { type: 'delimiter' },
-      { type: 'link', href: '/graph', label: 'Volcano plot' }
-    ];
-  })
+  // .sections((ctx) => {
+  //   return [
+  //     ...ctx.args.formulas.map((f, i) => ({
+  //       type: 'link' as const,
+  //       href: `/formula?id=${i}` as const,
+  //       label: f.label
+  //     })),
+  //     { type: 'delimiter' },
+  //     { type: 'link', href: '/graph', label: 'Volcano plot' }
+  //   ];
+  // })
+
+  .sections([
+    { type: 'link', href: '/', label: 'Contrast' },
+    { type: 'link', href: '/graph', label: 'Volcano plot' }
+  ])
 
   .done();
 
