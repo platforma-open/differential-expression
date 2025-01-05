@@ -1,4 +1,4 @@
-<!-- <script setup lang="ts">
+<script setup lang="ts">
 import {
   PlAgDataTable,
   PlBlockPage,
@@ -29,7 +29,7 @@ function showAlert() {
 }
 
 const covariateOptions = computed(() => {
-  return app.model.outputs.covariateOptions?.map(v => ({
+  return app.model.outputs.metadataOptions?.map(v => ({
     value: v.ref,
     label: v.label
   })) ?? []
@@ -81,4 +81,4 @@ const denominatorOptions = computed(() => {
 
     <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" />
   </PlBlockPage>
-</template> -->
+</template>

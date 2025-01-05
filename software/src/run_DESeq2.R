@@ -141,7 +141,7 @@ colnames(metadata) <- make.names(colnames(metadata))
 
 # Transform long format to wide format
 count_matrix <- count_long %>%
-  pivot_wider(names_from = Sample, values_from = `Expression level`) %>%
+  pivot_wider(names_from = Sample, values_from = `Raw gene expression`) %>%
   as.data.frame()
 
 rownames(count_matrix) <- count_matrix$`Ensembl Id`
