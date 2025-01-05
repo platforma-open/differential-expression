@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 1.1.0
+
+### Minor Changes
+
+- c41f72c: One contrast can be run per block
+
 ## 1.0.2
 
 ### Patch Changes
