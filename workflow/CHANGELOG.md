@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 1.2.0
+
+### Minor Changes
+
+- e3f00d7: DEG exported for downstream analysis
+
+### Patch Changes
+
+- Updated dependencies [e3f00d7]
+  - @platforma-open/milaboratories.run-deseq2-r.software@1.2.0
+
 ## 1.1.2
 
 ### Patch Changes
