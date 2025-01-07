@@ -12,11 +12,13 @@
 wf := import("@platforma-sdk/workflow-tengo:workflow")
 exec := import("@platforma-sdk/workflow-tengo:exec")
 topTablePfconvParamsLib := import(":topTablePfconvParams")
+DEGPfconvParamsLib := import(":DEGPfconvParams")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 assets := import("@platforma-sdk/workflow-tengo:assets")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
 text := import("text")
 ll := import("@platforma-sdk/workflow-tengo:ll")
+pSpec := import("@platforma-sdk/workflow-tengo:pframes.spec")
 
 
 wf.prepare(func(args){
@@ -39,7 +41,7 @@ wf.prepare(func(args){
 
 wf.body(func(args) {
 
-	//blockId := wf.blockId().getDataAsJson()
+	blockId := wf.blockId().getDataAsJson()
 
 	rawCounts := args.resolvedInput
 	countsSpec := rawCounts.spec
@@ -72,6 +74,7 @@ wf.body(func(args) {
 		addFile("rawCounts.csv", csvCounts).
 		addFile("covariates.csv", csvCovariates).
 		saveFile("topTable.csv").
+		saveFile("DEG.csv").
 		printErrStreamToStdout().
 		saveStdoutContent().
 		cache(24 * 60 * 60 * 1000).
@@ -80,10 +83,50 @@ wf.body(func(args) {
 	topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec)
 	topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams)
 
+	// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
+	DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec)
+	DEGPf := xsv.importFile(diffExpression.getFile("DEG.csv"), "csv", DEGImportParams)
+
+	trace := pSpec.makeTrace(countsSpec,
+		{type: "milaboratories.differential-expression", id: blockId, importance: 30, label: "DEG - " + numerator + "/" + denominator}
+	)
+
+	exports := {
+			DEG : {
+			spec: trace.inject({
+				kind: "PColumn",
+				name: "DEG",
+				domain: {
+					"pl7.app/blockId": blockId,
+					"pl7.app/species": species
+				},
+				valueType: "Double",
+				annotations: {
+					"pl7.app/label": numerator + " vs " + denominator + " (log2FC)",
+					"pl7.app/table/hValue": "true"
+				},
+				axesSpec: [
+					{
+						"name": "pl7.app/rna-seq/geneId",
+						"type": "String",
+						"domain": {
+							"pl7.app/blockId": blockId,
+							"pl7.app/species": species
+						},
+						"annotations": {
+							"pl7.app/label": "Ensembl Id"
+						}
+					}
+					]
+			}),
+			data: DEGPf["log2foldchange.data"]
+		}
+	}
+
 	return {
 		outputs: {
 			topTablePf: pframes.exportFrame(topTablePf)
 		},
-		exports: {}
+		exports: exports
 	}
 })
