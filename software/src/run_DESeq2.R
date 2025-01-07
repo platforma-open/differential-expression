@@ -176,4 +176,17 @@ res_df <- res_df[, c("EnsemblId", "SYMBOL", setdiff(colnames(res_df), c("Ensembl
 
 # Save topTable as csv
 write.csv(res_df, opt$output, row.names = FALSE)
-cat("Analysis completed. Results saved to", opt$output, "\n")
+cat("Full results saved to", opt$output, "\n")
+
+
+# Filter DEGs with adjusted p-value < 0.05 and absolute log2FoldChange > 0.6
+deg_df <- res_df[
+  res_df$padj < 0.05 & abs(res_df$log2FoldChange) > 0.6,
+  c("EnsemblId", "SYMBOL", "log2FoldChange")
+]
+deg_df <- deg_df[!is.na(deg_df$EnsemblId),]
+
+# Save DEG as csv
+#deg_output <- sub("\\.csv$", "_DEG.csv", opt$output)
+write.csv(deg_df, "DEG.csv", row.names = FALSE)
+cat("Filtered DEGs saved to", "DEG.csv", "\n")

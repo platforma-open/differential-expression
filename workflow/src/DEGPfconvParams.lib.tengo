@@ -1,0 +1,46 @@
+ll := import("@platforma-sdk/workflow-tengo:ll")
+
+getColumns := func(countsSpec) {
+	return {
+		"axes": [
+			{
+				"column": "EnsemblId",
+				"spec": countsSpec.axesSpec[1]
+			}
+			],
+		"columns": [
+			// {
+			// 	"column": "SYMBOL",
+			// 	"id": "genesymbol",
+			// 	"allowNA": true,
+			// 	"spec": {
+			// 		"name": "pl7.app/rna-seq/genesymbol",
+			// 		"valueType": "String",
+			// 		"annotations": {
+			// 			"pl7.app/label": "Gene symbol",
+			// 			"pl7.app/table/orderPriority": "80"
+			// 		}
+			// 	}
+			// },
+			{
+				"column": "log2FoldChange",
+				"id": "log2foldchange",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/log2foldchange",
+					"valueType": "Double",
+					"annotations": {
+						"pl7.app/label": "Log2FC",
+						"pl7.app/table/orderPriority": "60"
+					}
+				}
+			}
+			],
+		"storageFormat": "Binary",
+		"partitionKeyLength": 0
+	}
+}
+
+export ll.toStrict({
+	getColumns: getColumns
+})
