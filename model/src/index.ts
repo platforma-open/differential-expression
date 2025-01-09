@@ -61,8 +61,16 @@ export const model = BlockModel.create()
     }
   })
 
+  // User can only select as input raw gene count matrices
+  // includeNativeLabel ensures raw counts pl7.app/label (native label, 'Raw gene expression')
+  // is visible in selection (by default we see Samples & data ID)
+  // addLabelAsSuffix moves the native label to the end
+  // Result: [dataID] / Raw gene expression
   .output('countsOptions', (ctx) =>
-    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'countMatrix')
+    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && 
+                                        spec.name === 'countMatrix' &&
+                                        spec.annotations?.['pl7.app/rna-seq/normalized'] === 'false'
+                                ,{includeNativeLabel: true, addLabelAsSuffix:true})
   )
 
   .output('metadataOptions', (ctx) =>
