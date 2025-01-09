@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 1.3.0
+
+### Minor Changes
+
+- 7538217: Allow only DE analysis of raw counts
+
 ## 1.2.0
 
 ### Minor Changes
