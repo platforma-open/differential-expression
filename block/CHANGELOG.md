@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.1.6
+
+### Patch Changes
+
+- 4917d6a: chore: fix changelog
+
 ## 1.1.5
 
 ### Patch Changes
