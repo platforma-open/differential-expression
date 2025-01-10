@@ -31,7 +31,7 @@
       "support": "mailto:support@milaboratories.com",
       "description": "Identify differentially expressed genes between conditions.",
       "longDescription": "file:../docs/description.md",
-      "changelog": "file:../CHANGELOG.md",
+      "changelog": "file:./CHANGELOG.md",
       "tags": [
         "rna-seq"
       ],

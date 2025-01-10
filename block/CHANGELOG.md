@@ -51,3 +51,7 @@
 ### Patch Changes
 
 - 8aa4f20: chore: bump version
+
+## 1.0.0
+
+Initial release.
