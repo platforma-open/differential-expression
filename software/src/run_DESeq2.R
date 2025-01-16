@@ -167,12 +167,18 @@ dds <- DESeq(dds)
 res <- results(dds, contrast = c(make.names(opt$contrast_factor), opt$numerator, opt$denominator))
 res_df <- as.data.frame(res)
 
-# Annotate genes and reorder columns
+# Annotate genes
 res_df <- annotate_results(res_df, opt$species)
 res_df$EnsemblId <- rownames(res_df)
 res_df$minlog10padj <- -log10(res_df$padj)
 res_df$minlog10padj[is.na(res_df$minlog10padj)] <- NA
-res_df <- res_df[, c("EnsemblId", "SYMBOL", setdiff(colnames(res_df), c("EnsemblId", "SYMBOL")))]
+
+# Add regulation direction
+res_df$Regulation <- ifelse(res_df$log2FoldChange > 1, "Up",
+                            ifelse(res_df$log2FoldChange < -1, "Down", "NS"))
+
+# Reorder columns
+res_df <- res_df[, c("EnsemblId", "SYMBOL", "Regulation", setdiff(colnames(res_df), c("EnsemblId", "SYMBOL", "Regulation")))]
 
 # Save topTable as csv
 write.csv(res_df, opt$output, row.names = FALSE)
@@ -182,7 +188,7 @@ cat("Full results saved to", opt$output, "\n")
 # Filter DEGs with adjusted p-value < 0.05 and absolute log2FoldChange > 0.6
 deg_df <- res_df[
   res_df$padj < 0.05 & abs(res_df$log2FoldChange) > 0.6,
-  c("EnsemblId", "SYMBOL", "log2FoldChange")
+  c("EnsemblId", "SYMBOL", "log2FoldChange", "Regulation")
 ]
 deg_df <- deg_df[!is.na(deg_df$EnsemblId),]
 

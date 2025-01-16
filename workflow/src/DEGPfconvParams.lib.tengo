@@ -9,19 +9,19 @@ getColumns := func(countsSpec) {
 			}
 			],
 		"columns": [
-			// {
-			// 	"column": "SYMBOL",
-			// 	"id": "genesymbol",
-			// 	"allowNA": true,
-			// 	"spec": {
-			// 		"name": "pl7.app/rna-seq/genesymbol",
-			// 		"valueType": "String",
-			// 		"annotations": {
-			// 			"pl7.app/label": "Gene symbol",
-			// 			"pl7.app/table/orderPriority": "80"
-			// 		}
-			// 	}
-			// },
+			{
+				"column": "SYMBOL",
+				"id": "genesymbol",
+				"allowNA": true,
+				"spec": {
+					"name": "pl7.app/rna-seq/genesymbol",
+					"valueType": "String",
+					"annotations": {
+						"pl7.app/label": "Gene symbol",
+						"pl7.app/table/orderPriority": "80"
+					}
+				}
+			},
 			{
 				"column": "log2FoldChange",
 				"id": "log2foldchange",
@@ -32,6 +32,18 @@ getColumns := func(countsSpec) {
 					"annotations": {
 						"pl7.app/label": "Log2FC",
 						"pl7.app/table/orderPriority": "60"
+					}
+				}
+			},
+			{
+				"column": "Regulation",
+				"id": "regulationDirection",
+				"spec": {
+					"name": "pl7.app/rna-seq/regulationDirection",
+					"valueType": "String",
+					"annotations": {
+						"pl7.app/label": "Regulation direction",
+						"pl7.app/table/orderPriority": "5"
 					}
 				}
 			}
