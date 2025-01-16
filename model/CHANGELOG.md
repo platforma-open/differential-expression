@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 1.4.0
+
+### Minor Changes
+
+- 00a1db8: Limit axis options in volcano plot
+
 ## 1.3.0
 
 ### Minor Changes
