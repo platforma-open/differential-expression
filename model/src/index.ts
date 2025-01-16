@@ -125,10 +125,18 @@ export const model = BlockModel.create()
   })
 
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
-    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
+     // Allow only log2 FC and -log10 Padjust as options for volcano axis
+     // Include gene symbol for future filters
+     pCols = pCols.filter(
+                col => col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
+                        col.spec.name === "pl7.app/rna-seq/minlog10padj" ||
+                        col.spec.name === "pl7.app/rna-seq/genesymbol"
+    );
+
 
     // enriching with upstream data
     const valueTypes = ['Int', 'Float', 'Double', 'String'] as ValueType[];
@@ -136,7 +144,10 @@ export const model = BlockModel.create()
       .getData()
       .entries.map((v) => v.obj)
       .filter(isPColumn)
-      .filter((column) => valueTypes.find((valueType) => valueType === column.spec.valueType));
+      .filter((column) => valueTypes.find((valueType) => (valueType === column.spec.valueType) &&
+                                                          (column.id.includes("metadata"))
+                                          )
+    );
 
     return ctx.createPFrame([...pCols, ...upstream]);
   })
