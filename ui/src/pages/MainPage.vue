@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   PlAgDataTable,
+  PlAgDataTableToolsPanel,
   PlBlockPage,
   PlBtnGhost,
   PlDataTableSettings,
@@ -73,12 +74,13 @@ const denominatorOptions = computed(() => {
       <template #title>Settings</template>
       <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
         label="Select dataset" />
-      <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="covariateOptions" label="Design formula" />
+      <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="covariateOptions" label="Design" />
       <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions" label="Contrast factor" />
       <PlDropdown v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
     </PlSlideModal>
 
-    <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" />
+    <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
+    show-export-button />
   </PlBlockPage>
 </template>
