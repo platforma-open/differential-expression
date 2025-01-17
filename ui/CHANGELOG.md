@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 1.3.0
+
+### Minor Changes
+
+- 19cad87: Volcano color formatted
+
+### Patch Changes
+
+- Updated dependencies [19cad87]
+  - @platforma-open/milaboratories.differential-expression.model@1.5.0
+
 ## 1.2.2
 
 ### Patch Changes

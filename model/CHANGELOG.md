@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 1.5.0
+
+### Minor Changes
+
+- 19cad87: Volcano color formatted
+
 ## 1.4.0
 
 ### Minor Changes

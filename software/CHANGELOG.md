@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 1.3.0
+
+### Minor Changes
+
+- 19cad87: Volcano color formatted
+
 ## 1.2.0
 
 ### Minor Changes
