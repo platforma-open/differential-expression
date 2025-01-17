@@ -134,9 +134,18 @@ export const model = BlockModel.create()
      pCols = pCols.filter(
                 col => col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
                         col.spec.name === "pl7.app/rna-seq/minlog10padj" ||
-                        col.spec.name === "pl7.app/rna-seq/genesymbol"
+                        col.spec.name === "pl7.app/rna-seq/regulationDirection" ||
+                        col.spec.name === "pl7.app/rna-seq/genesymbol" 
     );
 
+    // var DEGpCols = ctx.outputs?.resolve('DEGPf')?.getPColumns();
+    // if (DEGpCols === undefined) {
+    //   return undefined;
+    // }
+    
+    // DEGpCols = DEGpCols.filter(
+    //   col => col.spec.name === "pl7.app/rna-seq/genesymbol"
+    // );
 
     // enriching with upstream data
     const valueTypes = ['Int', 'Float', 'Double', 'String'] as ValueType[];
@@ -150,19 +159,8 @@ export const model = BlockModel.create()
     );
 
     return ctx.createPFrame([...pCols, ...upstream]);
+    // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
   })
-
-  // .sections((ctx) => {
-  //   return [
-  //     ...ctx.args.formulas.map((f, i) => ({
-  //       type: 'link' as const,
-  //       href: `/formula?id=${i}` as const,
-  //       label: f.label
-  //     })),
-  //     { type: 'delimiter' },
-  //     { type: 'link', href: '/graph', label: 'Volcano plot' }
-  //   ];
-  // })
 
   .sections([
     { type: 'link', href: '/', label: 'Contrast' },

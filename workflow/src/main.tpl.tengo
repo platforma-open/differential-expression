@@ -125,7 +125,8 @@ wf.body(func(args) {
 
 	return {
 		outputs: {
-			topTablePf: pframes.exportFrame(topTablePf)
+			topTablePf: pframes.exportFrame(topTablePf),
+			DEGPf: pframes.exportFrame(DEGPf)
 		},
 		exports: exports
 	}
