@@ -11,11 +11,11 @@ catalog:
   '@platforma-sdk/model': ^1.21.20
   '@platforma-sdk/ui-vue': ^1.21.24
   '@platforma-sdk/tengo-builder': ^1.17.5
-  '@platforma-sdk/workflow-tengo': ^2.9.8
+  '@platforma-sdk/workflow-tengo': ^2.9.9
 
-  '@platforma-sdk/test': ^1.21.32
-  '@milaboratories/graph-maker': ^1.1.22
-  '@milaboratories/software-pframes-conv': ^2.1.5
+  '@platforma-sdk/test': ^1.21.34
+  '@milaboratories/graph-maker': ^1.1.27
+  '@milaboratories/software-pframes-conv': ^2.1.7
   '@platforma-open/milaboratories.software-small-binaries': ^1.15.6
   '@platforma-open/milaboratories.software-subread': ^1.0.0
   '@platforma-open/milaboratories.software-star': ^1.0.1
@@ -24,7 +24,7 @@ catalog:
   '@platforma-sdk/package-builder': ^2.15.0
 
   'vue': ^3.5.13
-  'vue-tsc': ^2.1.10
+  'vue-tsc': ^2.2.0
 
   'typescript': ^5.6.3
   'tsup': ~8.3.5
