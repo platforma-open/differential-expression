@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 1.6.0
+
+### Minor Changes
+
+- c68f182: Improved Visualization
+
 ## 1.5.0
 
 ### Minor Changes
