@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 1.4.1
+
+### Patch Changes
+
+- d6dfeb0: chore: update gitignore
+
 ## 1.4.0
 
 ### Minor Changes
