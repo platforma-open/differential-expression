@@ -95,7 +95,7 @@ wf.body(func(args) {
 			DEG : {
 			spec: trace.inject({
 				kind: "PColumn",
-				name: "DEG",
+				name: "pl7.app/rna-seq/DEG",
 				domain: {
 					"pl7.app/blockId": blockId,
 					"pl7.app/species": species
@@ -110,7 +110,6 @@ wf.body(func(args) {
 						"name": "pl7.app/rna-seq/geneId",
 						"type": "String",
 						"domain": {
-							"pl7.app/blockId": blockId,
 							"pl7.app/species": species
 						},
 						"annotations": {
