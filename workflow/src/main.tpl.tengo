@@ -103,7 +103,10 @@ wf.body(func(args) {
 				valueType: "Double",
 				annotations: {
 					"pl7.app/label": numerator + " vs " + denominator + " (log2FC)",
-					"pl7.app/table/hValue": "true"
+					"pl7.app/table/hValue": "true",
+					// This allows us to select this Pcolumn to use it as filtering
+					// in this case to keep only genes appearing in this list
+					"pl7.app/isSubset": "true"
 				},
 				axesSpec: [
 					{
