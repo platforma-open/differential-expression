@@ -68,8 +68,8 @@ export const model = BlockModel.create()
   // Result: [dataID] / Raw gene expression
   .output('countsOptions', (ctx) =>
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && 
-                                        spec.name === 'countMatrix' &&
-                                        spec.annotations?.['pl7.app/rna-seq/normalized'] === 'false'
+                                        spec.name === 'pl7.app/rna-seq/countMatrix' &&
+                                        spec.domain?.['pl7.app/rna-seq/normalized'] === 'false'
                                 ,{includeNativeLabel: true, addLabelAsSuffix:true})
   )
 

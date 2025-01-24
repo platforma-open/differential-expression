@@ -95,7 +95,7 @@ wf.body(func(args) {
 			DEG : {
 			spec: trace.inject({
 				kind: "PColumn",
-				name: "DEG",
+				name: "pl7.app/rna-seq/DEG",
 				domain: {
 					"pl7.app/blockId": blockId,
 					"pl7.app/species": species
@@ -103,14 +103,16 @@ wf.body(func(args) {
 				valueType: "Double",
 				annotations: {
 					"pl7.app/label": numerator + " vs " + denominator + " (log2FC)",
-					"pl7.app/table/hValue": "true"
+					"pl7.app/table/hValue": "true",
+					// This allows us to select this Pcolumn to use it as filtering
+					// in this case to keep only genes appearing in this list
+					"pl7.app/isSubset": "true"
 				},
 				axesSpec: [
 					{
 						"name": "pl7.app/rna-seq/geneId",
 						"type": "String",
 						"domain": {
-							"pl7.app/blockId": blockId,
 							"pl7.app/species": species
 						},
 						"annotations": {
