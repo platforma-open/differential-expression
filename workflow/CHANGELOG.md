@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 2.0.0
+
+### Major Changes
+
+- fe6c53d: Updated reference to normalize stage in specs and made DEG Pcolumn subsetable
+
 ## 1.4.1
 
 ### Patch Changes
