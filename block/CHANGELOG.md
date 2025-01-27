@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.1.12
+
+### Patch Changes
+
+- Updated dependencies [b6d4462]
+  - @platforma-open/milaboratories.differential-expression.model@2.0.1
+  - @platforma-open/milaboratories.differential-expression.ui@1.4.2
+
 ## 1.1.11
 
 ### Patch Changes

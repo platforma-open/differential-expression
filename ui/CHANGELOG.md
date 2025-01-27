@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 1.4.2
+
+### Patch Changes
+
+- b6d4462: [desktop] Plot tab is not displayed unless switching between Blocks
+- Updated dependencies [b6d4462]
+  - @platforma-open/milaboratories.differential-expression.model@2.0.1
+
 ## 1.4.1
 
 ### Patch Changes
