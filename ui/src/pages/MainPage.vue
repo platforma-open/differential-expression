@@ -13,6 +13,7 @@ import {
 } from '@platforma-sdk/ui-vue';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
+import ErrorBoundary from '../components/ErrorBoundary.vue';
 
 const app = useApp();
 
@@ -25,9 +26,6 @@ const tableSettings = computed<PlDataTableSettings>(() => ({
 
 const settingsAreShown = ref(app.model.outputs.pt === undefined)
 const showSettings = () => { settingsAreShown.value = true }
-function showAlert() {
-  alert('close item');
-}
 
 const covariateOptions = computed(() => {
   return app.model.outputs.metadataOptions?.map(v => ({
@@ -80,7 +78,10 @@ const denominatorOptions = computed(() => {
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
     </PlSlideModal>
 
-    <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
-    show-export-button />
+    <ErrorBoundary>
+      <!-- There are runtime errors in this table component; temporarily, I wrapped this component in ErrorBoundary (this component prevents errors from propagation and breaking the ui app) -->
+      <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
+      show-export-button />
+    </ErrorBoundary>
   </PlBlockPage>
 </template>
