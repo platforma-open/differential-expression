@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 1.4.3
+
+### Patch Changes
+
+- 47e2257: PlAgDataTable usage fix, dependancy update
+- Updated dependencies [47e2257]
+  - @platforma-open/milaboratories.differential-expression.model@2.0.2
+
 ## 1.4.2
 
 ### Patch Changes
