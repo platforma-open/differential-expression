@@ -13,16 +13,13 @@ import {
 } from '@platforma-sdk/ui-vue';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
-import ErrorBoundary from '../components/ErrorBoundary.vue';
 
 const app = useApp();
 
 const tableSettings = computed<PlDataTableSettings>(() => ({
   sourceType: "ptable",
-
   pTable: app.model.outputs.pt,
-
-} satisfies PlDataTableSettings));
+}));
 
 const settingsAreShown = ref(app.model.outputs.pt === undefined)
 const showSettings = () => { settingsAreShown.value = true }
@@ -60,14 +57,21 @@ const denominatorOptions = computed(() => {
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
     <template #append>
-      <PlBtnGhost @click.stop="showSettings">
-        Settings
-        <template #append>
-          <PlMaskIcon24 name="settings" />
-        </template>
-      </PlBtnGhost>
+      <PlAgDataTableToolsPanel>
+        <PlBtnGhost @click.stop="showSettings">
+          Settings
+          <template #append>
+            <PlMaskIcon24 name="settings" />
+          </template>
+        </PlBtnGhost>
+      </PlAgDataTableToolsPanel>
     </template>
-
+    <PlAgDataTable
+      :settings="tableSettings"
+      v-model="app.model.ui.tableState"
+      show-columns-panel
+      show-export-button
+    />
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
       <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
@@ -77,11 +81,5 @@ const denominatorOptions = computed(() => {
       <PlDropdown v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
     </PlSlideModal>
-
-    <ErrorBoundary>
-      <!-- There are runtime errors in this table component; temporarily, I wrapped this component in ErrorBoundary (this component prevents errors from propagation and breaking the ui app) -->
-      <PlAgDataTable v-if="app.model.ui" :settings="tableSettings" v-model="app.model.ui.tableState" show-columns-panel
-      show-export-button />
-    </ErrorBoundary>
   </PlBlockPage>
 </template>

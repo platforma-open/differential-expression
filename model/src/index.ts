@@ -150,24 +150,20 @@ export const model = BlockModel.create()
     // );
 
     // enriching with upstream data
-    const valueTypes = ['Int', 'Float', 'Double', 'String'] as ValueType[];
     const upstream = ctx.resultPool
       .getData()
       .entries.map((v) => v.obj)
       .filter(isPColumn)
-      .filter((column) => valueTypes.find((valueType) => (valueType === column.spec.valueType) &&
-                                                          (column.id.includes("metadata"))
-                                          )
-    );
+      .filter((column) => column.id.includes("metadata"));
 
     return ctx.createPFrame([...pCols, ...upstream]);
     // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
   })
 
-  .sections([
+  .sections((_ctx) => ([
     { type: 'link', href: '/', label: 'Contrast' },
     { type: 'link', href: '/graph', label: 'Volcano plot' }
-  ])
+  ]))
 
   .done();
 
