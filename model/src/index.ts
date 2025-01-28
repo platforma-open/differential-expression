@@ -8,7 +8,6 @@ import {
   PFrameHandle,
   PlDataTableState,
   PlRef,
-  ValueType
 } from '@platforma-sdk/model';
 
 export type UiState = {

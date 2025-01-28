@@ -13,6 +13,7 @@ import {
 } from '@platforma-sdk/ui-vue';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
+import ErrorBoundary from '../components/ErrorBoundary.vue';
 
 const app = useApp();
 
@@ -66,12 +67,14 @@ const denominatorOptions = computed(() => {
         </PlBtnGhost>
       </PlAgDataTableToolsPanel>
     </template>
-    <PlAgDataTable
-      :settings="tableSettings"
-      v-model="app.model.ui.tableState"
-      show-columns-panel
-      show-export-button
-    />
+    <ErrorBoundary>
+      <PlAgDataTable
+        :settings="tableSettings"
+        v-model="app.model.ui.tableState"
+        show-columns-panel
+        show-export-button
+      />
+    </ErrorBoundary>
     <PlSlideModal v-model="settingsAreShown">
       <template #title>Settings</template>
       <PlDropdownRef v-model="app.model.args.countsRef" :options="app.model.outputs.countsOptions"
