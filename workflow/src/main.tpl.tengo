@@ -122,6 +122,35 @@ wf.body(func(args) {
 					]
 			}),
 			data: DEGPf["log2foldchange.data"]
+		},
+		// Pcolum indicating if genes are Up/Down-regulated of NS
+		regDir : {
+			spec: trace.inject({
+				kind: "PColumn",
+				name: "pl7.app/rna-seq/regulationDirection",
+				domain: {
+					"pl7.app/blockId": blockId,
+					"pl7.app/species": species
+				},
+				valueType: "String",
+				annotations: {
+					"pl7.app/label": numerator + " vs " + denominator
+
+				},
+				axesSpec: [
+					{
+						"name": "pl7.app/rna-seq/geneId",
+						"type": "String",
+						"domain": {
+							"pl7.app/species": species
+						},
+						"annotations": {
+							"pl7.app/label": "Ensembl Id"
+						}
+					}
+					]
+			}),
+			data: DEGPf["regulationDirection.data"]
 		}
 	}
 
