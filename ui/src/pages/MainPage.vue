@@ -57,7 +57,6 @@ const denominatorOptions = computed(() => {
 </script>
 
 <template>
-  {{  app.model.args.numerator }}
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
     <template #append>
