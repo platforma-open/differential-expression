@@ -31,7 +31,7 @@ export type BlockArgs = {
   covariateRefs: PlRef[];
   contrastFactor?: PlRef;
   denominator?: String;
-  numerator?: String;
+  numerator: string[];
 };
 
 export const model = BlockModel.create()
@@ -43,7 +43,8 @@ export const model = BlockModel.create()
     //     covariateRefs: []
     //   }
     // ]
-    covariateRefs: []
+    covariateRefs: [],
+    numerator: [],
   })
 
   .withUiState<UiState>({

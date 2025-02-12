@@ -48,13 +48,16 @@ const numeratorOptions = computed(() => {
   }));
 })
 
+// Only options not selected as numerators[] are accepted as denominator
 const denominatorOptions = computed(() => {
-  return numeratorOptions.value?.filter(op => op.value !== app.model.args.numerator);
+  return numeratorOptions.value?.filter(op => 
+                                  !app.model.args.numerator.includes(op.value));
 })
 
 </script>
 
 <template>
+  {{  app.model.args.numerator }}
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
     <template #append>
@@ -81,7 +84,7 @@ const denominatorOptions = computed(() => {
         label="Select dataset" />
       <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="covariateOptions" label="Design" />
       <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions" label="Contrast factor" />
-      <PlDropdown v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
+      <PlDropdownMulti v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
     </PlSlideModal>
   </PlBlockPage>
