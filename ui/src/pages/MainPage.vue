@@ -83,7 +83,11 @@ const denominatorOptions = computed(() => {
         label="Select dataset" />
       <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="covariateOptions" label="Design" />
       <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions" label="Contrast factor" />
-      <PlDropdownMulti v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" />
+      <PlDropdownMulti v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" >
+        <template #tooltip>
+          Calculate a contrast per each one of the selected Numerators versus the selected control/baseline
+        </template>
+      </PlDropdownMulti>
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
     </PlSlideModal>
   </PlBlockPage>
