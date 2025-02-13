@@ -134,7 +134,7 @@ wf.body(func(args) {
 				},
 				valueType: "String",
 				annotations: {
-					"pl7.app/label": numerator + " vs " + denominator
+					"pl7.app/label": numerator + " vs " + denominator + " (UP\\Down-regulated gene list)"
 
 				},
 				axesSpec: [
