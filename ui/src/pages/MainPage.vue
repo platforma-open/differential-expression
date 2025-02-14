@@ -51,7 +51,7 @@ const numeratorOptions = computed(() => {
 // Only options not selected as numerators[] are accepted as denominator
 const denominatorOptions = computed(() => {
   return numeratorOptions.value?.filter(op => 
-                                  !app.model.args.numerator.includes(op.value));
+                                  !app.model.args.numerators.includes(op.value));
 })
 
 </script>
@@ -83,7 +83,7 @@ const denominatorOptions = computed(() => {
         label="Select dataset" />
       <PlDropdownMulti v-model="app.model.args.covariateRefs" :options="covariateOptions" label="Design" />
       <PlDropdown v-model="app.model.args.contrastFactor" :options="contrastFactorOptions" label="Contrast factor" />
-      <PlDropdownMulti v-model="app.model.args.numerator" :options="numeratorOptions" label="Numerator" >
+      <PlDropdownMulti v-model="app.model.args.numerators" :options="numeratorOptions" label="Numerator" >
         <template #tooltip>
           Calculate a contrast per each one of the selected Numerators versus the selected control/baseline
         </template>

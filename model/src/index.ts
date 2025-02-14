@@ -2,6 +2,8 @@ import { GraphMakerState } from '@milaboratories/graph-maker';
 import {
   BlockModel,
   createPlDataTable,
+  createPlDataTableSheet,
+  getUniquePartitionKeys,
   InferOutputsType,
   isPColumn,
   isPColumnSpec,
@@ -30,8 +32,8 @@ export type BlockArgs = {
   // formulas: Formula[];
   covariateRefs: PlRef[];
   contrastFactor?: PlRef;
-  denominator?: String;
-  numerator: string[];
+  denominator?: string;
+  numerators: string[];
 };
 
 export const model = BlockModel.create()
@@ -44,7 +46,7 @@ export const model = BlockModel.create()
     //   }
     // ]
     covariateRefs: [],
-    numerator: [],
+    numerators: [],
   })
 
   .withUiState<UiState>({
