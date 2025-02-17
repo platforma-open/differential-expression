@@ -86,7 +86,10 @@ wf.body(func(args) {
 			run()
 
 		topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec)
-		topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams)
+		topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams, 
+															// This changes output format from default to per column
+															// So key will be column name and values spec and data
+															{splitDataAndSpec: true})
 
 		// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
 		DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec)
@@ -96,39 +99,18 @@ wf.body(func(args) {
 			{type: "milaboratories.differential-expression", id: blockId, importance: 30, label: "DEG - " + numerator + "/" + denominator}
 		)
 
-		topDegPFrameBuilder.add(
-			numerator,
-			trace.inject({
-				kind: "PColumn",
-				name: "pl7.app/rna-seq/DEG",
-				domain: {
-					"pl7.app/blockId": blockId,
-					"pl7.app/species": species
-				},
-				valueType: "Double",
-				annotations: {
-					"pl7.app/label": numerator + " vs " + denominator + " (log2FC)",
-					"pl7.app/table/hValue": "true",
-					// This allows us to select this Pcolumn to use it as filtering
-					// in this case to keep only genes appearing in this list
-					"pl7.app/isSubset": "true"
-				},
-				axesSpec: [
-					{
-						"name": "pl7.app/rna-seq/geneId",
-						"type": "String",
-						"domain": {
-							"pl7.app/species": species
-						},
-						"annotations": {
-							"pl7.app/label": "Ensembl Id"
-						}
-					}
-					]
-			}),
-			topTablePf["log2foldchange.data"]
+		for columnName, value in topTablePf { 
+			columnSpec := value.spec
+			columnSpec.axesSpec[0].domain["pl7.app/comparison"] = numerator + " - vs - " + denominator
+			columnData := value.data
+			topDegPFrameBuilder.add(
+				numerator + " - " + columnName,
+				trace.inject(columnSpec),
+				columnData
 
 			)
+		}
+
 		degPFrameBuilder.add(
 			numerator,
 			trace.inject({
@@ -205,7 +187,6 @@ wf.body(func(args) {
 	return {
 		outputs: {
 			topTablePf: pframes.exportFrame(topDegPF)
-			// DEGPf: pframes.exportFrame(degPF)
 		},
 		exports: exports
 	}

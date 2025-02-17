@@ -34,6 +34,7 @@ export type BlockArgs = {
   contrastFactor?: PlRef;
   denominator?: string;
   numerators: string[];
+  comparison?: string;
 };
 
 export const model = BlockModel.create()
@@ -46,7 +47,7 @@ export const model = BlockModel.create()
     //   }
     // ]
     covariateRefs: [],
-    numerators: [],
+    numerators: []
   })
 
   .withUiState<UiState>({
@@ -99,34 +100,43 @@ export const model = BlockModel.create()
   })
 
   /**
-   * Returns array of options, i-th element of the array contains list of options for i-th formula
-   */
-  // .output('denominatorOptions', (ctx) => {
-  //   return ctx.args.formulas.map((f) => {
-  //     if (!f.contrastFactor) return undefined;
-  //     const data = ctx.resultPool.getDataByRef(f.contrastFactor)?.data;
-
-  //     // @TODO need a convenient method in API
-  //     // @TODO also should be filtered ONLY to the data existing in the dataset
-  //     const values = data?.getDataAsJson<Record<string, string>>()?.['data'];
-
-  //     if (!values) return undefined;
-
-  //     return [...new Set(Object.values(values))];
-  //   });
-  // })
-
-  /**
    * Returns a map of results
    */
   .output('pt', (ctx) => {
-    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
 
+    // Filter by selected comparison
+    pCols = pCols.filter(
+      col => col.spec.axesSpec[0]?.domain?.["pl7.app/comparison"] === ctx.args.comparison 
+    );
+
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
   })
+
+  .output('topTablePcols', (ctx) => {
+    var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    if (pCols === undefined) {
+      return undefined;
+    }
+     // Allow only log2 FC and -log10 Padjust as options for volcano axis
+     // Include gene symbol for future filters
+     pCols = pCols.filter(
+                col => (col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
+                        col.spec.name === "pl7.app/rna-seq/minlog10padj" ||
+                        col.spec.name === "pl7.app/rna-seq/regulationDirection" ||
+                        col.spec.name === "pl7.app/rna-seq/genesymbol" ) &&
+                        col.spec.axesSpec[0]?.domain?.["pl7.app/comparison"] === ctx.args.comparison 
+    );
+
+    
+
+    return pCols;
+    // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
+  })
+
 
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
     var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
@@ -136,10 +146,11 @@ export const model = BlockModel.create()
      // Allow only log2 FC and -log10 Padjust as options for volcano axis
      // Include gene symbol for future filters
      pCols = pCols.filter(
-                col => col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
+                col => (col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
                         col.spec.name === "pl7.app/rna-seq/minlog10padj" ||
                         col.spec.name === "pl7.app/rna-seq/regulationDirection" ||
-                        col.spec.name === "pl7.app/rna-seq/genesymbol" 
+                        col.spec.name === "pl7.app/rna-seq/genesymbol" ) &&
+                        col.spec.axesSpec[0]?.domain?.["pl7.app/comparison"] === ctx.args.comparison 
     );
 
     // var DEGpCols = ctx.outputs?.resolve('DEGPf')?.getPColumns();

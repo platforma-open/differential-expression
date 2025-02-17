@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  listToOptions,
   PlAgDataTable,
   PlAgDataTableToolsPanel,
   PlBlockPage,
@@ -11,7 +12,7 @@ import {
   PlMaskIcon24,
   PlSlideModal
 } from '@platforma-sdk/ui-vue';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useApp } from '../app';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 
@@ -41,6 +42,24 @@ const contrastFactorOptions = computed(() => {
   }))
 })
 
+
+// Generate list of comparisons with all possible numerator x denominator combinations
+const comparisonOptions = computed(() => {
+  let options: string[] = [];
+  if (app.model.args.numerators.length !== 0 &&
+        app.model.args.denominator !== undefined) {
+      
+      for (var num of app.model.args.numerators) {
+        options.push(num + " - vs - " + app.model.args.denominator)
+          }
+      // Select first option when available
+      if (app.model.args.comparison === undefined) {
+        app.model.args.comparison = options[0]
+      }
+  }
+  return listToOptions(options);
+})
+
 const numeratorOptions = computed(() => {
   return app.model.outputs.denominatorOptions?.map(v => ({
     value: v,
@@ -59,6 +78,11 @@ const denominatorOptions = computed(() => {
 <template>
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
+    <PlDropdown v-model="app.model.args.comparison" :options="comparisonOptions" label="Comparison" >
+      <template #tooltip>
+          Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
+      </template>
+    </PlDropdown>
     <template #append>
       <PlAgDataTableToolsPanel>
         <PlBtnGhost @click.stop="showSettings">
