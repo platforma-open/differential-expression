@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import {ComponentPublicInstance, onErrorCaptured, reactive} from 'vue';
+import type { ComponentPublicInstance } from 'vue';
+import { onErrorCaptured, reactive } from 'vue';
 
 const data = reactive({
   error: null as unknown,
-  errorMessage: ''
+  errorMessage: '',
 });
 
 onErrorCaptured((
   err: unknown,
   instance: ComponentPublicInstance | null,
-  info: string
+  info: string,
 ) => {
   console.log('boundary error', err);
   data.error = err;
@@ -17,7 +18,6 @@ onErrorCaptured((
   return false;
 });
 </script>
-
 
 <template>
   <div v-if="data.error">{{ data.error }}</div>

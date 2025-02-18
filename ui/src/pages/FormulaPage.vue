@@ -42,7 +42,6 @@ const deleteFormula = async () => {
     app.navigateTo(`/formula?id=${app.args.formulas.length - 1}`);
 };
 
-
 const tableSettings = computed<PlDataTableSettings>(() => ({
     sourceType: "ptable",
 
@@ -62,7 +61,6 @@ const covariateOptions = computed(() => {
         label: v.label
     })) ?? []
 })
-
 
 const contrastFactorOptions = computed(() => {
     return formula.value.covariateRefs.map((ref) => ({

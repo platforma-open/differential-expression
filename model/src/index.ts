@@ -1,15 +1,14 @@
-import { GraphMakerState } from '@milaboratories/graph-maker';
+import type { GraphMakerState } from '@milaboratories/graph-maker';
+import type {
+  InferOutputsType,
+  PFrameHandle,
+  PlDataTableState,
+  PlRef } from '@platforma-sdk/model';
 import {
   BlockModel,
   createPlDataTable,
-  createPlDataTableSheet,
-  getUniquePartitionKeys,
-  InferOutputsType,
   isPColumn,
   isPColumnSpec,
-  PFrameHandle,
-  PlDataTableState,
-  PlRef,
 } from '@platforma-sdk/model';
 
 export type UiState = {
@@ -47,7 +46,7 @@ export const model = BlockModel.create()
     //   }
     // ]
     covariateRefs: [],
-    numerators: []
+    numerators: [],
   })
 
   .withUiState<UiState>({
@@ -55,31 +54,31 @@ export const model = BlockModel.create()
       gridState: {},
       pTableParams: {
         sorting: [],
-        filters: []
-      }
+        filters: [],
+      },
     },
     graphState: {
       title: 'Differential gene expression',
-      template: 'dots'
-    }
+      template: 'dots',
+    },
   })
 
-  // User can only select as input raw gene count matrices
-  // includeNativeLabel ensures raw counts pl7.app/label (native label, 'Raw gene expression')
-  // is visible in selection (by default we see Samples & data ID)
-  // addLabelAsSuffix moves the native label to the end
-  // Result: [dataID] / Raw gene expression
+// User can only select as input raw gene count matrices
+// includeNativeLabel ensures raw counts pl7.app/label (native label, 'Raw gene expression')
+// is visible in selection (by default we see Samples & data ID)
+// addLabelAsSuffix moves the native label to the end
+// Result: [dataID] / Raw gene expression
 
   .output('countsOptions', (ctx) =>
     // I've added these "||" for backward compatibility (As I see, the shape of PColum was changed)
-    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && 
-                                        (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix') &&
-                                        (spec.annotations?.['pl7.app/rna-seq/normalized'] === 'false' || spec.domain?.['pl7.app/rna-seq/normalized'] === 'false')
-                                ,{includeNativeLabel: true, addLabelAsSuffix:true})
+    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec)
+      && (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix')
+      && (spec.annotations?.['pl7.app/rna-seq/normalized'] === 'false' || spec.domain?.['pl7.app/rna-seq/normalized'] === 'false')
+    , { includeNativeLabel: true, addLabelAsSuffix: true }),
   )
 
   .output('metadataOptions', (ctx) =>
-    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'pl7.app/metadata')
+    ctx.resultPool.getOptions((spec) => isPColumnSpec(spec) && spec.name === 'pl7.app/metadata'),
   )
 
   .output('datasetSpec', (ctx) => {
@@ -103,61 +102,58 @@ export const model = BlockModel.create()
    * Returns a map of results
    */
   .output('pt', (ctx) => {
-    var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    let pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
 
     // Filter by selected comparison
     pCols = pCols.filter(
-      col => col.spec.axesSpec[0]?.domain?.["pl7.app/comparison"] === ctx.args.comparison 
+      (col) => col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
     );
 
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
   })
 
   .output('topTablePcols', (ctx) => {
-    var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    let pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
-     // Allow only log2 FC and -log10 Padjust as options for volcano axis
-     // Include gene symbol for future filters
-     pCols = pCols.filter(
-                col => (col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
-                        col.spec.name === "pl7.app/rna-seq/minlog10padj" ||
-                        col.spec.name === "pl7.app/rna-seq/regulationDirection" ||
-                        col.spec.name === "pl7.app/rna-seq/genesymbol" ) &&
-                        col.spec.axesSpec[0]?.domain?.["pl7.app/comparison"] === ctx.args.comparison 
+    // Allow only log2 FC and -log10 Padjust as options for volcano axis
+    // Include gene symbol for future filters
+    pCols = pCols.filter(
+      (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
+        || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
+        || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
+        || col.spec.name === 'pl7.app/rna-seq/genesymbol')
+      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
     );
-
-    
 
     return pCols;
     // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
   })
 
-
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
-    var pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    let pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
-     // Allow only log2 FC and -log10 Padjust as options for volcano axis
-     // Include gene symbol for future filters
-     pCols = pCols.filter(
-                col => (col.spec.name === "pl7.app/rna-seq/log2foldchange" || 
-                        col.spec.name === "pl7.app/rna-seq/minlog10padj" ||
-                        col.spec.name === "pl7.app/rna-seq/regulationDirection" ||
-                        col.spec.name === "pl7.app/rna-seq/genesymbol" ) &&
-                        col.spec.axesSpec[0]?.domain?.["pl7.app/comparison"] === ctx.args.comparison 
+    // Allow only log2 FC and -log10 Padjust as options for volcano axis
+    // Include gene symbol for future filters
+    pCols = pCols.filter(
+      (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
+        || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
+        || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
+        || col.spec.name === 'pl7.app/rna-seq/genesymbol')
+      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
     );
 
     // var DEGpCols = ctx.outputs?.resolve('DEGPf')?.getPColumns();
     // if (DEGpCols === undefined) {
     //   return undefined;
     // }
-    
+
     // DEGpCols = DEGpCols.filter(
     //   col => col.spec.name === "pl7.app/rna-seq/genesymbol"
     // );
@@ -167,7 +163,7 @@ export const model = BlockModel.create()
       .getData()
       .entries.map((v) => v.obj)
       .filter(isPColumn)
-      .filter((column) => column.id.includes("metadata"));
+      .filter((column) => column.id.includes('metadata'));
 
     return ctx.createPFrame([...pCols, ...upstream]);
     // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
@@ -175,7 +171,7 @@ export const model = BlockModel.create()
 
   .sections((_ctx) => ([
     { type: 'link', href: '/', label: 'Contrast' },
-    { type: 'link', href: '/graph', label: 'Volcano plot' }
+    { type: 'link', href: '/graph', label: 'Volcano plot' },
   ]))
 
   .done();
