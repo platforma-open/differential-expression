@@ -66,11 +66,8 @@ const comparisonOptions = computed(() => {
 
 const key = ref('');
 // Reset graph maker state to allow new selection of defaults
-watch(() => app.model.ui.comparison, (_) => {
-  app.model.ui.graphState = {
-    title: 'Differential gene expression',
-    template: 'dots',
-  };
+watch(() => defaultOptions.value, () => {
+  delete app.model.ui.graphState.optionsState;
   key.value = app.model.ui.comparison ?? '';
 },
 // immediate - to trigger first time before first change
