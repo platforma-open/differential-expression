@@ -82,12 +82,11 @@ export const model = BlockModel.create()
     },
   })
 
-// User can only select as input raw gene count matrices
-// includeNativeLabel ensures raw counts pl7.app/label (native label, 'Raw gene expression')
-// is visible in selection (by default we see Samples & data ID)
-// addLabelAsSuffix moves the native label to the end
-// Result: [dataID] / Raw gene expression
-
+  // User can only select as input raw gene count matrices
+  // includeNativeLabel ensures raw counts pl7.app/label (native label, 'Raw gene expression')
+  // is visible in selection (by default we see Samples & data ID)
+  // addLabelAsSuffix moves the native label to the end
+  // Result: [dataID] / Raw gene expression
   .output('countsOptions', (ctx) =>
     // I've added these "||" for backward compatibility (As I see, the shape of PColum was changed)
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec)
@@ -117,9 +116,7 @@ export const model = BlockModel.create()
     return [...new Set(Object.values(values))];
   })
 
-  /**
-   * Returns a map of results
-   */
+  // Returns a map of results
   .output('pt', (ctx) => {
     let pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
@@ -146,6 +143,7 @@ export const model = BlockModel.create()
         || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
         || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
         || col.spec.name === 'pl7.app/rna-seq/genesymbol')
+      // Only values associated to selected comparison
       && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
     );
 
@@ -173,15 +171,6 @@ export const model = BlockModel.create()
       && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
     );
 
-    // var DEGpCols = ctx.outputs?.resolve('DEGPf')?.getPColumns();
-    // if (DEGpCols === undefined) {
-    //   return undefined;
-    // }
-
-    // DEGpCols = DEGpCols.filter(
-    //   col => col.spec.name === "pl7.app/rna-seq/genesymbol"
-    // );
-
     // enriching with upstream data
     const upstream = ctx.resultPool
       .getData()
@@ -190,7 +179,6 @@ export const model = BlockModel.create()
       .filter((column) => column.id.includes('metadata'));
 
     return ctx.createPFrame([...pCols, ...upstream]);
-    // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
   })
 
   .sections((_ctx) => ([

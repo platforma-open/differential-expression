@@ -80,8 +80,11 @@ watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
     <template #append>
-      <PlDropdown v-model="app.model.ui.comparison" :options="comparisonOptions"
-                  label="Comparison" :style="{ width: '400px' }">
+      <PlDropdown
+        v-model="app.model.ui.comparison"
+        :options="comparisonOptions"
+        label="Comparison" :style="{ width: '300px' }"
+      >
         <template #tooltip>
           Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
         </template>

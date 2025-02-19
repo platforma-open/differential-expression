@@ -3,7 +3,7 @@ import type { GraphMakerProps } from '@milaboratories/graph-maker';
 import { GraphMaker } from '@milaboratories/graph-maker';
 import '@milaboratories/graph-maker/styles';
 import { useApp } from '../app';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { listToOptions, PlDropdown } from '@platforma-sdk/ui-vue';
 import type { PColumnIdAndSpec } from '@platforma-sdk/model';
 
@@ -22,31 +22,26 @@ const defaultOptions = computed((): GraphMakerProps['defaultOptions'] => {
   }
 
   const defaults: GraphMakerProps['defaultOptions'] = [
-    // log2foldchange
     {
       inputName: 'x',
       selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/log2foldchange',
         topTablePcols)].spec,
     },
-    // minlog10padj
     {
       inputName: 'y',
       selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/minlog10padj',
         topTablePcols)].spec,
     },
-    // regulationDirection
     {
       inputName: 'grouping',
       selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/regulationDirection',
         topTablePcols)].spec,
     },
-    // genesymbol
     {
       inputName: 'label',
       selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/genesymbol',
         topTablePcols)].spec,
     },
-    // genesymbol
     {
       inputName: 'tooltipContent',
       selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/genesymbol',
@@ -69,12 +64,14 @@ const comparisonOptions = computed(() => {
   return listToOptions(options);
 });
 
+const key = ref('');
 // Reset graph maker state to allow new selection of defaults
-watch(() => [app.model.ui.comparison], (_) => {
+watch(() => app.model.ui.comparison, (_) => {
   app.model.ui.graphState = {
     title: 'Differential gene expression',
     template: 'dots',
   };
+  key.value = app.model.ui.comparison ?? '';
 },
 // immediate - to trigger first time before first change
 // deep - for objects of complicated structure
@@ -85,13 +82,14 @@ watch(() => [app.model.ui.comparison], (_) => {
 
 <template>
   <GraphMaker
-    v-model="app.model.ui.graphState" chartType="scatterplot" :p-frame="app.model.outputs.topTablePf"
-    :defaultOptions="defaultOptions"
+    :key="key"
+    v-model="app.model.ui.graphState" chartType="scatterplot"
+    :p-frame="app.model.outputs.topTablePf" :defaultOptions="defaultOptions"
   >
     <template #titleLineSlot>
       <PlDropdown
         v-model="app.model.ui.comparison" :options="comparisonOptions"
-        label="Comparison" :style="{ width: '400px' }"
+        label="Comparison" :style="{ width: '300px' }"
       >
         <template #tooltip>
           Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
