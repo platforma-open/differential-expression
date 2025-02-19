@@ -13,6 +13,7 @@
     "@platforma-open/milaboratories.differential-expression.model": "workspace:*",
     "@milaboratories/graph-maker": "catalog:",
     "@platforma-sdk/ui-vue": "catalog:",
+    "@platforma-sdk/model": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 import type { GraphMakerState } from '@milaboratories/graph-maker';
 import type {
   InferOutputsType,
+  PColumnIdAndSpec,
   PFrameHandle,
   PlDataTableState,
   PlRef } from '@platforma-sdk/model';
@@ -14,6 +15,7 @@ import {
 export type UiState = {
   tableState: PlDataTableState;
   graphState: GraphMakerState;
+  comparison?: string;
 };
 
 // export type Formula = {
@@ -33,8 +35,24 @@ export type BlockArgs = {
   contrastFactor?: PlRef;
   denominator?: string;
   numerators: string[];
-  comparison?: string;
 };
+
+// function filterTopTablePCols(pCols: PColumn) {
+//   if ((pCols === undefined) || !(isPColumn(pCols))) {
+//     return undefined;
+//   }
+//   // Allow only log2 FC and -log10 Padjust as options for volcano axis
+//   // Include gene symbol for future filters
+//   pCols = pCols.filter(
+//     (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
+//       || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
+//       || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
+//       || col.spec.name === 'pl7.app/rna-seq/genesymbol')
+//     && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
+//   );
+
+//   return pCols;
+// }
 
 export const model = BlockModel.create()
 
@@ -60,6 +78,7 @@ export const model = BlockModel.create()
     graphState: {
       title: 'Differential gene expression',
       template: 'dots',
+      currentTab: null,
     },
   })
 
@@ -109,7 +128,7 @@ export const model = BlockModel.create()
 
     // Filter by selected comparison
     pCols = pCols.filter(
-      (col) => col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
+      (col) => col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
     );
 
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
@@ -127,11 +146,16 @@ export const model = BlockModel.create()
         || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
         || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
         || col.spec.name === 'pl7.app/rna-seq/genesymbol')
-      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
+      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
     );
 
-    return pCols;
-    // return ctx.createPFrame([...pCols, ...DEGpCols, ...upstream]);
+    return pCols.map(
+      (c) =>
+        ({
+          columnId: c.id,
+          spec: c.spec,
+        } satisfies PColumnIdAndSpec),
+    );
   })
 
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
@@ -146,7 +170,7 @@ export const model = BlockModel.create()
         || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
         || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
         || col.spec.name === 'pl7.app/rna-seq/genesymbol')
-      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
+      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
     );
 
     // var DEGpCols = ctx.outputs?.resolve('DEGPf')?.getPColumns();

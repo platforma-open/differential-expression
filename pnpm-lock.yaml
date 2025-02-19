@@ -158,6 +158,9 @@ importers:
       '@platforma-open/milaboratories.differential-expression.model':
         specifier: workspace:*
         version: link:../model
+      '@platforma-sdk/model':
+        specifier: 'catalog:'
+        version: 1.22.18
       '@platforma-sdk/ui-vue':
         specifier: 'catalog:'
         version: 1.22.39(typescript@5.7.3)

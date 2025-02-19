@@ -13,7 +13,7 @@ import {
   PlMaskIcon24,
   PlSlideModal,
 } from '@platforma-sdk/ui-vue';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useApp } from '../app';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 
@@ -51,10 +51,6 @@ const comparisonOptions = computed(() => {
     for (const num of app.model.args.numerators) {
       options.push(num + ' - vs - ' + app.model.args.denominator);
     }
-    // Select first option when available
-    if (app.model.args.comparison === undefined) {
-      app.model.args.comparison = options[0];
-    }
   }
   return listToOptions(options);
 });
@@ -72,25 +68,32 @@ const denominatorOptions = computed(() => {
     !app.model.args.numerators.includes(op.value));
 });
 
+watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
+  if (!app.model.ui.comparison && (comparisonOptions.value.length !== 0)) {
+    app.model.ui.comparison = comparisonOptions.value[0].value;
+  }
+}, { deep: true, immediate: true });
+
 </script>
 
 <template>
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
-    <PlDropdown v-model="app.model.args.comparison" :options="comparisonOptions" label="Comparison" >
-      <template #tooltip>
-        Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
-      </template>
-    </PlDropdown>
     <template #append>
-      <PlAgDataTableToolsPanel>
-        <PlBtnGhost @click.stop="showSettings">
-          Settings
-          <template #append>
-            <PlMaskIcon24 name="settings" />
-          </template>
-        </PlBtnGhost>
-      </PlAgDataTableToolsPanel>
+      <PlDropdown v-model="app.model.ui.comparison" :options="comparisonOptions"
+                  label="Comparison" :style="{ width: '400px' }">
+        <template #tooltip>
+          Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
+        </template>
+      </PlDropdown>
+      <!-- PlAgDataTableToolsPanel controls showing  Export column and filter-->
+      <PlAgDataTableToolsPanel/>
+      <PlBtnGhost @click.stop="showSettings">
+        Settings
+        <template #append>
+          <PlMaskIcon24 name="settings" />
+        </template>
+      </PlBtnGhost>
     </template>
     <ErrorBoundary>
       <PlAgDataTable
