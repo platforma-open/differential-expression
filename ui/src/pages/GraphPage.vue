@@ -9,10 +9,7 @@ import type { PColumnIdAndSpec } from '@platforma-sdk/model';
 
 const app = useApp();
 
-// Set defaults (only set on first execution)
-const defaultOptions = computed((): GraphMakerProps['defaultOptions'] => {
-  const topTablePcols = app.model.outputs.topTablePcols;
-
+function getDefaultOptions(topTablePcols?:PColumnIdAndSpec[]) {
   if (!topTablePcols) {
     return undefined;
   }
@@ -50,7 +47,7 @@ const defaultOptions = computed((): GraphMakerProps['defaultOptions'] => {
   ];
 
   return defaults;
-});
+}
 
 // Generate list of comparisons with all possible numerator x denominator combinations
 const comparisonOptions = computed(() => {
@@ -64,11 +61,14 @@ const comparisonOptions = computed(() => {
   return listToOptions(options);
 });
 
-const key = ref('');
+const defaultOptions = ref(getDefaultOptions(app.model.outputs.topTablePcols))
+const key = ref(defaultOptions.value ? JSON.stringify(defaultOptions.value) : '');
+
 // Reset graph maker state to allow new selection of defaults
-watch(() => defaultOptions.value, () => {
+watch(() => app.model.outputs.topTablePcols, (topTablePcols) => {
   delete app.model.ui.graphState.optionsState;
-  key.value = app.model.ui.comparison ?? '';
+  defaultOptions.value = getDefaultOptions(topTablePcols);
+  key.value = defaultOptions.value ? JSON.stringify(defaultOptions.value) : '';
 },
 // immediate - to trigger first time before first change
 // deep - for objects of complicated structure
