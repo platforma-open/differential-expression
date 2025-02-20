@@ -87,11 +87,7 @@ watch(() => app.model.outputs.topTablePcols, (topTablePcols) => {
       <PlDropdown
         v-model="app.model.ui.comparison" :options="comparisonOptions"
         label="Comparison" :style="{ width: '300px' }"
-      >
-        <template #tooltip>
-          Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
-        </template>
-      </PlDropdown>
+      />
     </template>
   </GraphMaker>
 </template>
