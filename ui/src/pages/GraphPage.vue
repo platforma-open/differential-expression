@@ -9,7 +9,7 @@ import type { PColumnIdAndSpec } from '@platforma-sdk/model';
 
 const app = useApp();
 
-function getDefaultOptions(topTablePcols?:PColumnIdAndSpec[]) {
+function getDefaultOptions(topTablePcols?: PColumnIdAndSpec[]) {
   if (!topTablePcols) {
     return undefined;
   }
@@ -61,9 +61,9 @@ const comparisonOptions = computed(() => {
   return listToOptions(options);
 });
 
-const defaultOptions = ref(getDefaultOptions(app.model.outputs.topTablePcols))
+// Steps needed to reset graph maker after changing input table
+const defaultOptions = ref(getDefaultOptions(app.model.outputs.topTablePcols));
 const key = ref(defaultOptions.value ? JSON.stringify(defaultOptions.value) : '');
-
 // Reset graph maker state to allow new selection of defaults
 watch(() => app.model.outputs.topTablePcols, (topTablePcols) => {
   delete app.model.ui.graphState.optionsState;
