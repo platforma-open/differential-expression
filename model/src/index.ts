@@ -176,7 +176,7 @@ export const model = BlockModel.create()
       .getData()
       .entries.map((v) => v.obj)
       .filter(isPColumn)
-      .filter((column) => column.id.includes('metadata'));
+      .filter((column) => column.spec.name === 'pl7.app/metadata');
 
     return ctx.createPFrame([...pCols, ...upstream]);
   })
