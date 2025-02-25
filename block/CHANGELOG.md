@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.2.0
+
+### Minor Changes
+
+- 2a769ee: Updated metadata
+
 ## 1.1.14
 
 ### Patch Changes
