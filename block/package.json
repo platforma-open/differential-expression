@@ -26,14 +26,15 @@
     "meta": {
       "title": "Differential Expression",
       "logo": "file:../logos/block-logo.png",
-      "url": "https://github.com/milaboratory/platforma-differential-expression",
-      "docs": "https://github.com/milaboratory/platforma-differential-expression/docs",
+      "url": "https://github.com/platforma-open/differential-expression",
+      "docs": "https://github.com/platforma-open/differential-expression/docs",
       "support": "mailto:support@milaboratories.com",
       "description": "Identify differentially expressed genes between conditions.",
       "longDescription": "file:../docs/description.md",
       "changelog": "file:./CHANGELOG.md",
       "tags": [
-        "rna-seq"
+        "rna-seq",
+        "downstream"
       ],
       "organization": {
         "name": "MiLaboratories Inc",
