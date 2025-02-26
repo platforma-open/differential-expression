@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 2.1.0
+
+### Minor Changes
+
+- 40bb1fb: Run multiple DEG analysis at once
+- 60c782d: Allow multiple comparisons at once
+
 ## 2.0.2
 
 ### Patch Changes

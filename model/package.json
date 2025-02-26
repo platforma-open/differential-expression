@@ -1,6 +1,6 @@
 {
   "name": "@platforma-open/milaboratories.differential-expression.model",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Block model",
   "type": "module",
   "main": "dist/index.cjs",
@@ -8,7 +8,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup && vite build && block-tools build-model",
-     "lint": "eslint ."
+    "lint": "eslint ."
   },
   "dependencies": {
     "@platforma-sdk/model": "catalog:",

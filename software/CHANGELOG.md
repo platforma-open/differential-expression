@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 1.5.0
+
+### Minor Changes
+
+- 40bb1fb: Run multiple DEG analysis at once
+- 60c782d: Allow multiple comparisons at once
+
 ## 1.4.1
 
 ### Patch Changes
