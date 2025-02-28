@@ -123,7 +123,7 @@ getColumns := func(countsSpec) {
 					"annotations": {
 						"pl7.app/label": "Regulation direction",
 						"pl7.app/graph/palette": "{\"name\":\"triadic\",\"mapping\":{\"Up\":\"19\",\"Down\":\"22\",\"NS\":\"25\"}}",
-						"pl7.app/graph/thresholds": "[{\"columnId\": {\"name\": \"log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Min LogFC (left vertical)\",\"value\": \"-1\"},{\"columnId\": {\"name\": \"log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Max LogFC (right vertical)\",\"value\": \"1\"},{\"columnId\": {\"name\": \"minlog10padj\",\"valueType\": \"Double\"},\"label\": \"Y bound\",\"value\": \"2\"}]",
+						"pl7.app/graph/thresholds": "[{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Min LogFC (left vertical)\",\"value\": \"-1\"},{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Max LogFC (right vertical)\",\"value\": \"1\"},{\"columnId\": {\"name\": \"pl7.app/rna-seq/minlog10padj\",\"valueType\": \"Double\"},\"label\": \"Y bound\",\"value\": \"2\"}]",
 						"pl7.app/table/orderPriority": "5"
 					}
 				}
