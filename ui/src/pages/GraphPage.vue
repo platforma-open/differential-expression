@@ -80,7 +80,7 @@ watch(() => app.model.outputs.topTablePcols, (topTablePcols) => {
 <template>
   <GraphMaker
     :key="key"
-    v-model="app.model.ui.graphState" chartType="scatterplot"
+    v-model="app.model.ui.graphState" chartType="scatterplot-umap"
     :p-frame="app.model.outputs.topTablePf" :defaultOptions="defaultOptions"
   >
     <template #titleLineSlot>

@@ -178,10 +178,10 @@ wf.body(func(args) {
 	// Build the final PFrames
 	degPF := degPFrameBuilder.build()
 	topDegPF := topDegPFrameBuilder.build()
-	refDirPF := regDirPFrameBuilder.build()
+	regDirPF := regDirPFrameBuilder.build()
 	exports := {
 		DEG: degPF,
-		regDir: refDirPF
+		regDir: regDirPF
 	}
 
 	return {
