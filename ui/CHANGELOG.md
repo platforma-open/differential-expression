@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 1.5.1
+
+### Patch Changes
+
+- 14cc8c8: move scatterplot to canvas
+- 6968079: minor update
+
 ## 1.5.0
 
 ### Minor Changes
