@@ -35,6 +35,8 @@ export type BlockArgs = {
   contrastFactor?: PlRef;
   denominator?: string;
   numerators: string[];
+  log2FCThreshold: number;
+  pAdjFCThreshold: number;
 };
 
 // function filterTopTablePCols(pCols: PColumn) {
@@ -65,6 +67,8 @@ export const model = BlockModel.create()
     // ]
     covariateRefs: [],
     numerators: [],
+    log2FCThreshold: 1,
+    pAdjFCThreshold: 0.05,
   })
 
   .withUiState<UiState>({
@@ -81,6 +85,14 @@ export const model = BlockModel.create()
       currentTab: null,
     },
   })
+
+  // Activate "Run" button only after these conditions are satisfied
+  .argsValid((ctx) => (
+    (ctx.args.numerators !== undefined)) && (ctx.args.numerators.length !== 0)
+  && (ctx.args.denominator !== undefined)
+  && (ctx.args.log2FCThreshold !== undefined)
+  && (ctx.args.pAdjFCThreshold !== undefined),
+  )
 
   // User can only select as input raw gene count matrices
   // includeNativeLabel ensures raw counts pl7.app/label (native label, 'Raw gene expression')
