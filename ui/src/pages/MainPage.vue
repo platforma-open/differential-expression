@@ -15,6 +15,7 @@ import {
   PlAccordionSection,
   PlNumberField,
   PlRow,
+  PlAlert,
 } from '@platforma-sdk/ui-vue';
 import { computed, ref, watch } from 'vue';
 import { useApp } from '../app';
@@ -142,6 +143,10 @@ watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
             label="Adjusted p-value" :minValue="0" :maxValue="1" :step="0.01"
           />
         </PlRow>
+        <!-- Add warning if selected p-value threshold is above 0.05 -->
+        <PlAlert v-if="app.model.args.pAdjFCThreshold > 0.05" type="warn">
+          {{ "Warning: Selected adjusted p-value threshold is higher than the most commonly used 0.05" }}
+        </PlAlert>
       </PlAccordionSection>
     </PlSlideModal>
   </PlBlockPage>
