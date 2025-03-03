@@ -14,6 +14,7 @@ import {
   PlSlideModal,
   PlAccordionSection,
   PlNumberField,
+  PlRow,
 } from '@platforma-sdk/ui-vue';
 import { computed, ref, watch } from 'vue';
 import { useApp } from '../app';
@@ -125,26 +126,22 @@ watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
 
       <!-- Content hidden until you click THRESHOLD PARAMETERS -->
       <PlAccordionSection label="THRESHOLD PARAMETERS">
-        <PlNumberField
-          v-model="app.model.args.log2FCThreshold"
-          label="Log2(FC)" :minValue="0" :step="0.1"
-        >
-          <template #tooltip>
-            Select a valid absolute log2(FC) threshold for identifying
-            significant DEGs. Genes meeting this criterion will be used as
-            input for downstream analyses.
-          </template>
-        </PlNumberField>
-        <PlNumberField
-          v-model="app.model.args.pAdjFCThreshold"
-          label="Adjusted p-value" :minValue="0" :maxValue="1" :step="0.01"
-        >
-          <template #tooltip>
-            Select a valid p-value threshold for identifying
-            significant DEGs. Genes meeting this criterion will be used as
-            input for downstream analyses.
-          </template>
-        </PlNumberField>
+        <PlRow>
+          <PlNumberField
+            v-model="app.model.args.log2FCThreshold"
+            label="Log2(FC)" :minValue="0" :step="0.1"
+          >
+            <template #tooltip>
+              Select a valid absolute log2(FC) threshold for identifying
+              significant DEGs. Genes meeting this criterion will be used as
+              input for downstream analyses.
+            </template>
+          </PlNumberField>
+          <PlNumberField
+            v-model="app.model.args.pAdjFCThreshold"
+            label="Adjusted p-value" :minValue="0" :maxValue="1" :step="0.01"
+          />
+        </PlRow>
       </PlAccordionSection>
     </PlSlideModal>
   </PlBlockPage>
