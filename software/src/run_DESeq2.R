@@ -106,13 +106,28 @@ annotate_results <- function(res_df, species) {
 
 # DESeq2 script using above declared functions
 option_list <- list(
-  make_option(c("-c", "--count_matrix"), type="character", default=NULL, help="Path to count matrix CSV file", metavar="character"),
-  make_option(c("-m", "--metadata"), type="character", default=NULL, help="Path to metadata CSV file", metavar="character"),
-  make_option(c("-t", "--contrast_factor"), type="character", default=NULL, help="Column name in metadata for the contrast", metavar="character"),
-  make_option(c("-n", "--numerator"), type="character", default=NULL, help="Numerator level for contrast factor", metavar="character"),
-  make_option(c("-d", "--denominator"), type="character", default=NULL, help="Denominator level for contrast factor", metavar="character"),
-  make_option(c("-s", "--species"), type="character", default="homo-sapiens", help="Species for annotation", metavar="character"),
-  make_option(c("-o", "--output"), type="character", default="deseq2_results.csv", help="Output CSV file for results", metavar="character")
+  make_option(c("-c", "--count_matrix"), type = "character", default = NULL,
+              help = "Path to count matrix CSV file", metavar = "character"),
+  make_option(c("-m", "--metadata"), type = "character", default = NULL,
+              help = "Path to metadata CSV file", metavar = "character"),
+  make_option(c("-t", "--contrast_factor"), type = "character", default = NULL,
+              help = "Column name in metadata for the contrast",
+              metavar = "character"),
+  make_option(c("-n", "--numerator"), type = "character", default = NULL,
+              help = "Numerator level for contrast factor",
+              metavar = "character"),
+  make_option(c("-d", "--denominator"), type = "character", default = NULL,
+              help = "Denominator level for contrast factor",
+              metavar = "character"),
+  make_option(c("-s", "--species"), type = "character", default = "homo-sapiens",
+              help = "Species for annotation", metavar = "character"),
+  make_option(c("-o", "--output"), type = "character",
+              default = "deseq2_results.csv",
+              help = "Output CSV file for results", metavar = "character"),
+  make_option(c("-f", "--fc_threshold"), type = "double", default = 1,
+              help = "Adjusted p-value threshold for significance"),
+  make_option(c("-p", "--p_threshold"), type = "double", default = 0.05,
+              help = "Adjusted p-value threshold for significance")
 )
 
 opt_parser <- OptionParser(option_list = option_list)
@@ -174,11 +189,14 @@ res_df$minlog10padj <- -log10(res_df$padj)
 res_df$minlog10padj[is.na(res_df$minlog10padj)] <- NA
 
 # Add regulation direction
-res_df$Regulation <- ifelse(res_df$log2FoldChange > 1, "Up",
-                            ifelse(res_df$log2FoldChange < -1, "Down", "NS"))
+res_df$Regulation <- ifelse(res_df$log2FoldChange >= opt$fc_threshold, "Up",
+                            ifelse(res_df$log2FoldChange <= -opt$fc_threshold,
+                                   "Down", "NS"))
 
 # Reorder columns
-res_df <- res_df[, c("EnsemblId", "SYMBOL", "Regulation", setdiff(colnames(res_df), c("EnsemblId", "SYMBOL", "Regulation")))]
+res_df <- res_df[, c("EnsemblId", "SYMBOL", "Regulation",
+                     setdiff(colnames(res_df), c("EnsemblId", "SYMBOL",
+                                                 "Regulation")))]
 
 # Save topTable as csv
 write.csv(res_df, opt$output, row.names = FALSE)
@@ -187,7 +205,7 @@ cat("Full results saved to", opt$output, "\n")
 
 # Filter DEGs with adjusted p-value < 0.05 and absolute log2FoldChange > 0.6
 deg_df <- res_df[
-  res_df$padj < 0.05 & abs(res_df$log2FoldChange) > 0.6,
+  res_df$padj <= opt$p_threshold & abs(res_df$log2FoldChange) >= opt$fc_threshold,
   c("EnsemblId", "SYMBOL", "log2FoldChange", "Regulation")
 ]
 deg_df <- deg_df[!is.na(deg_df$EnsemblId),]

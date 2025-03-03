@@ -16,7 +16,6 @@ DEGPfconvParamsLib := import(":DEGPfconvParams")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 assets := import("@platforma-sdk/workflow-tengo:assets")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
-text := import("text")
 ll := import("@platforma-sdk/workflow-tengo:ll")
 pSpec := import("@platforma-sdk/workflow-tengo:pframes.spec")
 
@@ -47,8 +46,9 @@ wf.body(func(args) {
 	countsSpec := rawCounts.spec
 
 	contrastFactor := args.resolvedContrastFactor
-	// numerator := args.numerators
 	denominator := args.denominator
+	log2FCThreshold := args.log2FCThreshold
+	pAdjFCThreshold := args.pAdjFCThreshold
 
 	species := countsSpec.domain["pl7.app/species"]
 	
@@ -76,6 +76,8 @@ wf.body(func(args) {
 			arg("-d").arg(denominator).
 			arg("-s").arg(species).
 			arg("-o").arg("topTable.csv").
+			arg("-f").arg(string(log2FCThreshold)).
+			arg("-p").arg(string(pAdjFCThreshold)).
 			addFile("rawCounts.csv", csvCounts).
 			addFile("covariates.csv", csvCovariates).
 			saveFile("topTable.csv").
@@ -85,7 +87,9 @@ wf.body(func(args) {
 			cache(24 * 60 * 60 * 1000).
 			run()
 
-		topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec)
+		topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec,
+																   log2FCThreshold,
+																   pAdjFCThreshold)
 		topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams, 
 															// This changes output format from default to per column
 															// So key will be column name and values spec and data
@@ -96,7 +100,8 @@ wf.body(func(args) {
 		DEGPf := xsv.importFile(diffExpression.getFile("DEG.csv"), "csv", DEGImportParams)
 
 		trace := pSpec.makeTrace(countsSpec,
-			{type: "milaboratories.differential-expression", id: blockId, importance: 30, label: "DEG - " + numerator + "/" + denominator}
+			{type: "milaboratories.differential-expression", id: blockId, importance: 30, 
+			label: "DEG - " + numerator + "/" + denominator + " (log2FC: " + log2FCThreshold + ", pAdj: " + pAdjFCThreshold + ")"}
 		)
 
 		for columnName, value in topTablePf { 

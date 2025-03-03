@@ -11,7 +11,7 @@ catalog:
   '@platforma-sdk/model': ^1.22.18
   '@platforma-sdk/ui-vue': ^1.22.64
   '@platforma-sdk/tengo-builder': ^1.17.7
-  '@platforma-sdk/workflow-tengo': ^2.12.0
+  '@platforma-sdk/workflow-tengo': ^2.13.5
 
   '@platforma-sdk/test': ^1.22.47
   '@milaboratories/graph-maker': ^1.1.51
