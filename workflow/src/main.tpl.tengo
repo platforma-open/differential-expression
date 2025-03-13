@@ -56,7 +56,7 @@ wf.body(func(args) {
 	if species == undefined {
 		species = countsSpec.axesSpec[1].domain["pl7.app/species"]
 	}
-		
+
 	covariates := []
 
 	for _, v in args.metaRefs {

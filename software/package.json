@@ -15,11 +15,7 @@
           "artifact": {
             "type": "R",
             "registry": "platforma-open",
-            "environment": "@platforma-open/milaboratories.runenv-r:4.4.1",
-            "dependencies": {
-              "toolset": "renv",
-              "lockFile": "renv.lock"
-            },
+            "environment": "@platforma-open/milaboratories.runenv-r-differential-expression:main",
             "root": "./src"
           },
           "cmd": [
@@ -31,7 +27,7 @@
     }
   },
   "devDependencies": {
-    "@platforma-open/milaboratories.runenv-r": "catalog:",
+    "@platforma-open/milaboratories.runenv-r-differential-expression": "catalog:",
     "@platforma-sdk/package-builder": "catalog:"
   }
 }

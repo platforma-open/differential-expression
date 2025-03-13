@@ -18,16 +18,6 @@ export type UiState = {
   comparison?: string;
 };
 
-// export type Formula = {
-//   // we put formula label in the arg as it will be used
-//   // in the annotations to re-use in the downstream blocks
-//   label: string;
-//   covariateRefs: PlRef[];
-//   contrastFactor?: PlRef;
-//   denominator?: String;
-//   numerator?: String;
-// };
-
 export type BlockArgs = {
   countsRef?: PlRef;
   // formulas: Formula[];
@@ -39,32 +29,9 @@ export type BlockArgs = {
   pAdjFCThreshold: number;
 };
 
-// function filterTopTablePCols(pCols: PColumn) {
-//   if ((pCols === undefined) || !(isPColumn(pCols))) {
-//     return undefined;
-//   }
-//   // Allow only log2 FC and -log10 Padjust as options for volcano axis
-//   // Include gene symbol for future filters
-//   pCols = pCols.filter(
-//     (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
-//       || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
-//       || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
-//       || col.spec.name === 'pl7.app/rna-seq/genesymbol')
-//     && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.args.comparison,
-//   );
-
-//   return pCols;
-// }
-
 export const model = BlockModel.create()
 
   .withArgs<BlockArgs>({
-    // formulas: [
-    //   {
-    //     label: 'Formula',
-    //     covariateRefs: []
-    //   }
-    // ]
     covariateRefs: [],
     numerators: [],
     log2FCThreshold: 1,

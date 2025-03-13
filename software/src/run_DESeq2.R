@@ -1,29 +1,11 @@
 #!/usr/bin/env Rscript
 
-options(repos = c(CRAN = "https://cran.r-project.org"))
-
-# Functions to install libraries
-# Unified function to install and load packages
-install_and_load <- function(package_name) {
-  if (!requireNamespace(package_name, quietly = TRUE)) {
-    if (package_name %in% rownames(available.packages())) {
-      install.packages(package_name)
-    } else {
-      if (!requireNamespace("BiocManager", quietly = TRUE)) {
-        install.packages("BiocManager")
-      }
-      BiocManager::install(package_name)
-    }
-  }
-  library(package_name, character.only = TRUE)
-}
-
 # Load libraries
-install_and_load("optparse")
-install_and_load("tidyr")
-install_and_load("dplyr")
-install_and_load("DESeq2")
-install_and_load("AnnotationDbi")
+library("optparse")
+library("tidyr")
+library("dplyr")
+library("DESeq2")
+library("AnnotationDbi")
 
 # Function to load species specific annotation package
 load_annotation_package <- function(species) {
@@ -41,17 +23,17 @@ load_annotation_package <- function(species) {
     "sus-scrofa" = "org.Ss.eg.db",
     "test-species" = "org.Mm.eg.db"
   )
-  
+
   if (!(species %in% names(species_to_package))) {
     stop("Unsupported species name. Supported species are: ",
          paste(names(species_to_package), collapse = ", "))
   }
-  
+
   annotation_package <- species_to_package[[species]]
-  
-  if (!requireNamespace(annotation_package, quietly = TRUE)) {
-    BiocManager::install(annotation_package)
-  }
+
+  # if (!requireNamespace(annotation_package, quietly = TRUE)) {
+  #   BiocManager::install(annotation_package)
+  # }
   
   library(annotation_package, character.only = TRUE)
   return(annotation_package)
@@ -60,17 +42,17 @@ load_annotation_package <- function(species) {
 # Function to annotate genes
 annotate_results <- function(res_df, species) {
   annotation_package <- load_annotation_package(species)
-  
+
   # Strip version numbers from Ensembl IDs
   rownames(res_df) <- sub("\\.\\d+$", "", rownames(res_df))
   ensembl_ids <- rownames(res_df)
-  
+
   # Get all valid Ensembl IDs
   valid_ensembl_ids <- keys(get(annotation_package), keytype = "ENSEMBL")
-  
+
   # Filter Ensembl IDs
   matched_ids <- ensembl_ids[ensembl_ids %in% valid_ensembl_ids]
-  
+
   # Determine column to map based on species
   if (species == "saccharomyces-cerevisiae") {
     column_to_map <- "COMMON"
@@ -82,7 +64,7 @@ annotate_results <- function(res_df, species) {
     column_to_map <- "SYMBOL"
     key_type <- "ENSEMBL"
   }
-  
+
   # Map IDs to symbols
   matched_symbols <- mapIds(
     get(annotation_package),
@@ -91,7 +73,7 @@ annotate_results <- function(res_df, species) {
     keytype = key_type,
     multiVals = "first"
   )
-  
+
   # Create symbol column for the results
   res_df$SYMBOL <- sapply(ensembl_ids, function(id) {
     if (id %in% names(matched_symbols)) {
@@ -100,7 +82,7 @@ annotate_results <- function(res_df, species) {
       return(NA)
     }
   })
-  
+
   return(res_df)
 }
 
