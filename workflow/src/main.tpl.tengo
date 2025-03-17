@@ -51,7 +51,6 @@ wf.body(func(args) {
 	pAdjFCThreshold := args.pAdjFCThreshold
 
 	// @TODO: look for species only in axis when old Star version get obsolete
-	// @TODO: look for species only in axis when old Star version get obsolete
 	species := countsSpec.domain["pl7.app/species"]
 	// Last Star version holds species ID in axis domain
 	if species == undefined {
