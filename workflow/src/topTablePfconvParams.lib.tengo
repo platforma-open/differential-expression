@@ -1,6 +1,12 @@
 ll := import("@platforma-sdk/workflow-tengo:ll")
+math := import("math")
 
-getColumns := func(countsSpec) {
+getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
+	// Define volcano plot significant line cut points
+	thresholds := "[{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Min LogFC (left vertical)\",\"value\": " + string(-log2FCThreshold) + "},"
+	thresholds = thresholds + "{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Max LogFC (right vertical)\",\"value\": " + string(log2FCThreshold) + "},"
+	thresholds = thresholds + "{\"columnId\": {\"name\": \"pl7.app/rna-seq/minlog10padj\",\"valueType\": \"Double\"},\"label\": \"Y bound\",\"value\": " + string(-math.log10(pAdjFCThreshold)) + "}]"
+	
 	return {
 		"axes": [
 			{
@@ -123,7 +129,7 @@ getColumns := func(countsSpec) {
 					"annotations": {
 						"pl7.app/label": "Regulation direction",
 						"pl7.app/graph/palette": "{\"name\":\"triadic\",\"mapping\":{\"Up\":\"19\",\"Down\":\"22\",\"NS\":\"25\"}}",
-						"pl7.app/graph/thresholds": "[{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Min LogFC (left vertical)\",\"value\": \"-1\"},{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Max LogFC (right vertical)\",\"value\": \"1\"},{\"columnId\": {\"name\": \"pl7.app/rna-seq/minlog10padj\",\"valueType\": \"Double\"},\"label\": \"Y bound\",\"value\": \"1.3\"}]",
+						"pl7.app/graph/thresholds": thresholds,
 						"pl7.app/table/orderPriority": "5"
 					}
 				}

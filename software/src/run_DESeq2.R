@@ -1,29 +1,11 @@
 #!/usr/bin/env Rscript
 
-options(repos = c(CRAN = "https://cran.r-project.org"))
-
-# Functions to install libraries
-# Unified function to install and load packages
-install_and_load <- function(package_name) {
-  if (!requireNamespace(package_name, quietly = TRUE)) {
-    if (package_name %in% rownames(available.packages())) {
-      install.packages(package_name)
-    } else {
-      if (!requireNamespace("BiocManager", quietly = TRUE)) {
-        install.packages("BiocManager")
-      }
-      BiocManager::install(package_name)
-    }
-  }
-  library(package_name, character.only = TRUE)
-}
-
 # Load libraries
-install_and_load("optparse")
-install_and_load("tidyr")
-install_and_load("dplyr")
-install_and_load("DESeq2")
-install_and_load("AnnotationDbi")
+library("optparse")
+library("tidyr")
+library("dplyr")
+library("DESeq2")
+library("AnnotationDbi")
 
 # Function to load species specific annotation package
 load_annotation_package <- function(species) {
@@ -41,18 +23,14 @@ load_annotation_package <- function(species) {
     "sus-scrofa" = "org.Ss.eg.db",
     "test-species" = "org.Mm.eg.db"
   )
-  
+
   if (!(species %in% names(species_to_package))) {
     stop("Unsupported species name. Supported species are: ",
          paste(names(species_to_package), collapse = ", "))
   }
-  
+
   annotation_package <- species_to_package[[species]]
-  
-  if (!requireNamespace(annotation_package, quietly = TRUE)) {
-    BiocManager::install(annotation_package)
-  }
-  
+
   library(annotation_package, character.only = TRUE)
   return(annotation_package)
 }
@@ -60,17 +38,17 @@ load_annotation_package <- function(species) {
 # Function to annotate genes
 annotate_results <- function(res_df, species) {
   annotation_package <- load_annotation_package(species)
-  
+
   # Strip version numbers from Ensembl IDs
   rownames(res_df) <- sub("\\.\\d+$", "", rownames(res_df))
   ensembl_ids <- rownames(res_df)
-  
+
   # Get all valid Ensembl IDs
   valid_ensembl_ids <- keys(get(annotation_package), keytype = "ENSEMBL")
-  
+
   # Filter Ensembl IDs
   matched_ids <- ensembl_ids[ensembl_ids %in% valid_ensembl_ids]
-  
+
   # Determine column to map based on species
   if (species == "saccharomyces-cerevisiae") {
     column_to_map <- "COMMON"
@@ -82,7 +60,7 @@ annotate_results <- function(res_df, species) {
     column_to_map <- "SYMBOL"
     key_type <- "ENSEMBL"
   }
-  
+
   # Map IDs to symbols
   matched_symbols <- mapIds(
     get(annotation_package),
@@ -91,7 +69,7 @@ annotate_results <- function(res_df, species) {
     keytype = key_type,
     multiVals = "first"
   )
-  
+
   # Create symbol column for the results
   res_df$SYMBOL <- sapply(ensembl_ids, function(id) {
     if (id %in% names(matched_symbols)) {
@@ -100,19 +78,34 @@ annotate_results <- function(res_df, species) {
       return(NA)
     }
   })
-  
+
   return(res_df)
 }
 
 # DESeq2 script using above declared functions
 option_list <- list(
-  make_option(c("-c", "--count_matrix"), type="character", default=NULL, help="Path to count matrix CSV file", metavar="character"),
-  make_option(c("-m", "--metadata"), type="character", default=NULL, help="Path to metadata CSV file", metavar="character"),
-  make_option(c("-t", "--contrast_factor"), type="character", default=NULL, help="Column name in metadata for the contrast", metavar="character"),
-  make_option(c("-n", "--numerator"), type="character", default=NULL, help="Numerator level for contrast factor", metavar="character"),
-  make_option(c("-d", "--denominator"), type="character", default=NULL, help="Denominator level for contrast factor", metavar="character"),
-  make_option(c("-s", "--species"), type="character", default="homo-sapiens", help="Species for annotation", metavar="character"),
-  make_option(c("-o", "--output"), type="character", default="deseq2_results.csv", help="Output CSV file for results", metavar="character")
+  make_option(c("-c", "--count_matrix"), type = "character", default = NULL,
+              help = "Path to count matrix CSV file", metavar = "character"),
+  make_option(c("-m", "--metadata"), type = "character", default = NULL,
+              help = "Path to metadata CSV file", metavar = "character"),
+  make_option(c("-t", "--contrast_factor"), type = "character", default = NULL,
+              help = "Column name in metadata for the contrast",
+              metavar = "character"),
+  make_option(c("-n", "--numerator"), type = "character", default = NULL,
+              help = "Numerator level for contrast factor",
+              metavar = "character"),
+  make_option(c("-d", "--denominator"), type = "character", default = NULL,
+              help = "Denominator level for contrast factor",
+              metavar = "character"),
+  make_option(c("-s", "--species"), type = "character", default = "homo-sapiens",
+              help = "Species for annotation", metavar = "character"),
+  make_option(c("-o", "--output"), type = "character",
+              default = "deseq2_results.csv",
+              help = "Output CSV file for results", metavar = "character"),
+  make_option(c("-f", "--fc_threshold"), type = "double", default = 1,
+              help = "Adjusted p-value threshold for significance"),
+  make_option(c("-p", "--p_threshold"), type = "double", default = 0.05,
+              help = "Adjusted p-value threshold for significance")
 )
 
 opt_parser <- OptionParser(option_list = option_list)
@@ -174,11 +167,14 @@ res_df$minlog10padj <- -log10(res_df$padj)
 res_df$minlog10padj[is.na(res_df$minlog10padj)] <- NA
 
 # Add regulation direction
-res_df$Regulation <- ifelse(res_df$log2FoldChange > 1, "Up",
-                            ifelse(res_df$log2FoldChange < -1, "Down", "NS"))
+res_df$Regulation <- ifelse(res_df$log2FoldChange >= opt$fc_threshold, "Up",
+                            ifelse(res_df$log2FoldChange <= -opt$fc_threshold,
+                                   "Down", "NS"))
 
 # Reorder columns
-res_df <- res_df[, c("EnsemblId", "SYMBOL", "Regulation", setdiff(colnames(res_df), c("EnsemblId", "SYMBOL", "Regulation")))]
+res_df <- res_df[, c("EnsemblId", "SYMBOL", "Regulation",
+                     setdiff(colnames(res_df), c("EnsemblId", "SYMBOL",
+                                                 "Regulation")))]
 
 # Save topTable as csv
 write.csv(res_df, opt$output, row.names = FALSE)
@@ -187,7 +183,7 @@ cat("Full results saved to", opt$output, "\n")
 
 # Filter DEGs with adjusted p-value < 0.05 and absolute log2FoldChange > 0.6
 deg_df <- res_df[
-  res_df$padj < 0.05 & abs(res_df$log2FoldChange) > 0.6,
+  res_df$padj <= opt$p_threshold & abs(res_df$log2FoldChange) >= opt$fc_threshold,
   c("EnsemblId", "SYMBOL", "log2FoldChange", "Regulation")
 ]
 deg_df <- deg_df[!is.na(deg_df$EnsemblId),]

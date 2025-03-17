@@ -5,7 +5,8 @@
     "build": {
       "inputs": ["$TURBO_DEFAULT$"],
       "outputs": ["./dist/**", "./block-pack/**", "./pkg-*.tgz"],
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": ["PL_PKG_DEV"]
     },
     "test": {
       "dependsOn": ["build"],

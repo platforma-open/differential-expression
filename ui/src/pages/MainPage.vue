@@ -12,6 +12,10 @@ import {
   PlDropdownRef,
   PlMaskIcon24,
   PlSlideModal,
+  PlAccordionSection,
+  PlNumberField,
+  PlRow,
+  PlAlert,
 } from '@platforma-sdk/ui-vue';
 import { computed, ref, watch } from 'vue';
 import { useApp } from '../app';
@@ -120,6 +124,33 @@ watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
         </template>
       </PlDropdownMulti>
       <PlDropdown v-model="app.model.args.denominator" :options="denominatorOptions" label="Denominator" />
+
+      <!-- Content hidden until you click THRESHOLD PARAMETERS -->
+      <PlAccordionSection label="THRESHOLD PARAMETERS">
+        <PlRow>
+          <PlNumberField
+            v-model="app.model.args.log2FCThreshold"
+            label="Log2(FC)" :minValue="0" :step="0.1"
+          >
+            <template #tooltip>
+              Select a valid absolute log2(FC) threshold for identifying
+              significant DEGs. Genes meeting this criterion will be used as
+              input for downstream analyses.
+            </template>
+          </PlNumberField>
+          <PlNumberField
+            v-model="app.model.args.pAdjFCThreshold"
+            label="Adjusted p-value" :minValue="0" :maxValue="1" :step="0.01"
+          />
+        </PlRow>
+        <!-- Add warnings if selected threshold are out of most commonly used bounds -->
+        <PlAlert v-if="app.model.args.pAdjFCThreshold > 0.05" type="warn">
+          {{ "Warning: The selected adjusted p-value threshold is higher than the most commonly used 0.05" }}
+        </PlAlert>
+        <PlAlert v-if="app.model.args.log2FCThreshold < 0.6" type="warn">
+          {{ "Warning: The selected Log2(FC) threshold may be too low for most use cases" }}
+        </PlAlert>
+      </PlAccordionSection>
     </PlSlideModal>
   </PlBlockPage>
 </template>
