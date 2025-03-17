@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 2.3.0
+
+### Minor Changes
+
+- d3b1c0e: Multiple ways of looking for spacies
+
 ## 2.2.1
 
 ### Patch Changes
