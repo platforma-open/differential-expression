@@ -16,8 +16,8 @@ catalogs:
       specifier: ^2.1.16
       version: 2.1.16
     '@platforma-open/milaboratories.runenv-r-differential-expression':
-      specifier: ^1.0.5
-      version: 1.0.5
+      specifier: ^1.0.6
+      version: 1.0.6
     '@platforma-open/milaboratories.software-small-binaries':
       specifier: ^1.15.14
       version: 1.15.14
@@ -129,7 +129,7 @@ importers:
     devDependencies:
       '@platforma-open/milaboratories.runenv-r-differential-expression':
         specifier: 'catalog:'
-        version: 1.0.5
+        version: 1.0.6
       '@platforma-sdk/package-builder':
         specifier: 'catalog:'
         version: 2.15.4
@@ -1173,8 +1173,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@platforma-open/milaboratories.runenv-r-differential-expression@1.0.5':
-    resolution: {integrity: sha512-igJO1sZg5aIi8na//3XLK9gIYEBYOmGGNrYRUgs3TUJTGY6Xe/lRgJHvo+W21pRK6Ht45jXIeSO+ieN2Ge3mIA==}
+  '@platforma-open/milaboratories.runenv-r-differential-expression@1.0.6':
+    resolution: {integrity: sha512-JXe413zUDB6x+uYS4og+KfL6I0dmA888dU+FpruZ+13piHOBh0Eku7/Qj/+NLWY3s/vtKCq4Vntq6Dlt2o9oWA==}
 
   '@platforma-open/milaboratories.software-small-binaries.guided-command@1.0.4':
     resolution: {integrity: sha512-LD8XQDnR+L9oRD7JXE0VWGmv1/0cm+J71flrwBUWeIbuaenPC8Nsza8oy7JjLJ8AX+bm8XAyyJALuqBBqkL95Q==}
@@ -6667,7 +6667,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@platforma-open/milaboratories.runenv-r-differential-expression@1.0.5': {}
+  '@platforma-open/milaboratories.runenv-r-differential-expression@1.0.6': {}
 
   '@platforma-open/milaboratories.software-small-binaries.guided-command@1.0.4': {}
 

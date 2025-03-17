@@ -31,10 +31,6 @@ load_annotation_package <- function(species) {
 
   annotation_package <- species_to_package[[species]]
 
-  # if (!requireNamespace(annotation_package, quietly = TRUE)) {
-  #   BiocManager::install(annotation_package)
-  # }
-  
   library(annotation_package, character.only = TRUE)
   return(annotation_package)
 }
