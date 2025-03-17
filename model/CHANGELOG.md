@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 2.2.0
+
+### Minor Changes
+
+- 4dc33f9: New analysis options and Renv
+
 ## 2.1.0
 
 ### Minor Changes

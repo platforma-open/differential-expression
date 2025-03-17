@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 1.6.0
+
+### Minor Changes
+
+- 4dc33f9: New analysis options and Renv
+
+### Patch Changes
+
+- Updated dependencies [4dc33f9]
+  - @platforma-open/milaboratories.differential-expression.model@2.2.0
+
 ## 1.5.1
 
 ### Patch Changes
