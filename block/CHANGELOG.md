@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.2.5
+
+### Patch Changes
+
+- b951ece: Updated tags and ranking
+
 ## 1.2.4
 
 ### Patch Changes
