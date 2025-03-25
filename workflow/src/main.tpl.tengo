@@ -11,16 +11,13 @@
 
 wf := import("@platforma-sdk/workflow-tengo:workflow")
 exec := import("@platforma-sdk/workflow-tengo:exec")
-topTablePfconvParamsLib := import(":topTablePfconvParams")
-DEGPfconvParamsLib := import(":DEGPfconvParams")
 xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 assets := import("@platforma-sdk/workflow-tengo:assets")
 pframes := import("@platforma-sdk/workflow-tengo:pframes")
 ll := import("@platforma-sdk/workflow-tengo:ll")
-pSpec := import("@platforma-sdk/workflow-tengo:pframes.spec")
 render := import("@platforma-sdk/workflow-tengo:render")
 
-testPresetInfoTpl := assets.importTemplate(":test")
+diffAnalysisTpl := assets.importTemplate(":diffAnalysis")
 
 wf.prepare(func(args){
 
@@ -46,169 +43,54 @@ wf.body(func(args) {
 
 	rawCounts := args.resolvedInput
 	countsSpec := rawCounts.spec
-
 	contrastFactor := args.resolvedContrastFactor
 	denominator := args.denominator
 	log2FCThreshold := args.log2FCThreshold
 	pAdjFCThreshold := args.pAdjFCThreshold
 
-	// @TODO: look for species only in axis when old Star version get obsolete
-	species := countsSpec.domain["pl7.app/species"]
-	// Last Star version holds species ID in axis domain
-	if species == undefined {
-		species = countsSpec.axesSpec[1].domain["pl7.app/species"]
-	}
-
 	covariates := []
-
 	for _, v in args.metaRefs {
 		covariates = append(covariates, v)
 	}
 
 	// convert PColumns to csv
-	csvCounts := xsv.exportFrame([rawCounts], "csv", {})
 	csvCovariates := xsv.exportFrame(covariates, "csv", {})
-
-	test := render.create(testPresetInfoTpl, {
-		csvCovariates: csvCovariates,
-		params: {
-			species: species
-		}
-	})
-
-	testOut := test.output("wetherContinue", 24 * 60 * 60 * 1000)
-	if testOut == "continue" {
-		ll := import("@platforma-sdk/workflow-tengo:ll")
-		maps := import("@platforma-sdk/workflow-tengo:maps")
-		ll.panic("%v", "It worked")
-	}
 	
-	
-
-	degPFrameBuilder := pframes.pFrameBuilder()
-	regDirPFrameBuilder := pframes.pFrameBuilder()
-	topDegPFrameBuilder := pframes.pFrameBuilder()
-
-	for numerator in args.numerators {
-		diffExpression := exec.builder().
-			software(assets.importSoftware("@platforma-open/milaboratories.run-deseq2-r.software:deseq2")).
-			arg("-c").arg("rawCounts.csv").
-			arg("-m").arg("covariates.csv").
-			arg("-t").arg(contrastFactor.spec.annotations["pl7.app/label"]). // ??
-			arg("-n").arg(numerator).
-			arg("-d").arg(denominator).
-			arg("-s").arg(species).
-			arg("-o").arg("topTable.csv").
-			arg("-f").arg(string(log2FCThreshold)).
-			arg("-p").arg(string(pAdjFCThreshold)).
-			addFile("rawCounts.csv", csvCounts).
+	// Run script to check if metadata matrix will be full rank
+	continueCheck := exec.builder().
+			software(assets.importSoftware("@platforma-open/milaboratories.run-deseq2-r.software:prev-checks")).
+			arg("--output").arg(".").
+			arg("--metadata").arg("covariates.csv").
 			addFile("covariates.csv", csvCovariates).
-			saveFile("topTable.csv").
-			saveFile("DEG.csv").
+			saveFileContent("continueOrNot.txt").
 			printErrStreamToStdout().
 			saveStdoutContent().
 			cache(24 * 60 * 60 * 1000).
 			run()
 
-		topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec,
-																   log2FCThreshold,
-																   pAdjFCThreshold)
-		topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams, 
-															// This changes output format from default to per column
-															// So key will be column name and values spec and data
-															{splitDataAndSpec: true})
+	// This content is resolved in a sub-template only
+	continueOrNot := continueCheck.getFileContent("continueOrNot.txt")
 
-		// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
-		DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec)
-		DEGPf := xsv.importFile(diffExpression.getFile("DEG.csv"), "csv", DEGImportParams)
-
-		trace := pSpec.makeTrace(countsSpec,
-			{type: "milaboratories.differential-expression", id: blockId, importance: 30, 
-			label: "DEG - " + numerator + "/" + denominator + " (log2FC: " + log2FCThreshold + ", pAdj: " + pAdjFCThreshold + ")"}
-		)
-
-		for columnName, value in topTablePf { 
-			columnSpec := value.spec
-			columnSpec.axesSpec[0].domain["pl7.app/comparison"] = numerator + " - vs - " + denominator
-			columnData := value.data
-			topDegPFrameBuilder.add(
-				numerator + " - " + columnName,
-				trace.inject(columnSpec),
-				columnData
-
-			)
+	// Run differential analysis template
+	// Analysis will only run if matrix is full rank (continueOrNot.txt content == "continue")
+	diffAnalysis := render.create(diffAnalysisTpl, {
+		continueOrNot: continueOrNot,
+		rawCounts: rawCounts,
+		csvCovariates: csvCovariates,
+		numerators: args.numerators,
+		contrastFactor: contrastFactor,
+		params: {
+			denominator: denominator,
+			log2FCThreshold: log2FCThreshold,
+			pAdjFCThreshold: pAdjFCThreshold
 		}
+	})
+	
+	// Gather results from continueCheck template
+	degPF := diffAnalysis.output("degPF", 24 * 60 * 60 * 1000)
+	regDirPF := diffAnalysis.output("regDirPF", 24 * 60 * 60 * 1000)
+	topDegPF := diffAnalysis.output("topDegPF", 24 * 60 * 60 * 1000)
 
-		degPFrameBuilder.add(
-			numerator,
-			trace.inject({
-				kind: "PColumn",
-				name: "pl7.app/rna-seq/DEG",
-				domain: {
-					"pl7.app/blockId": blockId,
-					"pl7.app/species": species
-				},
-				valueType: "Double",
-				annotations: {
-					"pl7.app/label": numerator + " vs " + denominator + " (log2FC)",
-					"pl7.app/table/hValue": "true",
-					// This allows us to select this Pcolumn to use it as filtering
-					// in this case to keep only genes appearing in this list
-					"pl7.app/isSubset": "true"
-				},
-				axesSpec: [
-					{
-						"name": "pl7.app/rna-seq/geneId",
-						"type": "String",
-						"domain": {
-							"pl7.app/species": species
-						},
-						"annotations": {
-							"pl7.app/label": "Ensembl Id"
-							// "pl7.app/graph/axis/highCardinality": "true"
-						}
-					}
-					]
-			}),
-			DEGPf["log2foldchange.data"]
-		)
-
-		regDirPFrameBuilder.add(
-			numerator,
-			trace.inject({
-				kind: "PColumn",
-				name: "pl7.app/rna-seq/regulationDirection",
-				domain: {
-					"pl7.app/blockId": blockId,
-					"pl7.app/species": species
-				},
-				valueType: "String",
-				annotations: {
-					"pl7.app/label": numerator + " vs " + denominator + " (UP\\Down-regulated gene list)"
-
-				},
-				axesSpec: [
-					{
-						"name": "pl7.app/rna-seq/geneId",
-						"type": "String",
-						"domain": {
-							"pl7.app/species": species
-						},
-						"annotations": {
-							"pl7.app/label": "Ensembl Id"
-							// "pl7.app/graph/axis/highCardinality": "true"
-						}
-					}
-					]
-			}),
-			DEGPf["regulationDirection.data"]
-		)
-	}
-
-	// Build the final PFrames
-	degPF := degPFrameBuilder.build()
-	topDegPF := topDegPFrameBuilder.build()
-	regDirPF := regDirPFrameBuilder.build()
 	exports := {
 		DEG: degPF,
 		regDir: regDirPF
