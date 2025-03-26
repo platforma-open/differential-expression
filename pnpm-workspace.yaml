@@ -17,7 +17,7 @@ catalog:
   '@milaboratories/graph-maker': ^1.1.56
   '@milaboratories/software-pframes-conv': ^2.1.16
   '@platforma-open/milaboratories.software-small-binaries': ^1.15.14
-  '@platforma-open/milaboratories.runenv-r-differential-expression': ^1.0.6
+  '@platforma-open/milaboratories.runenv-r-differential-expression': ^1.0.7
   '@platforma-sdk/package-builder': ^2.15.4
   '@platforma-sdk/eslint-config': ^1.0.1
 
