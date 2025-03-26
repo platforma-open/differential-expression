@@ -151,6 +151,12 @@ watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
           {{ "Warning: The selected Log2(FC) threshold may be too low for most use cases" }}
         </PlAlert>
       </PlAccordionSection>
+      <PlAlert v-if="app.model.outputs.emptyCheck == 'notFullRank'" type="error">
+        {{ "Error: The model matrix is not full rank, so the model cannot be fit as specified. \
+              One or more variables or interaction terms in the design formula are linear\
+              combinations of the others and must be removed. Please, check the metadata \
+              columns included in the Design section." }}
+      </PlAlert>
     </PlSlideModal>
   </PlBlockPage>
 </template>

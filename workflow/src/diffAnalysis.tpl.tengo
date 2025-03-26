@@ -1,5 +1,4 @@
-// get preset
-
+// run annotation and DE analysis
 self := import("@platforma-sdk/workflow-tengo:tpl")
 smart := import("@platforma-sdk/workflow-tengo:smart")
 ll := import("@platforma-sdk/workflow-tengo:ll")
@@ -31,9 +30,9 @@ self.validateInputs({
 self.defineOutputs("degPF", "regDirPF", "topDegPF")
 
 self.body(func(inputs) {
-	degPF := undefined
-	topDegPF := undefined
-	regDirPF := undefined
+	degPF := {}
+	topDegPF := {}
+	regDirPF := {}
 
 	// Proceed only if metadata matrix is full rank
 	if string(inputs.continueOrNot.getData()) == "continue" {
@@ -171,13 +170,18 @@ self.body(func(inputs) {
 		degPF = degPFrameBuilder.build()
 		topDegPF = topDegPFrameBuilder.build()
 		regDirPF = regDirPFrameBuilder.build()
-	}
-	
 
-	// run al deseq part and return what was sent to exports there
-	return {
-		degPF: degPF,
-		regDirPF: regDirPF,
-		topDegPF: topDegPF
+		return {
+			degPF: degPF,
+			regDirPF: regDirPF,
+			topDegPF: pframes.exportFrame(topDegPF)
+		}
+	} else {
+		// If matrix is not full rank return empty objects
+		return {
+			degPF: degPF,
+			regDirPF: regDirPF,
+			topDegPF: topDegPF
+		}
 	}
 })
