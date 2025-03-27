@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 2.5.0
+
+### Minor Changes
+
+- db81af6: Added conditional execution step if model matrix not full rank
+
+### Patch Changes
+
+- Updated dependencies [db81af6]
+  - @platforma-open/milaboratories.run-deseq2-r.software@1.7.0
+
 ## 2.4.0
 
 ### Minor Changes
