@@ -34,9 +34,18 @@ self.body(func(inputs) {
 	topDegPF := {}
 	regDirPF := {}
 
-	// Proceed only if metadata matrix is full rank
-	if string(inputs.continueOrNot.getData()) == "continue" {
+	
+	if string(inputs.continueOrNot.getData()) != "continue" {
+		// If matrix is not full rank return empty objects
+		return {
+			degPF: degPF,
+			regDirPF: regDirPF,
+			topDegPF: topDegPF
+		}
 
+	} else {
+		// Proceed only if metadata matrix is full rank
+		
 		countsSpec := inputs.rawCounts.spec
 		// @TODO: look for species only in axis when old Star version get obsolete
 		species := countsSpec.domain["pl7.app/species"]
@@ -177,12 +186,5 @@ self.body(func(inputs) {
 			regDirPF: regDirPF,
 			topDegPF: pframes.exportFrame(topDegPF)
 		}
-	} else {
-		// If matrix is not full rank return empty objects
-		return {
-			degPF: degPF,
-			regDirPF: regDirPF,
-			topDegPF: topDegPF
-		}
-	}
+	} 
 })
