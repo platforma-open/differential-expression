@@ -23,7 +23,7 @@ self.validateInputs({
 		"__options__,closed": "",
 		"denominator,omitempty": "string",
 		"log2FCThreshold,omitempty": "number",
-		"pAdjFCThreshold,omitempty": "number"
+		"pAdjThreshold,omitempty": "number"
 	}
 })
 
@@ -53,6 +53,7 @@ self.body(func(inputs) {
 		topDegPFrameBuilder := pframes.pFrameBuilder()
 
 		for numerator in inputs.numerators {
+			numerator = string(numerator)
 			diffExpression := exec.builder().
 				software(assets.importSoftware("@platforma-open/milaboratories.run-deseq2-r.software:deseq2")).
 				arg("-c").arg("rawCounts.csv").
@@ -63,7 +64,7 @@ self.body(func(inputs) {
 				arg("-s").arg(species).
 				arg("-o").arg("topTable.csv").
 				arg("-f").arg(string(inputs.params.log2FCThreshold)).
-				arg("-p").arg(string(inputs.params.pAdjFCThreshold)).
+				arg("-p").arg(string(inputs.params.pAdjThreshold)).
 				addFile("rawCounts.csv", csvCounts).
 				addFile("covariates.csv", inputs.csvCovariates).
 				saveFile("topTable.csv").
@@ -75,7 +76,7 @@ self.body(func(inputs) {
 
 			topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec,
 																	inputs.params.log2FCThreshold,
-																	inputs.params.pAdjFCThreshold)
+																	inputs.params.pAdjThreshold)
 			topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams, 
 																// This changes output format from default to per column
 																// So key will be column name and values spec and data
@@ -87,12 +88,12 @@ self.body(func(inputs) {
 
 			trace := pSpec.makeTrace(countsSpec,
 				{type: "milaboratories.differential-expression", importance: 30, 
-				label: "DEG - " + numerator + "/" + inputs.params.denominator + " (log2FC: " + inputs.params.log2FCThreshold + ", pAdj: " + inputs.params.pAdjFCThreshold + ")"}
+				label: "DEG - " + numerator + "/" + inputs.params.denominator + " (log2FC: " + inputs.params.log2FCThreshold + ", pAdj: " + inputs.params.pAdjThreshold + ")"}
 			)
 
 			for columnName, value in topTablePf { 
 				columnSpec := value.spec
-				columnSpec.axesSpec[0].domain["pl7.app/comparison"] = numerator + " - vs - " + inputs.params.denominator
+				columnSpec.axesSpec[0].domain["pl7.app/rna-seq/comparison"] = numerator + " - vs - " + inputs.params.denominator
 				columnData := value.data
 				topDegPFrameBuilder.add(
 					numerator + " - " + columnName,

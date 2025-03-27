@@ -44,9 +44,9 @@ wf.body(func(args) {
 	rawCounts := args.resolvedInput
 	countsSpec := rawCounts.spec
 	contrastFactor := args.resolvedContrastFactor
-	denominator := args.denominator
+	denominator := string(args.denominator)
 	log2FCThreshold := args.log2FCThreshold
-	pAdjFCThreshold := args.pAdjFCThreshold
+	pAdjThreshold := args.pAdjThreshold
 
 	covariates := []
 	for _, v in args.metaRefs {
@@ -82,7 +82,7 @@ wf.body(func(args) {
 		params: {
 			denominator: denominator,
 			log2FCThreshold: log2FCThreshold,
-			pAdjFCThreshold: pAdjFCThreshold
+			pAdjThreshold: pAdjThreshold
 		}
 	})
 	
