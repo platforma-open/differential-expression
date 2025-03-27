@@ -7,18 +7,18 @@ packages:
   - test
 
 catalog:
-  '@platforma-sdk/block-tools': ^2.5.18
-  '@platforma-sdk/model': ^1.22.59
-  '@platforma-sdk/ui-vue': ^1.22.82
-  '@platforma-sdk/tengo-builder': ^1.19.2
-  '@platforma-sdk/workflow-tengo': ^2.15.9
+  '@platforma-sdk/block-tools': ^2.5.24
+  '@platforma-sdk/model': ^1.24.5
+  '@platforma-sdk/ui-vue': ^1.24.5
+  '@platforma-sdk/tengo-builder': ^2.0.1
+  '@platforma-sdk/workflow-tengo': ^3.0.2
 
-  '@platforma-sdk/test': ^1.22.86
-  '@milaboratories/graph-maker': ^1.1.53
-  '@milaboratories/software-pframes-conv': ^2.1.16
-  '@platforma-open/milaboratories.software-small-binaries': ^1.15.14
-  '@platforma-open/milaboratories.runenv-r-differential-expression': ^1.0.6
-  '@platforma-sdk/package-builder': ^2.15.4
+  '@platforma-sdk/test': ^1.24.7
+  '@milaboratories/graph-maker': ^1.1.61
+  '@milaboratories/software-pframes-conv': ^2.1.19
+  '@platforma-open/milaboratories.software-small-binaries': ^1.15.19
+  '@platforma-open/milaboratories.runenv-r-differential-expression': ^1.0.7
+  '@platforma-sdk/package-builder': ^2.15.6
   '@platforma-sdk/eslint-config': ^1.0.1
 
   'vue': ^3.5.13
