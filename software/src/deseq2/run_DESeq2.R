@@ -1,11 +1,11 @@
 #!/usr/bin/env Rscript
 
 # Load libraries
-library("optparse")
-library("tidyr")
-library("dplyr")
-library("DESeq2")
-library("AnnotationDbi")
+suppressMessages(library("optparse"))
+suppressMessages(library("tidyr"))
+suppressMessages(library("dplyr"))
+suppressMessages(library("DESeq2"))
+suppressMessages(library("AnnotationDbi"))
 
 # Function to load species specific annotation package
 load_annotation_package <- function(species) {
@@ -31,7 +31,7 @@ load_annotation_package <- function(species) {
 
   annotation_package <- species_to_package[[species]]
 
-  library(annotation_package, character.only = TRUE)
+  suppressMessages(library(annotation_package, character.only = TRUE))
   return(annotation_package)
 }
 
