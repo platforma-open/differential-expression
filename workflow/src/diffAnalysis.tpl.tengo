@@ -101,7 +101,8 @@ self.body(func(inputs) {
 			)
 
 			for columnName, value in topTablePf { 
-				columnSpec := value.spec
+				// avoid modifying the original spec
+				columnSpec := copy(value.spec)
 				columnSpec.axesSpec[0].domain["pl7.app/rna-seq/comparison"] = numerator + " - vs - " + inputs.params.denominator
 				columnData := value.data
 				topDegPFrameBuilder.add(
@@ -129,17 +130,7 @@ self.body(func(inputs) {
 						"pl7.app/isSubset": "true"
 					},
 					axesSpec: [
-						{
-							"name": "pl7.app/rna-seq/geneId",
-							"type": "String",
-							"domain": {
-								"pl7.app/species": species
-							},
-							"annotations": {
-								"pl7.app/label": "Ensembl Id"
-								// "pl7.app/graph/axis/highCardinality": "true"
-							}
-						}
+						countsSpec.axesSpec[1]
 						]
 				}),
 				DEGPf["log2foldchange.data"]
@@ -159,17 +150,7 @@ self.body(func(inputs) {
 
 					},
 					axesSpec: [
-						{
-							"name": "pl7.app/rna-seq/geneId",
-							"type": "String",
-							"domain": {
-								"pl7.app/species": species
-							},
-							"annotations": {
-								"pl7.app/label": "Ensembl Id"
-								// "pl7.app/graph/axis/highCardinality": "true"
-							}
-						}
+						countsSpec.axesSpec[1]
 						]
 				}),
 				DEGPf["regulationDirection.data"]
