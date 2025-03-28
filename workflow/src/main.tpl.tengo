@@ -110,7 +110,8 @@ wf.body(func(args) {
 		)
 
 		for columnName, value in topTablePf { 
-			columnSpec := value.spec
+			// avoid modifying the original spec
+			columnSpec := copy(value.spec)
 			columnSpec.axesSpec[0].domain["pl7.app/comparison"] = numerator + " - vs - " + denominator
 			columnData := value.data
 			topDegPFrameBuilder.add(
