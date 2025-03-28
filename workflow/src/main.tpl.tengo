@@ -139,16 +139,7 @@ wf.body(func(args) {
 					"pl7.app/isSubset": "true"
 				},
 				axesSpec: [
-					{
-						"name": "pl7.app/rna-seq/geneId",
-						"type": "String",
-						"domain": {
-							"pl7.app/species": species
-						},
-						"annotations": {
-							"pl7.app/label": "Ensembl Id"
-						}
-					}
+					countsSpec.axesSpec[1]
 					]
 			}),
 			DEGPf["log2foldchange.data"]
@@ -169,16 +160,7 @@ wf.body(func(args) {
 
 				},
 				axesSpec: [
-					{
-						"name": "pl7.app/rna-seq/geneId",
-						"type": "String",
-						"domain": {
-							"pl7.app/species": species
-						},
-						"annotations": {
-							"pl7.app/label": "Ensembl Id"
-						}
-					}
+					countsSpec.axesSpec[1]
 					]
 			}),
 			DEGPf["regulationDirection.data"]
