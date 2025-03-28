@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 2.6.0
+
+### Minor Changes
+
+- 692a8b0: Improved heatmap plotting
+
 ## 2.5.0
 
 ### Minor Changes
