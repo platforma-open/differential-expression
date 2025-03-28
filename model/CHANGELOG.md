@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 2.3.0
+
+### Minor Changes
+
+- db81af6: Added conditional execution step if model matrix not full rank
+
 ## 2.2.0
 
 ### Minor Changes

@@ -1,10 +1,12 @@
 import type { GraphMakerState } from '@milaboratories/graph-maker';
 import type {
   InferOutputsType,
+  PColumn,
   PColumnIdAndSpec,
   PFrameHandle,
   PlDataTableState,
-  PlRef } from '@platforma-sdk/model';
+  PlRef,
+  TreeNodeAccessor } from '@platforma-sdk/model';
 import {
   BlockModel,
   createPlDataTable,
@@ -26,8 +28,24 @@ export type BlockArgs = {
   denominator?: string;
   numerators: string[];
   log2FCThreshold: number;
-  pAdjFCThreshold: number;
+  pAdjThreshold: number;
 };
+
+// get main Pcols for plot and tables
+function filterPcols(pCols: PColumn<TreeNodeAccessor>[],
+  comparison: string | undefined):
+  PColumn<TreeNodeAccessor>[] {
+  // Allow only log2 FC and -log10 Padjust as options for volcano axis
+  pCols = pCols.filter(
+    (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
+      || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
+      || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
+      || col.spec.name === 'pl7.app/rna-seq/genesymbol')
+    // Only values associated to selected comparison
+    && col.spec.axesSpec[0]?.domain?.['pl7.app/rna-seq/comparison'] === comparison,
+  );
+  return pCols;
+}
 
 export const model = BlockModel.create()
 
@@ -35,7 +53,7 @@ export const model = BlockModel.create()
     covariateRefs: [],
     numerators: [],
     log2FCThreshold: 1,
-    pAdjFCThreshold: 0.05,
+    pAdjThreshold: 0.05,
   })
 
   .withUiState<UiState>({
@@ -58,7 +76,7 @@ export const model = BlockModel.create()
     (ctx.args.numerators !== undefined)) && (ctx.args.numerators.length !== 0)
   && (ctx.args.denominator !== undefined)
   && (ctx.args.log2FCThreshold !== undefined)
-  && (ctx.args.pAdjFCThreshold !== undefined),
+  && (ctx.args.pAdjThreshold !== undefined),
   )
 
   // User can only select as input raw gene count matrices
@@ -104,7 +122,7 @@ export const model = BlockModel.create()
 
     // Filter by selected comparison
     pCols = pCols.filter(
-      (col) => col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
+      (col) => col.spec.axesSpec[0]?.domain?.['pl7.app/rna-seq/comparison'] === ctx.uiState.comparison,
     );
 
     return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
@@ -115,16 +133,7 @@ export const model = BlockModel.create()
     if (pCols === undefined) {
       return undefined;
     }
-    // Allow only log2 FC and -log10 Padjust as options for volcano axis
-    // Include gene symbol for future filters
-    pCols = pCols.filter(
-      (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
-        || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
-        || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
-        || col.spec.name === 'pl7.app/rna-seq/genesymbol')
-      // Only values associated to selected comparison
-      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
-    );
+    pCols = filterPcols(pCols, ctx.uiState.comparison);
 
     return pCols.map(
       (c) =>
@@ -135,20 +144,24 @@ export const model = BlockModel.create()
     );
   })
 
+  .output('emptyCheck', (ctx) => {
+    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    if (pCols === undefined) {
+      return undefined;
+    }
+    // topTablePf will only be empty in cases where we did not run DEG due to
+    // non full rank matrix
+    if (pCols.length === 0) {
+      return 'notFullRank';
+    }
+  })
+
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
     let pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
-    // Allow only log2 FC and -log10 Padjust as options for volcano axis
-    // Include gene symbol for future filters
-    pCols = pCols.filter(
-      (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
-        || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
-        || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
-        || col.spec.name === 'pl7.app/rna-seq/genesymbol')
-      && col.spec.axesSpec[0]?.domain?.['pl7.app/comparison'] === ctx.uiState.comparison,
-    );
+    pCols = filterPcols(pCols, ctx.uiState.comparison);
 
     // enriching with upstream data
     const upstream = ctx.resultPool
