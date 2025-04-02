@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 1.7.1
+
+### Patch Changes
+
+- 3e86268: update graph-maker version
+
 ## 1.7.0
 
 ### Minor Changes
