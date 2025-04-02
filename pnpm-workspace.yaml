@@ -14,7 +14,7 @@ catalog:
   '@platforma-sdk/workflow-tengo': ^3.0.2
 
   '@platforma-sdk/test': ^1.24.7
-  '@milaboratories/graph-maker': ^1.1.61
+  '@milaboratories/graph-maker': ^1.1.64
   '@milaboratories/software-pframes-conv': ^2.1.19
   '@platforma-open/milaboratories.software-small-binaries': ^1.15.19
   '@platforma-open/milaboratories.runenv-r-differential-expression': ^1.0.7
