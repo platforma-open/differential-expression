@@ -9,8 +9,8 @@ import type {
   TreeNodeAccessor } from '@platforma-sdk/model';
 import {
   BlockModel,
+  createPFrameForGraphs,
   createPlDataTable,
-  isPColumn,
   isPColumnSpec,
 } from '@platforma-sdk/model';
 
@@ -163,14 +163,7 @@ export const model = BlockModel.create()
     }
     pCols = filterPcols(pCols, ctx.uiState.comparison);
 
-    // enriching with upstream data
-    const upstream = ctx.resultPool
-      .getData()
-      .entries.map((v) => v.obj)
-      .filter(isPColumn)
-      .filter((column) => column.spec.name === 'pl7.app/metadata');
-
-    return ctx.createPFrame([...pCols, ...upstream]);
+    return createPFrameForGraphs(ctx, pCols);
   })
 
   .sections((_ctx) => ([
