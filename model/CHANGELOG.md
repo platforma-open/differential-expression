@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 2.4.0
+
+### Minor Changes
+
+- a690f5d: Update graph creation
+
 ## 2.3.0
 
 ### Minor Changes
