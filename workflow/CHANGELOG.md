@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 2.6.1
+
+### Patch Changes
+
+- d5eb2ed: chore: update deps
+
 ## 2.6.0
 
 ### Minor Changes
