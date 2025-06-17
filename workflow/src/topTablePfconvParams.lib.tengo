@@ -37,7 +37,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "Base mean",
-						"pl7.app/table/orderPriority": "70"
+						"pl7.app/table/orderPriority": "70",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
@@ -51,7 +52,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"annotations": {
 						"pl7.app/label": "Log2FC",
 						"pl7.app/table/orderPriority": "60",
-						"pl7.app/graph/axis/symmetricRange": "0"
+						"pl7.app/graph/axis/symmetricRange": "0",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
@@ -64,7 +66,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "Log2FC SE",
-						"pl7.app/table/orderPriority": "50"
+						"pl7.app/table/orderPriority": "50",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
@@ -77,7 +80,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "Stat",
-						"pl7.app/table/orderPriority": "40"
+						"pl7.app/table/orderPriority": "40",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
@@ -90,7 +94,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "P-value",
-						"pl7.app/table/orderPriority": "30"
+						"pl7.app/table/orderPriority": "30",
+						"pl7.app/format": ".2e"
 					}
 				}
 			},
@@ -103,7 +108,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "Adjusted p-value",
-						"pl7.app/table/orderPriority": "20"
+						"pl7.app/table/orderPriority": "20",
+						"pl7.app/format": ".2e"
 					}
 				}
 			},
@@ -116,7 +122,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "-log10 adjusted p-value",
-						"pl7.app/table/orderPriority": "10"
+						"pl7.app/table/orderPriority": "10",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
