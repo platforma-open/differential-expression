@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 1.8.0
+
+### Minor Changes
+
+- c6ad8a1: allow prepare venv on Windows
+
 ## 1.7.0
 
 ### Minor Changes
