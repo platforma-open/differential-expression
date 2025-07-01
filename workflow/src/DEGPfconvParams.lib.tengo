@@ -31,7 +31,8 @@ getColumns := func(countsSpec) {
 					"valueType": "Double",
 					"annotations": {
 						"pl7.app/label": "Log2FC",
-						"pl7.app/table/orderPriority": "60"
+						"pl7.app/table/orderPriority": "60",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
