@@ -4,20 +4,23 @@ import type {
   PColumn,
   PColumnIdAndSpec,
   PFrameHandle,
-  PlDataTableState,
+  PlDataTableStateV2,
   PlRef,
-  TreeNodeAccessor } from '@platforma-sdk/model';
+  TreeNodeAccessor,
+} from '@platforma-sdk/model';
 import {
   BlockModel,
   createPFrameForGraphs,
-  createPlDataTable,
+  createPlDataTableSheet,
+  createPlDataTableStateV2,
+  createPlDataTableV2,
+  getUniquePartitionKeys,
   isPColumnSpec,
 } from '@platforma-sdk/model';
 
 export type UiState = {
-  tableState: PlDataTableState;
+  tableState: PlDataTableStateV2;
   graphState: GraphMakerState;
-  comparison?: string;
 };
 
 export type BlockArgs = {
@@ -32,17 +35,14 @@ export type BlockArgs = {
 };
 
 // get main Pcols for plot and tables
-function filterPcols(pCols: PColumn<TreeNodeAccessor>[],
-  comparison: string | undefined):
-  PColumn<TreeNodeAccessor>[] {
+function filterPcols(pCols: PColumn<TreeNodeAccessor>[]): PColumn<TreeNodeAccessor>[] {
   // Allow only log2 FC and -log10 Padjust as options for volcano axis
   pCols = pCols.filter(
     (col) => (col.spec.name === 'pl7.app/rna-seq/log2foldchange'
       || col.spec.name === 'pl7.app/rna-seq/minlog10padj'
       || col.spec.name === 'pl7.app/rna-seq/regulationDirection'
-      || col.spec.name === 'pl7.app/rna-seq/genesymbol')
-    // Only values associated to selected comparison
-    && col.spec.axesSpec[0]?.domain?.['pl7.app/rna-seq/comparison'] === comparison,
+      || col.spec.name === 'pl7.app/rna-seq/genesymbol'
+      || col.spec.name === 'pl7.app/rna-seq/contrastGroup'),
   );
   return pCols;
 }
@@ -57,13 +57,7 @@ export const model = BlockModel.create()
   })
 
   .withUiState<UiState>({
-    tableState: {
-      gridState: {},
-      pTableParams: {
-        sorting: [],
-        filters: [],
-      },
-    },
+    tableState: createPlDataTableStateV2(),
     graphState: {
       title: 'Differential gene expression',
       template: 'dots',
@@ -115,17 +109,29 @@ export const model = BlockModel.create()
 
   // Returns a map of results
   .output('pt', (ctx) => {
-    let pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
     if (pCols === undefined) {
       return undefined;
     }
 
-    // Filter by selected comparison
-    pCols = pCols.filter(
-      (col) => col.spec.axesSpec[0]?.domain?.['pl7.app/rna-seq/comparison'] === ctx.uiState.comparison,
-    );
+    return createPlDataTableV2(ctx, pCols, ctx.uiState?.tableState);
+  })
 
-    return createPlDataTable(ctx, pCols, ctx.uiState?.tableState);
+  .output('sheets', (ctx) => {
+    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
+    if (pCols === undefined) {
+      return undefined;
+    }
+
+    // Iterate over all pCols and get all posible uniqque contrast values
+    const contrasts = pCols.flatMap((col) => getUniquePartitionKeys(col.data)?.[0] || []);
+    if (!contrasts) return undefined;
+
+    // Get unique values
+    const uniqueContrasts = [...new Set(contrasts)];
+    if (!uniqueContrasts) return undefined;
+
+    return [createPlDataTableSheet(ctx, pCols[0].spec.axesSpec[0], uniqueContrasts)];
   })
 
   .output('topTablePcols', (ctx) => {
@@ -133,7 +139,7 @@ export const model = BlockModel.create()
     if (pCols === undefined) {
       return undefined;
     }
-    pCols = filterPcols(pCols, ctx.uiState.comparison);
+    pCols = filterPcols(pCols);
 
     return pCols.map(
       (c) =>
@@ -161,13 +167,13 @@ export const model = BlockModel.create()
     if (pCols === undefined) {
       return undefined;
     }
-    pCols = filterPcols(pCols, ctx.uiState.comparison);
+    pCols = filterPcols(pCols);
 
     return createPFrameForGraphs(ctx, pCols);
   })
 
   .sections((_ctx) => ([
-    { type: 'link', href: '/', label: 'Contrast' },
+    { type: 'link', href: '/', label: 'Main' },
     { type: 'link', href: '/graph', label: 'Volcano plot' },
   ]))
 
