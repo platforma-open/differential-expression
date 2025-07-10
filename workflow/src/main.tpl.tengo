@@ -82,7 +82,8 @@ wf.body(func(args) {
 		params: {
 			denominator: denominator,
 			log2FCThreshold: log2FCThreshold,
-			pAdjThreshold: pAdjThreshold
+			pAdjThreshold: pAdjThreshold,
+			blockId: blockId
 		}
 	})
 	

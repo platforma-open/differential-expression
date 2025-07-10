@@ -23,7 +23,8 @@ self.validateInputs({
 		"__options__,closed": "",
 		"denominator,omitempty": "string",
 		"log2FCThreshold,omitempty": "number",
-		"pAdjThreshold,omitempty": "number"
+		"pAdjThreshold,omitempty": "number",
+		"blockId,omitempty": "string"
 	}
 })
 
@@ -92,7 +93,7 @@ self.body(func(inputs) {
 																{splitDataAndSpec: true})
 
 			// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
-			DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec)
+			DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec, inputs.params.blockId, species)
 			DEGPf := xsv.importFile(diffExpression.getFile("DEG.csv"), "csv", DEGImportParams)
 
 			trace := pSpec.makeTrace(countsSpec,
@@ -102,12 +103,10 @@ self.body(func(inputs) {
 
 			for columnName, value in topTablePf { 
 				// avoid modifying the original spec
-				columnSpec := copy(value.spec)
-				columnSpec.axesSpec[0].domain["pl7.app/rna-seq/comparison"] = numerator + " - vs - " + inputs.params.denominator
 				columnData := value.data
 				topDegPFrameBuilder.add(
 					numerator + " - " + columnName,
-					trace.inject(columnSpec),
+					trace.inject(value.spec),
 					columnData
 
 				)
@@ -115,44 +114,13 @@ self.body(func(inputs) {
 
 			degPFrameBuilder.add(
 				numerator,
-				trace.inject({
-					kind: "PColumn",
-					name: "pl7.app/rna-seq/DEG",
-					domain: {
-						"pl7.app/species": species
-					},
-					valueType: "Double",
-					annotations: {
-						"pl7.app/label": numerator + " vs " + inputs.params.denominator + " (log2FC)",
-						"pl7.app/table/hValue": "true",
-						// This allows us to select this Pcolumn to use it as filtering
-						// in this case to keep only genes appearing in this list
-						"pl7.app/isSubset": "true"
-					},
-					axesSpec: [
-						countsSpec.axesSpec[1]
-						]
-				}),
+				trace.inject(DEGPf["log2foldchange.spec"]),
 				DEGPf["log2foldchange.data"]
 			)
 
 			regDirPFrameBuilder.add(
 				numerator,
-				trace.inject({
-					kind: "PColumn",
-					name: "pl7.app/rna-seq/regulationDirection",
-					domain: {
-						"pl7.app/species": species
-					},
-					valueType: "String",
-					annotations: {
-						"pl7.app/label": numerator + " vs " + inputs.params.denominator + " (UP\\Down-regulated gene list)"
-
-					},
-					axesSpec: [
-						countsSpec.axesSpec[1]
-						]
-				}),
+				trace.inject(DEGPf["regulationDirection.spec"]),
 				DEGPf["regulationDirection.data"]
 			)
 		}
