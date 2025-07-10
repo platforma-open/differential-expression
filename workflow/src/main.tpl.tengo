@@ -91,11 +91,12 @@ wf.body(func(args) {
 	degPF := diffAnalysis.output("degPF", 24 * 60 * 60 * 1000)
 	regDirPF := diffAnalysis.output("regDirPF", 24 * 60 * 60 * 1000)
 	topDegPF := diffAnalysis.output("topDegPF", 24 * 60 * 60 * 1000)
-
+	contrastExport := diffAnalysis.output("contrastExport", 24 * 60 * 60 * 1000)
 	
 	exports := {
 		DEG: degPF,
-		regDir: regDirPF
+		regDir: regDirPF,
+		contrastExport: contrastExport
 	}
 	outputs := {
 		topTablePf: topDegPF
