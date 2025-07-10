@@ -9,7 +9,7 @@ xsv := import("@platforma-sdk/workflow-tengo:pframes.xsv")
 pSpec := import("@platforma-sdk/workflow-tengo:pframes.spec")
 topTablePfconvParamsLib := import(":topTablePfconvParams")
 DEGPfconvParamsLib := import(":DEGPfconvParams")
-
+pt := import("@platforma-sdk/workflow-tengo:pt")
 
 
 self.validateInputs({
@@ -58,10 +58,10 @@ self.body(func(inputs) {
 		// convert PColumns to csv
 		csvCounts := xsv.exportFrame([inputs.rawCounts], "csv", {})
 
-		degPFrameBuilder := pframes.pFrameBuilder()
-		regDirPFrameBuilder := pframes.pFrameBuilder()
-		topDegPFrameBuilder := pframes.pFrameBuilder()
-
+		// Create PFrames for DEG, regulation direction and topTable
+		wf := pt.workflow().cpu(1).mem("2GiB")
+		dfsDeg := []
+		dfsTopTable := []
 		for numerator in inputs.numerators {
 			numerator = string(numerator)
 			diffExpression := exec.builder().
@@ -84,46 +84,62 @@ self.body(func(inputs) {
 				cache(24 * 60 * 60 * 1000).
 				run()
 
-			topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec,
-																	inputs.params.log2FCThreshold,
-																	inputs.params.pAdjThreshold)
-			topTablePf := xsv.importFile(diffExpression.getFile("topTable.csv"), "csv", topTableImportParams, 
-																// This changes output format from default to per column
-																// So key will be column name and values spec and data
-																{splitDataAndSpec: true})
+			dfsDeg += [wf.frame(diffExpression.getFile("DEG.csv"), {xsvType: "csv"})]
+			dfsTopTable += [wf.frame(diffExpression.getFile("topTable.csv"), {xsvType: "csv"})]
 
-			// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
-			DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec, inputs.params.blockId, species)
-			DEGPf := xsv.importFile(diffExpression.getFile("DEG.csv"), "csv", DEGImportParams)
+		}
 
-			trace := pSpec.makeTrace(countsSpec,
-				{type: "milaboratories.differential-expression", importance: 30, 
-				label: "DEG - " + numerator + "/" + inputs.params.denominator + " (log2FC: " + inputs.params.log2FCThreshold + ", pAdj: " + inputs.params.pAdjThreshold + ")"}
-			)
+		// Concatenate all DEG and topTable files
+		concatenatedDeg := pt.concat(dfsDeg)
+		concatenatedDeg.save("concatenated_output_Deg.csv")
+		concatenatedTopTable := pt.concat(dfsTopTable)
+		concatenatedTopTable.save("concatenated_output_topTable.csv")
+		ptablerResult := wf.run()
 
-			for columnName, value in topTablePf { 
-				// avoid modifying the original spec
-				columnData := value.data
-				topDegPFrameBuilder.add(
-					numerator + " - " + columnName,
-					trace.inject(value.spec),
-					columnData
+		topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec,
+																inputs.params.log2FCThreshold,
+																inputs.params.pAdjThreshold)
+		topTablePf := xsv.importFile(ptablerResult.getFile("concatenated_output_topTable.csv"), "csv", topTableImportParams, 
+															// This changes output format from default to per column
+															// So key will be column name and values spec and data
+															{splitDataAndSpec: true})
 
-				)
-			}
+		// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
+		DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec, inputs.params.blockId, species)
+		DEGPf := xsv.importFile(ptablerResult.getFile("concatenated_output_Deg.csv"), "csv", DEGImportParams)
 
-			degPFrameBuilder.add(
-				numerator,
-				trace.inject(DEGPf["log2foldchange.spec"]),
-				DEGPf["log2foldchange.data"]
-			)
+		trace := pSpec.makeTrace(countsSpec,
+			{type: "milaboratories.differential-expression", importance: 30, 
+			label: "DEG - Denominator: " + inputs.params.denominator + " (log2FC: " + inputs.params.log2FCThreshold + ", pAdj: " + inputs.params.pAdjThreshold + ")"}
+		)
 
-			regDirPFrameBuilder.add(
-				numerator,
-				trace.inject(DEGPf["regulationDirection.spec"]),
-				DEGPf["regulationDirection.data"]
+		degPFrameBuilder := pframes.pFrameBuilder()
+		regDirPFrameBuilder := pframes.pFrameBuilder()
+		topDegPFrameBuilder := pframes.pFrameBuilder()
+
+		for columnName, value in topTablePf { 
+			// avoid modifying the original spec
+			columnData := value.data
+			topDegPFrameBuilder.add(
+				columnName,
+				trace.inject(value.spec),
+				columnData
+
 			)
 		}
+
+		degPFrameBuilder.add(
+			"Log2FC",
+			trace.inject(DEGPf["log2foldchange.spec"]),
+			DEGPf["log2foldchange.data"]
+		)
+
+		regDirPFrameBuilder.add(
+			"Regulation Direction",
+			trace.inject(DEGPf["regulationDirection.spec"]),
+			DEGPf["regulationDirection.data"]
+		)
+		
 
 		// Build the final PFrames
 		degPF = degPFrameBuilder.build()
