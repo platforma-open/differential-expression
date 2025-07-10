@@ -2,10 +2,9 @@
 import type { GraphMakerProps } from '@milaboratories/graph-maker';
 import { GraphMaker } from '@milaboratories/graph-maker';
 import '@milaboratories/graph-maker/styles';
-import { useApp } from '../app';
-import { computed, ref, watch } from 'vue';
-import { listToOptions, PlDropdown } from '@platforma-sdk/ui-vue';
 import type { PColumnIdAndSpec } from '@platforma-sdk/model';
+import { ref, watch } from 'vue';
+import { useApp } from '../app';
 
 const app = useApp();
 
@@ -44,22 +43,15 @@ function getDefaultOptions(topTablePcols?: PColumnIdAndSpec[]) {
       selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/genesymbol',
         topTablePcols)].spec,
     },
+    {
+      inputName: 'tabBy',
+      selectedSource: topTablePcols[getIndex('pl7.app/rna-seq/log2foldchange',
+        topTablePcols)].spec.axesSpec[0],
+    },
   ];
 
   return defaults;
 }
-
-// Generate list of comparisons with all possible numerator x denominator combinations
-const comparisonOptions = computed(() => {
-  const options: string[] = [];
-  if (app.model.args.numerators.length !== 0
-    && app.model.args.denominator !== undefined) {
-    for (const num of app.model.args.numerators) {
-      options.push(num + ' - vs - ' + app.model.args.denominator);
-    }
-  }
-  return listToOptions(options);
-});
 
 // Steps needed to reset graph maker after changing input table
 const defaultOptions = ref(getDefaultOptions(app.model.outputs.topTablePcols));
@@ -82,12 +74,5 @@ watch(() => app.model.outputs.topTablePcols, (topTablePcols) => {
     :key="key"
     v-model="app.model.ui.graphState" chartType="scatterplot-umap"
     :p-frame="app.model.outputs.topTablePf" :defaultOptions="defaultOptions"
-  >
-    <template #titleLineSlot>
-      <PlDropdown
-        v-model="app.model.ui.comparison" :options="comparisonOptions"
-        label="Comparison" :style="{ width: '300px' }"
-      />
-    </template>
-  </GraphMaker>
+  />
 </template>

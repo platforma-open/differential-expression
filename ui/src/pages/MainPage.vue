@@ -1,32 +1,29 @@
 <script setup lang="ts">
-import type {
-  PlDataTableSettings } from '@platforma-sdk/ui-vue';
 import {
-  listToOptions,
-  PlAgDataTable,
-  PlAgDataTableToolsPanel,
+  PlAccordionSection,
+  PlAgDataTableV2,
+  PlAlert,
   PlBlockPage,
   PlBtnGhost,
   PlDropdown,
   PlDropdownMulti,
   PlDropdownRef,
   PlMaskIcon24,
-  PlSlideModal,
-  PlAccordionSection,
   PlNumberField,
   PlRow,
-  PlAlert,
+  PlSlideModal,
+  usePlDataTableSettingsV2,
 } from '@platforma-sdk/ui-vue';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useApp } from '../app';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 
 const app = useApp();
 
-const tableSettings = computed<PlDataTableSettings>(() => ({
-  sourceType: 'ptable',
-  pTable: app.model.outputs.pt,
-}));
+const tableSettings = usePlDataTableSettingsV2({
+  model: () => app.model.outputs.pt,
+  sheets: () => app.model.outputs.sheets,
+});
 
 const settingsAreShown = ref(app.model.outputs.pt === undefined);
 const showSettings = () => {
@@ -47,18 +44,6 @@ const contrastFactorOptions = computed(() => {
   }));
 });
 
-// Generate list of comparisons with all possible numerator x denominator combinations
-const comparisonOptions = computed(() => {
-  const options: string[] = [];
-  if (app.model.args.numerators.length !== 0
-    && app.model.args.denominator !== undefined) {
-    for (const num of app.model.args.numerators) {
-      options.push(num + ' - vs - ' + app.model.args.denominator);
-    }
-  }
-  return listToOptions(options);
-});
-
 const numeratorOptions = computed(() => {
   return app.model.outputs.denominatorOptions?.map((v) => ({
     value: v,
@@ -72,29 +57,13 @@ const denominatorOptions = computed(() => {
     !app.model.args.numerators.includes(op.value));
 });
 
-watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
-  if (!app.model.ui.comparison && (comparisonOptions.value.length !== 0)) {
-    app.model.ui.comparison = comparisonOptions.value[0].value;
-  }
-}, { deep: true, immediate: true });
-
 </script>
 
 <template>
   <PlBlockPage>
     <template #title>Differential Gene Expression</template>
     <template #append>
-      <PlDropdown
-        v-model="app.model.ui.comparison"
-        :options="comparisonOptions"
-        label="Comparison" :style="{ width: '300px' }"
-      >
-        <template #tooltip>
-          Select the specific Numerator - vs - Denominator comparison to be shown in table and plots
-        </template>
-      </PlDropdown>
       <!-- PlAgDataTableToolsPanel controls showing  Export column and filter-->
-      <PlAgDataTableToolsPanel/>
       <PlBtnGhost @click.stop="showSettings">
         Settings
         <template #append>
@@ -103,9 +72,10 @@ watch(() => [app.model.args.numerators, app.model.args.denominator], (_) => {
       </PlBtnGhost>
     </template>
     <ErrorBoundary>
-      <PlAgDataTable
+      <PlAgDataTableV2
         v-model="app.model.ui.tableState"
         :settings="tableSettings"
+        not-ready-text="Data is not computed"
         show-columns-panel
         show-export-button
       />
