@@ -119,7 +119,7 @@ export const model = BlockModel.create()
 
   .output('sheets', (ctx) => {
     const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
-    if (pCols === undefined) {
+    if (pCols === undefined || pCols.length === 0) {
       return undefined;
     }
 
@@ -128,38 +128,6 @@ export const model = BlockModel.create()
     if (!contrasts) return undefined;
 
     return [createPlDataTableSheet(ctx, pCols[0].spec.axesSpec[0], contrasts)];
-  })
-
-  .output('test', (ctx) => {
-    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
-    if (pCols === undefined) {
-      return undefined;
-    }
-    // Iterate over all pCols and get all posible uniqque contrast values
-    const contrasts = pCols.flatMap((col) => getUniquePartitionKeys(col.data)?.[0] || []);
-    // Get unique values
-    const uniqueContrasts = [...new Set(contrasts)];
-    if (!uniqueContrasts) return undefined;
-
-    return uniqueContrasts;
-  })
-
-  .output('clusterMarkersPt', (ctx) => {
-    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
-    if (pCols === undefined) {
-      return undefined;
-    }
-
-    const anchor = pCols[0];
-    if (!anchor) return undefined;
-
-    const r = getUniquePartitionKeys(anchor.data);
-    if (!r) return undefined;
-
-    return {
-      table: createPlDataTableV2(ctx, pCols, ctx.uiState?.tableState),
-      sheets: r.map((values, i) => createPlDataTableSheet(ctx, anchor.spec.axesSpec[i], values)),
-    };
   })
 
   .output('topTablePcols', (ctx) => {
