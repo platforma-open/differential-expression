@@ -195,6 +195,9 @@ importers:
       '@platforma-open/milaboratories.run-deseq2-r.software':
         specifier: workspace:*
         version: link:../software
+      '@platforma-sdk/workflow-tengo':
+        specifier: 'catalog:'
+        version: 4.9.3
     devDependencies:
       '@milaboratories/software-pframes-conv':
         specifier: 'catalog:'
@@ -208,9 +211,6 @@ importers:
       '@platforma-sdk/test':
         specifier: 'catalog:'
         version: 1.39.7(@types/node@22.0.0)
-      '@platforma-sdk/workflow-tengo':
-        specifier: 'catalog:'
-        version: 4.9.3
       vitest:
         specifier: 'catalog:'
         version: 2.1.9(@types/node@22.0.0)
