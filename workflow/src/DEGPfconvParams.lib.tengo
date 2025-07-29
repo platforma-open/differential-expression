@@ -53,6 +53,8 @@ getColumns := func(countsSpec, blockId, species) {
 						// This allows us to select this Pcolumn to use it as filtering
 						// in this case to keep only genes appearing in this list
 						"pl7.app/isSubset": "true"
+						"pl7.app/table/orderPriority": "60",
+						"pl7.app/format": ".2f"
 					}
 				}
 			},
