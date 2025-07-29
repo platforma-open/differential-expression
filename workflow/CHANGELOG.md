@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 2.7.0
+
+### Minor Changes
+
+- 66c7c3c: Add number formatting annotations
+
 ## 2.6.2
 
 ### Patch Changes
