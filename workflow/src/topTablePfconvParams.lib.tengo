@@ -8,34 +8,46 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 	thresholds = thresholds + "{\"columnId\": {\"name\": \"pl7.app/rna-seq/minlog10padj\",\"valueType\": \"Double\"},\"label\": \"Y bound\",\"value\": " + string(-math.log10(pAdjFCThreshold)) + "}]"
 	
 	return {
-		"axes": [
+		axes: [
 			{
-				"column": "EnsemblId",
-				"spec": countsSpec.axesSpec[1]
+				column: "Contrast",
+				id: "contrast",
+				allowNA: false,
+				spec: {
+					name: "pl7.app/rna-seq/contrastGroup",
+					type: "String",
+					annotations: {
+						"pl7.app/label": "Contrast"
+					}
+				}
+			},
+			{
+				column: "EnsemblId",
+				spec: countsSpec.axesSpec[1]
 			}
 			],
 		"columns": [
 			{
-				"column": "SYMBOL",
-				"id": "genesymbol",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/genesymbol",
-					"valueType": "String",
-					"annotations": {
+				column: "SYMBOL",
+				id: "genesymbol",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/genesymbol",
+					valueType: "String",
+					annotations: {
 						"pl7.app/label": "Gene symbol",
 						"pl7.app/table/orderPriority": "80"
 					}
 				}
 			},
 			{
-				"column": "baseMean",
-				"id": "basemean",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/basemean",
-					"valueType": "Double",
-					"annotations": {
+				column: "baseMean",
+				id: "basemean",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/basemean",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "Base mean",
 						"pl7.app/table/orderPriority": "70",
 						"pl7.app/format": ".2f"
@@ -43,13 +55,13 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "log2FoldChange",
-				"id": "log2foldchange",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/log2foldchange",
-					"valueType": "Double",
-					"annotations": {
+				column: "log2FoldChange",
+				id: "log2foldchange",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/log2foldchange",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "Log2FC",
 						"pl7.app/table/orderPriority": "60",
 						"pl7.app/graph/axis/symmetricRange": "0",
@@ -58,13 +70,13 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "lfcSE",
-				"id": "lfcse",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/lfcse",
-					"valueType": "Double",
-					"annotations": {
+				column: "lfcSE",
+				id: "lfcse",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/lfcse",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "Log2FC SE",
 						"pl7.app/table/orderPriority": "50",
 						"pl7.app/format": ".2f"
@@ -72,13 +84,13 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "stat",
-				"id": "waldstat",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/waldstat",
-					"valueType": "Double",
-					"annotations": {
+				column: "stat",
+				id: "waldstat",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/waldstat",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "Stat",
 						"pl7.app/table/orderPriority": "40",
 						"pl7.app/format": ".2f"
@@ -86,13 +98,13 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "pvalue",
-				"id": "pvalue",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/pvalue",
-					"valueType": "Double",
-					"annotations": {
+				column: "pvalue",
+				id: "pvalue",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/pvalue",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "P-value",
 						"pl7.app/table/orderPriority": "30",
 						"pl7.app/format": ".2e"
@@ -100,13 +112,13 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "padj",
-				"id": "padj",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/padj",
-					"valueType": "Double",
-					"annotations": {
+				column: "padj",
+				id: "padj",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/padj",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "Adjusted p-value",
 						"pl7.app/table/orderPriority": "20",
 						"pl7.app/format": ".2e"
@@ -114,13 +126,13 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "minlog10padj",
-				"id": "minlog10padj",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/minlog10padj",
-					"valueType": "Double",
-					"annotations": {
+				column: "minlog10padj",
+				id: "minlog10padj",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/minlog10padj",
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "-log10 adjusted p-value",
 						"pl7.app/table/orderPriority": "10",
 						"pl7.app/format": ".2f"
@@ -128,12 +140,12 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			},
 			{
-				"column": "Regulation",
-				"id": "regulationDirection",
-				"spec": {
-					"name": "pl7.app/rna-seq/regulationDirection",
-					"valueType": "String",
-					"annotations": {
+				column: "Regulation",
+				id: "regulationDirection",
+				spec: {
+					name: "pl7.app/rna-seq/regulationDirection",
+					valueType: "String",
+					annotations: {
 						"pl7.app/label": "Regulation direction",
 						"pl7.app/graph/palette": "{\"name\":\"triadic\",\"mapping\":{\"Up\":\"19\",\"Down\":\"22\",\"NS\":\"25\"}}",
 						"pl7.app/graph/thresholds": thresholds,
@@ -142,8 +154,8 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 				}
 			}
 			],
-		"storageFormat": "Binary",
-		"partitionKeyLength": 0
+		storageFormat: "Binary",
+		partitionKeyLength: 1
 	}
 }
 

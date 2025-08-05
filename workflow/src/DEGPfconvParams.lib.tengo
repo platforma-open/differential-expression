@@ -1,56 +1,81 @@
 ll := import("@platforma-sdk/workflow-tengo:ll")
 
-getColumns := func(countsSpec) {
+getColumns := func(countsSpec, blockId, species) {
 	return {
-		"axes": [
+		axes: [
 			{
-				"column": "EnsemblId",
-				"spec": countsSpec.axesSpec[1]
+				column: "Contrast",
+				id: "contrast",
+				allowNA: false,
+				spec: {
+					name: "pl7.app/rna-seq/contrastGroup",
+					type: "String",
+					domain: {
+						"pl7.app/blockId": blockId
+					},
+					annotations: {
+						"pl7.app/label": "Contrast"
+					}
+				}
+			},
+			{
+				column: "EnsemblId",
+				spec: countsSpec.axesSpec[1]
 			}
 			],
-		"columns": [
+		columns: [
 			{
-				"column": "SYMBOL",
-				"id": "genesymbol",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/genesymbol",
-					"valueType": "String",
-					"annotations": {
+				column: "SYMBOL",
+				id: "genesymbol",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/genesymbol",
+					valueType: "String",
+					annotations: {
 						"pl7.app/label": "Gene symbol",
 						"pl7.app/table/orderPriority": "80"
 					}
 				}
 			},
 			{
-				"column": "log2FoldChange",
-				"id": "log2foldchange",
-				"allowNA": true,
-				"spec": {
-					"name": "pl7.app/rna-seq/log2foldchange",
-					"valueType": "Double",
-					"annotations": {
+				column: "log2FoldChange",
+				id: "log2foldchange",
+				allowNA: true,
+				spec: {
+					name: "pl7.app/rna-seq/DEG",
+					domain: {
+						"pl7.app/species": species
+					},
+					valueType: "Double",
+					annotations: {
 						"pl7.app/label": "Log2FC",
+						"pl7.app/table/hValue": "true",
+						// This allows us to select this Pcolumn to use it as filtering
+						// in this case to keep only genes appearing in this list
+						"pl7.app/isSubset": "true",
 						"pl7.app/table/orderPriority": "60",
 						"pl7.app/format": ".2f"
 					}
 				}
 			},
 			{
-				"column": "Regulation",
-				"id": "regulationDirection",
-				"spec": {
-					"name": "pl7.app/rna-seq/regulationDirection",
-					"valueType": "String",
-					"annotations": {
-						"pl7.app/label": "Regulation direction",
+				column: "Regulation",
+				id: "regulationDirection",
+				spec: {
+					name: "pl7.app/rna-seq/regulationDirection",
+					domain: {
+						"pl7.app/species": species
+					},
+					valueType: "String",
+					annotations: {
+						"pl7.app/label": "Regulation direction (Up\\Down\\NS)",
 						"pl7.app/table/orderPriority": "5"
 					}
 				}
 			}
 			],
-		"storageFormat": "Binary",
-		"partitionKeyLength": 0
+		storageFormat: "Binary",
+		partitionKeyLength: 1
 	}
 }
 
