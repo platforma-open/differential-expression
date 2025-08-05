@@ -1,6 +1,6 @@
 {
   "name": "@platforma-open/milaboratories.differential-expression.model",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Block model",
   "type": "module",
   "main": "dist/index.cjs",

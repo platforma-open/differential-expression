@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 3.0.0
+
+### Major Changes
+
+- 2975a01: Change Pcolumns organization and exports structure
+
 ## 2.4.0
 
 ### Minor Changes

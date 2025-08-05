@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 3.0.0
+
+### Major Changes
+
+- 2975a01: Change Pcolumns organization and exports structure
+
+### Patch Changes
+
+- Updated dependencies [2975a01]
+  - @platforma-open/milaboratories.run-deseq2-r.software@2.0.0
+
 ## 2.7.0
 
 ### Minor Changes

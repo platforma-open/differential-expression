@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 2.0.0
+
+### Major Changes
+
+- 2975a01: Change Pcolumns organization and exports structure
+
 ## 1.8.0
 
 ### Minor Changes
