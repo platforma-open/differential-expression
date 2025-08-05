@@ -207,7 +207,7 @@ contrast_label <- paste0(opt$numerator, " vs ", opt$denominator)
 res_df$Contrast <- contrast_label
 
 # Save topTable as csv
-write.csv(res_df, opt$output, row.names = FALSE)
+write.csv(res_df, opt$output, row.names = FALSE, na = "")
 cat("Full results saved to", opt$output, "\n")
 
 # Filter DEGs with adjusted p-value < 0.05 and absolute log2FoldChange > 0.6
@@ -219,5 +219,5 @@ deg_df <- deg_df[!is.na(deg_df$EnsemblId), ]
 
 # Save DEG as csv
 # deg_output <- sub("\\.csv$", "_DEG.csv", opt$output)
-write.csv(deg_df, "DEG.csv", row.names = FALSE)
+write.csv(deg_df, "DEG.csv", row.names = FALSE, na = "")
 cat("Filtered DEGs saved to", "DEG.csv", "\n")
