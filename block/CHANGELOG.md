@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.2.14
+
+### Patch Changes
+
+- 6f9b61f: os limitations
+
 ## 1.2.13
 
 ### Patch Changes
