@@ -6,7 +6,7 @@
   "scripts": {
     "build": "pl-pkg build",
     "test": "true",
-    "prepublishOnly": "pl-pkg publish"
+    "prepublishOnly": "pl-pkg prepublish"
   },
   "block-software": {
     "entrypoints": {
@@ -29,7 +29,7 @@
           "artifact": {
             "type": "python",
             "registry": "platforma-open",
-            "environment": "@platforma-open/milaboratories.runenv-python-3:3.12.6",
+            "environment": "@platforma-open/milaboratories.runenv-python-3:3.12.10",
             "dependencies": {
               "toolset": "pip",
               "requirements": "requirements.txt"
