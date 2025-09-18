@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 2.0.1
+
+### Patch Changes
+
+- f1ded2a: Full SDK update
+
 ## 2.0.0
 
 ### Major Changes
