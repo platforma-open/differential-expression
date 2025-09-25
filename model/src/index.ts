@@ -83,7 +83,7 @@ export const model = BlockModel.create()
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec)
       && (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix')
       && (spec.annotations?.['pl7.app/rna-seq/normalized'] === 'false' || spec.domain?.['pl7.app/rna-seq/normalized'] === 'false')
-    , { includeNativeLabel: true, addLabelAsSuffix: true }),
+    , { includeNativeLabel: false, addLabelAsSuffix: true }),
   )
 
   .output('metadataOptions', (ctx) =>
