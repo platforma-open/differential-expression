@@ -47,7 +47,7 @@ def main():
     # Set sample as index
     metadata.set_index(keys="Sample", inplace=True)
     # Get formula
-    formula = "~" + " + ".join(metadata.columns)
+    formula = "~" + " + ".join([f'Q("{c}")' for c in metadata.columns])
     # Check if the design matrix is full rank
     rankResult = is_full_rank(metadata, formula)
 
