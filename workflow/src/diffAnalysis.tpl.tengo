@@ -57,7 +57,8 @@ self.body(func(inputs) {
 		return {
 			degPF: degPF,
 			regDirPF: regDirPF,
-			topDegPF: topDegPF
+			topDegPF: topDegPF,
+			contrastExport: {}
 		}
 
 	} else {
