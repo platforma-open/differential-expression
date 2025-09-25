@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 3.1.0
+
+### Minor Changes
+
+- 757e7e2: Fixed bug in full rank matrix check
+
+### Patch Changes
+
+- Updated dependencies [757e7e2]
+  - @platforma-open/milaboratories.run-deseq2-r.software@2.1.0
+
 ## 3.0.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 2.1.0
+
+### Minor Changes
+
+- 757e7e2: Fixed bug in full rank matrix check
+
 ## 2.0.1
 
 ### Patch Changes
