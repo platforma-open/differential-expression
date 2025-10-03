@@ -17,6 +17,7 @@ pframes := import("@platforma-sdk/workflow-tengo:pframes")
 ll := import("@platforma-sdk/workflow-tengo:ll")
 render := import("@platforma-sdk/workflow-tengo:render")
 
+pfErrorLogsConv := import(":pf-de-errors-conv")
 diffAnalysisTpl := assets.importTemplate(":diffAnalysis")
 
 wf.prepare(func(args){
@@ -48,13 +49,17 @@ wf.body(func(args) {
 	log2FCThreshold := args.log2FCThreshold
 	pAdjThreshold := args.pAdjThreshold
 
+	// Set default conversion memory and CPU
+	defaultConvMem := "16GiB"
+	defaultConvCpu := 1
+
 	covariates := []
 	for _, v in args.metaRefs {
 		covariates = append(covariates, v)
 	}
 
 	// convert PColumns to csv
-	csvCovariates := xsv.exportFrame(covariates, "csv", {})
+	csvCovariates := xsv.exportFrame(covariates, "csv", { mem: defaultConvMem, cpu: defaultConvCpu })
 	
 	// Run script to check if metadata matrix will be full rank
 	continueCheck := exec.builder().
@@ -62,14 +67,20 @@ wf.body(func(args) {
 			arg("--output").arg(".").
 			arg("--metadata").arg("covariates.csv").
 			addFile("covariates.csv", csvCovariates).
+			arg("--contrast_factor").arg(contrastFactor.spec.annotations["pl7.app/label"]).
+			arg("--numerators").arg(string(args.numerators)).
+			arg("--denominator").arg(denominator).
+			arg("--error_output").arg("./errorLogs.csv").
 			saveFileContent("continueOrNot.txt").
-			printErrStreamToStdout().
-			saveStdoutContent().
+			saveFile("errorLogs.csv").
 			cache(24 * 60 * 60 * 1000).
 			run()
 
 	// This content is resolved in a sub-template only
 	continueOrNot := continueCheck.getFileContent("continueOrNot.txt")
+
+	errorLogsImportParams := pfErrorLogsConv.getColumns()
+	errorLogsPf := xsv.importFile(continueCheck.getFile("errorLogs.csv"), "csv", errorLogsImportParams, { mem: defaultConvMem, cpu: defaultConvCpu })
 
 	// Run differential analysis template
 	// Analysis will only run if matrix is full rank (continueOrNot.txt content == "continue")
@@ -83,6 +94,10 @@ wf.body(func(args) {
 			denominator: denominator,
 			log2FCThreshold: log2FCThreshold,
 			pAdjThreshold: pAdjThreshold,
+			defaultConvMem: defaultConvMem,
+			defaultConvCpu: defaultConvCpu
+		},
+		metaInputs: {
 			blockId: blockId
 		}
 	})
@@ -99,7 +114,8 @@ wf.body(func(args) {
 		contrastExport: contrastExport
 	}
 	outputs := {
-		topTablePf: topDegPF
+		topTablePf: topDegPF,
+		errorLogs: pframes.exportFrame(errorLogsPf)
 	}
 
 	return {

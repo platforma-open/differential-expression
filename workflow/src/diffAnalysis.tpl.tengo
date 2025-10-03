@@ -40,6 +40,11 @@ self.validateInputs({
 		"denominator,omitempty": "string",
 		"log2FCThreshold,omitempty": "number",
 		"pAdjThreshold,omitempty": "number",
+		"defaultConvMem,omitempty": "string",
+		"defaultConvCpu,omitempty": "number"
+	},
+	metaInputs: {
+		"__options__,closed": "",
 		"blockId,omitempty": "string"
 	}
 })
@@ -63,6 +68,9 @@ self.body(func(inputs) {
 
 	} else {
 		// Proceed only if metadata matrix is full rank
+
+		defaultConvMem := inputs.params.defaultConvMem
+		defaultConvCpu := inputs.params.defaultConvCpu
 		
 		countsSpec := inputs.rawCounts.spec
 		// @TODO: look for species only in axis when old Star version get obsolete
@@ -73,7 +81,7 @@ self.body(func(inputs) {
 		}
 
 		// convert PColumns to csv
-		csvCounts := xsv.exportFrame([inputs.rawCounts], "csv", {})
+		csvCounts := xsv.exportFrame([inputs.rawCounts], "csv", { mem: defaultConvMem, cpu: defaultConvCpu })
 
 		// Create PFrames for DEG, regulation direction and topTable
 		wf := pt.workflow().cpu(1).mem("2GiB")
@@ -121,11 +129,11 @@ self.body(func(inputs) {
 		topTablePf := xsv.importFile(ptablerResult.getFile("concatenated_output_topTable.csv"), "csv", topTableImportParams, 
 															// This changes output format from default to per column
 															// So key will be column name and values spec and data
-															{splitDataAndSpec: true})
+															{splitDataAndSpec: true, mem: defaultConvMem, cpu: defaultConvCpu})
 
 		// Add DEG export with specific import params. Adding new csv output to script with only DEGs and logFC
-		DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec, inputs.params.blockId, species)
-		DEGPf := xsv.importFile(ptablerResult.getFile("concatenated_output_Deg.csv"), "csv", DEGImportParams)
+		DEGImportParams := DEGPfconvParamsLib.getColumns(countsSpec, inputs.metaInputs.blockId, species)
+		DEGPf := xsv.importFile(ptablerResult.getFile("concatenated_output_Deg.csv"), "csv", DEGImportParams, { mem: defaultConvMem, cpu: defaultConvCpu })
 
 		trace := pSpec.makeTrace(countsSpec,
 			{type: "milaboratories.differential-expression", importance: 30, 

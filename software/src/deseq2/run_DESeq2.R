@@ -139,6 +139,9 @@ if (is.null(opt$count_matrix) || is.null(opt$metadata) || is.null(opt$contrast_f
 count_long <- read.csv(opt$count_matrix, check.names = FALSE)
 metadata <- read.csv(opt$metadata, row.names = 1, check.names = FALSE)
 
+# Filter out samples for which we don't have metadata
+count_long <- count_long[count_long[, "Sample"] %in% rownames(metadata), ]
+
 # Validate contrast factor
 if (!opt$contrast_factor %in% colnames(metadata)) {
   stop("Contrast factor column not found in metadata")

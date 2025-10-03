@@ -3,6 +3,7 @@ import pandas as pd
 from patsy import dmatrix
 import argparse
 import os
+import json
 
 def is_full_rank(design_df, formula):
     """
@@ -39,23 +40,52 @@ def main():
     parser = argparse.ArgumentParser(description='Previous data checks before starting differential analysis.')
     parser.add_argument('--metadata', type=str, required=True, help='Path to metadata CSV file')
     parser.add_argument('--output', type=str, required=True, help='Output directory')
-
+    parser.add_argument('--contrast_factor', type=str, required=True, help='Contrast factor')
+    parser.add_argument('--numerators', required=True, help='Numerators')
+    parser.add_argument('--denominator', type=str, required=True, help='Denominator')
+    parser.add_argument('--error_output', type=str, required=True, help='Error output directory')
     args = parser.parse_args()
+
+    # Convert numerators json to list
+    numerators = json.loads(args.numerators)
 
     # Load metadata
     metadata = pd.read_csv(args.metadata)
     # Set sample as index
     metadata.set_index(keys="Sample", inplace=True)
-    # Get formula
-    formula = "~" + " + ".join([f'Q("{c}")' for c in metadata.columns])
-    # Check if the design matrix is full rank
-    rankResult = is_full_rank(metadata, formula)
-
-    # Write result to file
-    if rankResult:
-        export_result("continue", args.output)
-    else:
+    # Create error logs table
+    df_error = pd.DataFrame(columns=["Error", "value"])
+    errorLogs = []
+    # Make sure we have enough replicates for all the comparisons that are going be done
+    for numerator in numerators:
+        # Make sure at least we have a sample with enough replicates
+        if int(metadata[args.contrast_factor].value_counts()[[numerator, args.denominator]].max()) == 1:
+            errorLogs.append(f"Warning: This block requires replicates to perform the analysis. It is not feasible to compare {numerator} vs {args.denominator} because there is only one sample for each condition.")
+            
+    if len(errorLogs) > 0:
         export_result("stop", args.output)
+    else:
+         # Rename columns to numbers toa void issues related to weird characters
+        metadata.columns = [f"c{i}" for i in range(len(metadata.columns))]
+        # Get formula
+        formula = "~" + " + ".join(metadata.columns)
+        # Check if the design matrix is full rank
+        rankResult = is_full_rank(metadata, formula)
+
+        # Write result to file
+        if rankResult:
+            export_result("continue", args.output)
+        else:
+            errorLogs.append("Warning: The model matrix is not full rank, so the model cannot be fit as specified. \
+              One or more variables or interaction terms in the design formula are linear\
+              combinations of the others and must be removed. Please, check the metadata \
+              columns included in the Design section.")
+            export_result("stop", args.output)
+
+    # output error logs table
+    df_error['Error'] = range(len(errorLogs))
+    df_error['value'] = errorLogs
+    df_error.to_csv(args.error_output, index=False)
 
 if __name__ == "__main__":
     main()
