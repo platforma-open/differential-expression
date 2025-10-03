@@ -48,13 +48,17 @@ wf.body(func(args) {
 	log2FCThreshold := args.log2FCThreshold
 	pAdjThreshold := args.pAdjThreshold
 
+	// Set default conversion memory and CPU
+	defaultConvMem := "16GiB"
+	defaultConvCpu := 1
+
 	covariates := []
 	for _, v in args.metaRefs {
 		covariates = append(covariates, v)
 	}
 
 	// convert PColumns to csv
-	csvCovariates := xsv.exportFrame(covariates, "csv", {})
+	csvCovariates := xsv.exportFrame(covariates, "csv", { mem: defaultConvMem, cpu: defaultConvCpu })
 	
 	// Run script to check if metadata matrix will be full rank
 	continueCheck := exec.builder().
@@ -83,7 +87,9 @@ wf.body(func(args) {
 			denominator: denominator,
 			log2FCThreshold: log2FCThreshold,
 			pAdjThreshold: pAdjThreshold,
-			blockId: blockId
+			blockId: blockId,
+			defaultConvMem: defaultConvMem,
+			defaultConvCpu: defaultConvCpu
 		}
 	})
 	
