@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PFrameImpl } from '@platforma-sdk/model';
 import {
   PlAccordionSection,
   PlAgDataTableV2,
@@ -13,6 +14,7 @@ import {
   PlRow,
   PlSlideModal,
   usePlDataTableSettingsV2,
+  useWatchFetch,
 } from '@platforma-sdk/ui-vue';
 import { computed, ref } from 'vue';
 import { useApp } from '../app';
@@ -57,6 +59,29 @@ const denominatorOptions = computed(() => {
     !app.model.args.numerators.includes(op.value));
 });
 
+// Get error logs
+const errorLogs = useWatchFetch(() => app.model.outputs.errorLogs, async (pframeHandle) => {
+  if (!pframeHandle) {
+    return undefined;
+  }
+  // Get ID of first pcolumn in the pframe (the only one we will access)
+  const pFrame = new PFrameImpl(pframeHandle);
+  const list = await pFrame.listColumns();
+  const id = list?.[0].columnId;
+  if (!id) {
+    return undefined;
+  }
+  // Get unique values of that first pcolumn
+  const response = await pFrame.getUniqueValues({ columnId: id, filters: [], limit: 1000000 });
+  if (!response) {
+    return undefined;
+  }
+  if (response.values.data.length === 0) {
+    return undefined;
+  }
+  return response.values.data.join('\n');
+});
+
 </script>
 
 <template>
@@ -71,6 +96,9 @@ const denominatorOptions = computed(() => {
         </template>
       </PlBtnGhost>
     </template>
+    <PlAlert v-if="errorLogs.value !== undefined" type="error" icon>
+      {{ errorLogs.value }}
+    </PlAlert>
     <ErrorBoundary>
       <PlAgDataTableV2
         v-model="app.model.ui.tableState"
@@ -121,12 +149,6 @@ const denominatorOptions = computed(() => {
           {{ "Warning: The selected Log2(FC) threshold may be too low for most use cases" }}
         </PlAlert>
       </PlAccordionSection>
-      <PlAlert v-if="app.model.outputs.emptyCheck == 'notFullRank'" type="error">
-        {{ "Error: The model matrix is not full rank, so the model cannot be fit as specified. \
-              One or more variables or interaction terms in the design formula are linear\
-              combinations of the others and must be removed. Please, check the metadata \
-              columns included in the Design section." }}
-      </PlAlert>
     </PlSlideModal>
   </PlBlockPage>
 </template>

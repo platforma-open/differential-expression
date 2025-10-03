@@ -17,6 +17,7 @@ pframes := import("@platforma-sdk/workflow-tengo:pframes")
 ll := import("@platforma-sdk/workflow-tengo:ll")
 render := import("@platforma-sdk/workflow-tengo:render")
 
+pfErrorLogsConv := import(":pf-de-errors-conv")
 diffAnalysisTpl := assets.importTemplate(":diffAnalysis")
 
 wf.prepare(func(args){
@@ -66,14 +67,18 @@ wf.body(func(args) {
 			arg("--output").arg(".").
 			arg("--metadata").arg("covariates.csv").
 			addFile("covariates.csv", csvCovariates).
+			arg("--contrast_factor").arg(contrastFactor.spec.annotations["pl7.app/label"]).
+			arg("--error_output").arg("./errorLogs.csv").
 			saveFileContent("continueOrNot.txt").
-			printErrStreamToStdout().
-			saveStdoutContent().
+			saveFile("errorLogs.csv").
 			cache(24 * 60 * 60 * 1000).
 			run()
 
 	// This content is resolved in a sub-template only
 	continueOrNot := continueCheck.getFileContent("continueOrNot.txt")
+
+	errorLogsImportParams := pfErrorLogsConv.getColumns()
+	errorLogsPf := xsv.importFile(continueCheck.getFile("errorLogs.csv"), "csv", errorLogsImportParams, { mem: defaultConvMem, cpu: defaultConvCpu })
 
 	// Run differential analysis template
 	// Analysis will only run if matrix is full rank (continueOrNot.txt content == "continue")
@@ -87,9 +92,11 @@ wf.body(func(args) {
 			denominator: denominator,
 			log2FCThreshold: log2FCThreshold,
 			pAdjThreshold: pAdjThreshold,
-			blockId: blockId,
 			defaultConvMem: defaultConvMem,
 			defaultConvCpu: defaultConvCpu
+		},
+		metaInputs: {
+			blockId: blockId
 		}
 	})
 	
@@ -105,7 +112,8 @@ wf.body(func(args) {
 		contrastExport: contrastExport
 	}
 	outputs := {
-		topTablePf: topDegPF
+		topTablePf: topDegPF,
+		errorLogs: pframes.exportFrame(errorLogsPf)
 	}
 
 	return {
