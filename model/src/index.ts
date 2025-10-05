@@ -107,6 +107,15 @@ export const model = BlockModel.create()
     return [...new Set(Object.values(values))];
   })
 
+  .output('errorLogs', (ctx) => {
+    const pCols = ctx.outputs?.resolve('errorLogs')?.getPColumns();
+    if (pCols === undefined) {
+      return undefined;
+    }
+
+    return ctx.createPFrame(pCols);
+  })
+
   // Returns a map of results
   .output('pt', (ctx) => {
     const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
@@ -144,18 +153,6 @@ export const model = BlockModel.create()
           spec: c.spec,
         } satisfies PColumnIdAndSpec),
     );
-  })
-
-  .output('emptyCheck', (ctx) => {
-    const pCols = ctx.outputs?.resolve('topTablePf')?.getPColumns();
-    if (pCols === undefined) {
-      return undefined;
-    }
-    // topTablePf will only be empty in cases where we did not run DEG due to
-    // non full rank matrix
-    if (pCols.length === 0) {
-      return 'notFullRank';
-    }
   })
 
   .output('topTablePf', (ctx): PFrameHandle | undefined => {
