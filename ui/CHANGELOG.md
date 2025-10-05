@@ -1,5 +1,16 @@
 # @platforma-open/milaboratories.differential-expression.ui
 
+## 2.1.0
+
+### Minor Changes
+
+- e89d43a: Refactor error logs usage
+
+### Patch Changes
+
+- Updated dependencies [e89d43a]
+  - @platforma-open/milaboratories.differential-expression.model@3.2.0
+
 ## 2.0.2
 
 ### Patch Changes

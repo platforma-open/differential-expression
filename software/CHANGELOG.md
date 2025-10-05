@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 2.2.0
+
+### Minor Changes
+
+- e89d43a: Refactor error logs usage
+
 ## 2.1.0
 
 ### Minor Changes

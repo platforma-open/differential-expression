@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 3.2.0
+
+### Minor Changes
+
+- e89d43a: Refactor error logs usage
+
 ## 3.1.0
 
 ### Minor Changes
