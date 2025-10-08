@@ -1,5 +1,17 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 3.3.0
+
+### Minor Changes
+
+- 67e6b27: Fix issues with numerical conditions and correct wrong block argument path
+
+### Patch Changes
+
+- Updated dependencies [4985d5e]
+- Updated dependencies [67e6b27]
+  - @platforma-open/milaboratories.run-deseq2-r.software@2.3.0
+
 ## 3.2.0
 
 ### Minor Changes

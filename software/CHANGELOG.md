@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 2.3.0
+
+### Minor Changes
+
+- 4985d5e: deal with numeric numerator and denominators
+- 67e6b27: Fix issues with numerical conditions and correct wrong block argument path
+
 ## 2.2.0
 
 ### Minor Changes
