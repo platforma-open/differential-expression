@@ -1,5 +1,14 @@
 # @platforma-open/milaboratories.run-deseq2-r.software
 
+## 2.3.1
+
+### Patch Changes
+
+- ffa440c: technical release
+- 3b8e11b: technical release
+- 6b91a76: technical release
+- adf096d: technical release
+
 ## 2.3.0
 
 ### Minor Changes
