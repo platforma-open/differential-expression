@@ -22,6 +22,16 @@
             "Rscript",
             "{pkg}/run_DESeq2.R"
           ]
+        },
+        "docker": {
+          "artifact": {
+            "type": "docker",
+            "context": "./src/deseq2",
+            "dockerfile": "Dockerfile"
+          },
+          "cmd": [
+            "/app/run_DESeq2.R"
+          ]
         }
       },
       "prev-checks": {
