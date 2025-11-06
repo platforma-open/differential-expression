@@ -124,7 +124,7 @@ self.body(func(inputs) {
 		concatenatedTopTable.save("concatenated_output_topTable.csv")
 		ptablerResult := wf.run()
 
-		topTableImportParams := topTablePfconvParamsLib.getColumns(countsSpec,
+		topTableImportParams := topTablePfconvParamsLib.getColumns(copy(countsSpec),
 																inputs.params.log2FCThreshold,
 																inputs.params.pAdjThreshold)
 		topTablePf := xsv.importFile(ptablerResult.getFile("concatenated_output_topTable.csv"), "csv", topTableImportParams, 

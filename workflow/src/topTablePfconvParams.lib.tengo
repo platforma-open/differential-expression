@@ -7,6 +7,9 @@ getColumns := func(countsSpec, log2FCThreshold, pAdjFCThreshold) {
 	thresholds = thresholds + "{\"columnId\": {\"name\": \"pl7.app/rna-seq/log2foldchange\",\"valueType\": \"Double\"},\"label\": \"Max LogFC (right vertical)\",\"value\": " + string(log2FCThreshold) + "},"
 	thresholds = thresholds + "{\"columnId\": {\"name\": \"pl7.app/rna-seq/minlog10padj\",\"valueType\": \"Double\"},\"label\": \"Y bound\",\"value\": " + string(-math.log10(pAdjFCThreshold)) + "}]"
 	
+	// remove high cardinality annotation (will only affect outputs and block plots)
+	countsSpec.axesSpec[1].annotations["pl7.app/graph/axis/highCardinality"] = "false"
+	
 	return {
 		axes: [
 			{
