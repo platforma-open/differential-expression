@@ -1,5 +1,13 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 3.3.2
+
+### Patch Changes
+
+- de37c41: Support parquet format (update SDK)
+- Updated dependencies [de37c41]
+  - @platforma-open/milaboratories.run-deseq2-r.software@2.3.2
+
 ## 3.3.1
 
 ### Patch Changes
