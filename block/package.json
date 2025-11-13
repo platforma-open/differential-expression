@@ -27,9 +27,9 @@
       "title": "Differential Expression",
       "logo": "file:../logos/block-logo.png",
       "url": "https://github.com/platforma-open/differential-expression",
-      "docs": "https://github.com/platforma-open/differential-expression/docs",
+      "docs": "https://docs.platforma.bio/guides/bulk-rna-seq-analysis/bulk-rna-diff-expression/",
       "support": "mailto:support@milaboratories.com",
-      "description": "Identify differentially expressed genes between conditions.",
+      "description": "Identifies differentially expressed genes between conditions using DESeq2 with configurable fold change and p-value thresholds.",
       "longDescription": "file:../docs/description.md",
       "changelog": "file:./CHANGELOG.md",
       "tags": [
