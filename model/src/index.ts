@@ -82,6 +82,7 @@ export const model = BlockModel.create()
     // I've added these "||" for backward compatibility (As I see, the shape of PColum was changed)
     ctx.resultPool.getOptions((spec) => isPColumnSpec(spec)
       && (spec.name === 'pl7.app/rna-seq/countMatrix' || spec.name === 'countMatrix')
+      && spec.axesSpec.length === 2 // only bulk data (single cell has also cell axis)
       && (spec.annotations?.['pl7.app/rna-seq/normalized'] === 'false' || spec.domain?.['pl7.app/rna-seq/normalized'] === 'false')
     , { includeNativeLabel: false, addLabelAsSuffix: true }),
   )
