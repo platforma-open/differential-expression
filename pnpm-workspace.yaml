@@ -7,11 +7,11 @@ packages:
   - test
 
 catalog:
-  '@platforma-sdk/block-tools': ^2.6.22
+  '@platforma-sdk/block-tools': ^2.6.25
   '@platforma-sdk/model': ^1.45.30
   '@platforma-sdk/ui-vue': ^1.45.30
   '@platforma-sdk/tengo-builder': ^2.3.9
-  '@platforma-sdk/workflow-tengo': ^5.6.1
+  '@platforma-sdk/workflow-tengo': ^5.6.3
 
   '@platforma-sdk/test': ^1.45.30
   '@milaboratories/graph-maker': ^1.1.179
@@ -21,7 +21,7 @@ catalog:
   '@platforma-sdk/eslint-config': 1.1.0
   '@platforma-sdk/blocks-deps-updater': ^2.0.0
 
-  "@platforma-open/milaboratories.runenv-python-3": ^1.4.10
+  "@platforma-open/milaboratories.runenv-python-3": ^1.7.5
 
   'vue': ^3.5.13
   'vue-tsc': ^2.2.8
