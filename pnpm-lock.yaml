@@ -22,8 +22,8 @@ catalogs:
       specifier: ^1.0.7
       version: 1.0.7
     '@platforma-sdk/block-tools':
-      specifier: ^2.6.22
-      version: 2.6.22
+      specifier: ^2.6.25
+      version: 2.6.25
     '@platforma-sdk/blocks-deps-updater':
       specifier: ^2.0.0
       version: 2.0.0
@@ -46,8 +46,8 @@ catalogs:
       specifier: ^1.45.30
       version: 1.45.30
     '@platforma-sdk/workflow-tengo':
-      specifier: ^5.6.1
-      version: 5.6.1
+      specifier: ^5.6.3
+      version: 5.6.3
     '@vitejs/plugin-vue':
       specifier: ^5.2.4
       version: 5.2.4
@@ -104,7 +104,7 @@ importers:
     devDependencies:
       '@platforma-sdk/block-tools':
         specifier: 'catalog:'
-        version: 2.6.22
+        version: 2.6.25
 
   model:
     dependencies:
@@ -117,7 +117,7 @@ importers:
     devDependencies:
       '@platforma-sdk/block-tools':
         specifier: 'catalog:'
-        version: 2.6.22
+        version: 2.6.25
       '@platforma-sdk/eslint-config':
         specifier: 'catalog:'
         version: 1.1.0(@eslint/js@9.20.0)(@stylistic/eslint-plugin@2.13.0(eslint@9.20.1)(typescript@5.5.4))(eslint-plugin-n@17.15.1(eslint@9.20.1))(eslint-plugin-vue@9.32.0(eslint@9.20.1))(eslint@9.20.1)(globals@15.15.0)(typescript-eslint@8.24.1(eslint@9.20.1)(typescript@5.5.4))(typescript@5.5.4)
@@ -200,7 +200,7 @@ importers:
         version: link:../software
       '@platforma-sdk/workflow-tengo':
         specifier: 'catalog:'
-        version: 5.6.1
+        version: 5.6.3
     devDependencies:
       '@milaboratories/software-pframes-conv':
         specifier: 'catalog:'
@@ -1150,8 +1150,8 @@ packages:
   '@milaboratories/pl-model-common@1.21.6':
     resolution: {integrity: sha512-PU+LYdpz3bxmdVrZyjGDzxRNBgMn4FJC/D+vxZjNCp+LjxCgQkQ2K9tBy0xlkOVG6pCfAY8QhavZJciZJZZgrQ==}
 
-  '@milaboratories/pl-model-common@1.21.7':
-    resolution: {integrity: sha512-VMekzK2oGPN3e64w10zSgXzxYkMlKyoSSkXWf5AvaqaZvGnQariOFEl1TRJMzNaVKJn82FFrvyxgqJSEDsWsJQ==}
+  '@milaboratories/pl-model-common@1.21.9':
+    resolution: {integrity: sha512-0n8oq0e4ZqbMJIzVnP478BGT86vB4gNSRoDic1ai7bNwMiO+jtNSOwGMwR0mFeRLqXidSLcfDxiEMXmak34f7g==}
 
   '@milaboratories/pl-model-middle-layer@1.8.35':
     resolution: {integrity: sha512-fNYE4nWcmDn5CAK7IOwSR9htq10F7mPpfIunEcOHDXS1pSrPxc+QGiw6fJRWcV4KE8Qt55xfmmrl0zO/r2aCvg==}
@@ -1159,8 +1159,8 @@ packages:
   '@milaboratories/pl-model-middle-layer@1.8.40':
     resolution: {integrity: sha512-xwAhayvUYR1TmmIKtj/EOIc6TttvN18kXZcU0Ai/IfyjVqNw7GVPKywBLgD8Gt1yhg4Y8BTxilxpXTibRT3PCw==}
 
-  '@milaboratories/pl-model-middle-layer@1.8.41':
-    resolution: {integrity: sha512-Ky8OAuD1OdUiYuoe1zUrEVdrvPMRODt01mCufE+gBZYIA7MbBtkHAAjh9RUdInp49FzhvF11AKdOUqZU+Wtbcg==}
+  '@milaboratories/pl-model-middle-layer@1.8.44':
+    resolution: {integrity: sha512-aLCXZAbrDMRKyZNZMEE3/TV5X8ljhyhZ0yyOb/Q0rMs2wnyUUghN48y8kwOlrsnyqC4C7WlaG54jr/h4MN6ryA==}
 
   '@milaboratories/pl-tree@1.8.14':
     resolution: {integrity: sha512-Xs8bXyCoKiaaiXUNSgjm6wj2ZiOXRjFNb2kMTNtA492qIJSTB3/SxPv56NSARoKiw0yohvmLccb+8GvzIHxQOg==}
@@ -1246,17 +1246,29 @@ packages:
   '@platforma-open/milaboratories.software-ptabler@1.13.4':
     resolution: {integrity: sha512-//fyGaFZY4zsrIhmJ6TJuXWlur2mAsGn8DW+vNzvvkvXP2IXlpw/3uDBRZHkUjh/s+Sjq4F3Mnfp9pFSUlLPoQ==}
 
+  '@platforma-open/milaboratories.software-ptabler@1.13.5':
+    resolution: {integrity: sha512-G45vIsEumTTKg7TquqS6F8aB1ExYMkqhGt64a+8doSdE+U7RnKIU3jl4e++WRrAPlyzki0DuGipQ7umeTlktjA==}
+
   '@platforma-open/milaboratories.software-ptexter@1.2.0':
     resolution: {integrity: sha512-7dKhQyecDcxjRNOS9XRgLemZpOuJ3dKMryrBbbkYR6VLKj566tJkbKiC7p1wAWEtHKHEZUhCQYgTZfEtwHCkDA==}
 
   '@platforma-open/milaboratories.software-small-binaries.guided-command@1.1.1':
     resolution: {integrity: sha512-UPhSOP43GAL+gQVPlE/2ymjuOiYVojhmDad1moS4SI+t6IDF9QgnAj5I7V8eP2P2x0oSY5apgjg4EeUiGBrIkw==}
 
+  '@platforma-open/milaboratories.software-small-binaries.guided-command@1.1.2':
+    resolution: {integrity: sha512-Uru7JuysesN6ezb9/8V+DT7BqvO2NfoGA6eMeYOOfYAQWspVSIv3xLw/d1CKFgrcsVlo1SFhwNwyaPVJqgZkqw==}
+
   '@platforma-open/milaboratories.software-small-binaries.hello-world-py@1.0.6':
     resolution: {integrity: sha512-eYRjtkKkRFidVvsp3QEGpAOAaba15W0T7VrvM8X0QgNsHtSn1OYp7+THMqZf06zWbvJ1IVfjturQXUtpuv6UjQ==}
 
+  '@platforma-open/milaboratories.software-small-binaries.hello-world-py@1.0.7':
+    resolution: {integrity: sha512-3bluMQ+MM8Tt9ZF56ca+25RADRr2qGrKs3KUGCbKgYKh30DL7+hDsPdqebYx05Z9O9bwPPPzg+FG1zx7p+75wQ==}
+
   '@platforma-open/milaboratories.software-small-binaries.hello-world@1.1.1':
     resolution: {integrity: sha512-XPf/+HeXgPMKJU/BdxxTMgV11LHyktm72Y2GWjqT2wa3ZYUeiwLuCvRHfgKIXtSC4qJnjDlgmdqQIzldnlWG6g==}
+
+  '@platforma-open/milaboratories.software-small-binaries.hello-world@1.1.2':
+    resolution: {integrity: sha512-5BHY0/biXtcxbuIE7v0cZi5g8KtZWPDwhFus8gNF8ZPShKOhmYpfuCcmgYKlBn+PJ4ID0xvxbdFbDTpfcIeSIA==}
 
   '@platforma-open/milaboratories.software-small-binaries.java-stub@1.0.4':
     resolution: {integrity: sha512-nr0H+TZDKUR7dpxY5Q5Gh1FOT9Jx4Sr0Uk6jO2I18jJaOPchEPY+gOxemPJO30SNkkkbQiIRBBJYF54tMFiesA==}
@@ -1264,11 +1276,17 @@ packages:
   '@platforma-open/milaboratories.software-small-binaries.mnz-client@1.6.1':
     resolution: {integrity: sha512-4dJnBVFqxFgFznepUQAMJceWcJrGE2Ms5LH+2BMjG/qOFJpEAiWJlrjiobiapqf2jnJgxM1AcDVR9M67uGrySA==}
 
+  '@platforma-open/milaboratories.software-small-binaries.mnz-client@1.6.2':
+    resolution: {integrity: sha512-qRKXBUpZJUb02yi3qTPvf0vTEPg3zLFUuD/pKMcSj3FJTiObnWn/HOlmW68m2mPEfEpvAOPRxoIR1eiRIk72NQ==}
+
   '@platforma-open/milaboratories.software-small-binaries.python-stub@1.0.4':
     resolution: {integrity: sha512-5HjuYrvxvYNLo2M7EkhoQFlwPk6VxV2aoRY8PDU9cf0qyDIrdY6g/q4zRslZ6wWFhw/hTGsZ8CLXPGvdqiuCHw==}
 
   '@platforma-open/milaboratories.software-small-binaries.read-with-sleep@1.1.1':
     resolution: {integrity: sha512-6GFG8o+YzXngZNk9jyuBFgRCFybHZ67QHgpgtnwNXKWjaC627jEY9VxlmCtSQ7OL5V029wEern6QuNRoa0vGzQ==}
+
+  '@platforma-open/milaboratories.software-small-binaries.read-with-sleep@1.1.2':
+    resolution: {integrity: sha512-ZqTdqeMxCwHiVTjWLpaZTOkEl7TllHzWOOmUa2tOYhM+hjWqccpjhiC+lojE49SfO4wqDgiQINshMWLUYDda0w==}
 
   '@platforma-open/milaboratories.software-small-binaries.runenv-java-stub@1.0.6':
     resolution: {integrity: sha512-KWbIs9QLBbhiy+IUwnlGdPXSr7Uhx51zePwkHclFwWAA8Pdj2eOXAN5Q+qFAb3pHWb84mBUlWNCu0BMxANKIJw==}
@@ -1279,21 +1297,30 @@ packages:
   '@platforma-open/milaboratories.software-small-binaries.sleep@1.1.1':
     resolution: {integrity: sha512-SuXYzYtYcd+PJtJwCtC/6m6qVT17RrIw5jkUfwfzTaPl8o7o7dEMLEQzkhCFc6rmUYqcyfyz4skxMNtSOl+QTA==}
 
+  '@platforma-open/milaboratories.software-small-binaries.sleep@1.1.2':
+    resolution: {integrity: sha512-w9UD/dxlClcnrWijBDtRdX2Ww/mlijebcaOiE0bXNgwVXF8gtLR3lclS7bn1tUOdbh7fs5lr0thr7aTY7YMUzA==}
+
   '@platforma-open/milaboratories.software-small-binaries.small-asset@1.1.4':
     resolution: {integrity: sha512-TH5wqnEdfAtzomwpUkJR9fNR548U9K5Wl8KrhkuGqTQh5yM66C5nCnvwUA/i+09WKdwCwDzSvs5reogV6Hqw5Q==}
 
   '@platforma-open/milaboratories.software-small-binaries.table-converter@1.3.1':
     resolution: {integrity: sha512-CFcYb/hbzQ1UiP4sMXnRUST+feUkQoRrc8/vXSaOfUZY0tKdEEJCas+huSZ04l2oUhMFAU2PSO8H91BSspfvQQ==}
 
+  '@platforma-open/milaboratories.software-small-binaries.table-converter@1.3.2':
+    resolution: {integrity: sha512-A6cTLbRtyooPSD6PLYdv2fak/IucuPc0H/sQZvAQ55SBRFFlbOoxKHw73apigCRJ5U6+kSQ+3TQa9lksU42t1A==}
+
   '@platforma-open/milaboratories.software-small-binaries@1.15.23':
     resolution: {integrity: sha512-I1G2qEWALvNAJy9kOTXjryu0GvK+hvUCVPckNhGkFO/cGIsST7R7s9pm0exhG92PyuLFa5lwJFx/fgobqWUWNw==}
+
+  '@platforma-open/milaboratories.software-small-binaries@1.15.25':
+    resolution: {integrity: sha512-4y+YduAMh2C0jfjZHm2MSNShr4X/Qwzk67TUIHeV0qW3oDoT2NxDdd1IhpCN0Iw1Egxm+MM7X8eV9mS1Bq0PUg==}
 
   '@platforma-sdk/block-tools@2.6.21':
     resolution: {integrity: sha512-X5B094uOZF8QiSNQg7FhjhWtwpAHTmYBsiwwOVhfo5e0yd0x6DBns82Jp0wWwXvocv7VQnS4mYWoXCy6NVzIvw==}
     hasBin: true
 
-  '@platforma-sdk/block-tools@2.6.22':
-    resolution: {integrity: sha512-/GR3mTsfZcTVX1lX2uPiOBe06FN78xmcRiViR164FCI2yt8pFAz88wpI9LyGiRJh/fM8dE2jHXn0V76PniAFMA==}
+  '@platforma-sdk/block-tools@2.6.25':
+    resolution: {integrity: sha512-uU6RrdYrEbjoeuWx97B592NF2a6l43UPxIQisvRLaqk2dCYAx5RCimDjpJC0RfY7ReYnmiQi9ehCgFT2P/smiA==}
     hasBin: true
 
   '@platforma-sdk/blocks-deps-updater@2.0.0':
@@ -1339,8 +1366,8 @@ packages:
   '@platforma-sdk/workflow-tengo@5.5.17':
     resolution: {integrity: sha512-+fvJ6Z9Xkfe199jWm57+qHJGjCC8QuP6sVoF/8uyt5neVlrANsLT5jfSpgVj1yAIulgE9IxtqGrCHrvTbeocfg==}
 
-  '@platforma-sdk/workflow-tengo@5.6.1':
-    resolution: {integrity: sha512-p+4n4+RclR3lFRqurR0dhc5cHMFFtGLdutB8FFPU5pzpDXX+uKyG02Txe4e29WeDRwaIUnImNJQCULadDqERzA==}
+  '@platforma-sdk/workflow-tengo@5.6.3':
+    resolution: {integrity: sha512-yRRCk6rivpBncX6kXg/6qVWCqQos9aU+30uXN4Ndt5UwEHc5rtNowvZzb5R8wMbIOlHONbp1azJkw1k9tvKbVg==}
 
   '@protobuf-ts/grpc-transport@2.11.1':
     resolution: {integrity: sha512-l6wrcFffY+tuNnuyrNCkRM8hDIsAZVLA8Mn7PKdVyYxITosYh60qW663p9kL6TWXYuDCL3oxH8ih3vLKTDyhtg==}
@@ -5604,13 +5631,13 @@ snapshots:
     dependencies:
       '@aws-crypto/util': 5.2.0
       '@aws-sdk/types': 3.840.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-crypto/crc32c@5.2.0':
     dependencies:
       '@aws-crypto/util': 5.2.0
       '@aws-sdk/types': 3.840.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-crypto/sha1-browser@5.2.0':
     dependencies:
@@ -5619,7 +5646,7 @@ snapshots:
       '@aws-sdk/types': 3.840.0
       '@aws-sdk/util-locate-window': 3.568.0
       '@smithy/util-utf8': 2.3.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-crypto/sha256-browser@5.2.0':
     dependencies:
@@ -5629,23 +5656,23 @@ snapshots:
       '@aws-sdk/types': 3.840.0
       '@aws-sdk/util-locate-window': 3.568.0
       '@smithy/util-utf8': 2.3.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-crypto/sha256-js@5.2.0':
     dependencies:
       '@aws-crypto/util': 5.2.0
       '@aws-sdk/types': 3.840.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-crypto/supports-web-crypto@5.2.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-crypto/util@5.2.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/util-utf8': 2.3.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/client-s3@3.859.0':
     dependencies:
@@ -5705,7 +5732,7 @@ snapshots:
       '@smithy/util-utf8': 4.1.0
       '@smithy/util-waiter': 4.0.6
       '@types/uuid': 9.0.8
-      tslib: 2.6.3
+      tslib: 2.7.0
       uuid: 9.0.1
     transitivePeerDependencies:
       - aws-crt
@@ -5749,7 +5776,7 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-retry': 4.1.1
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
@@ -5769,7 +5796,7 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-utf8': 4.1.0
       fast-xml-parser: 5.2.5
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/credential-provider-env@3.858.0':
     dependencies:
@@ -5777,7 +5804,7 @@ snapshots:
       '@aws-sdk/types': 3.840.0
       '@smithy/property-provider': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/credential-provider-http@3.858.0':
     dependencies:
@@ -5790,7 +5817,7 @@ snapshots:
       '@smithy/smithy-client': 4.6.1
       '@smithy/types': 4.5.0
       '@smithy/util-stream': 4.3.1
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/credential-provider-ini@3.859.0':
     dependencies:
@@ -5806,7 +5833,7 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
@@ -5823,7 +5850,7 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
@@ -5834,7 +5861,7 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/credential-provider-sso@3.859.0':
     dependencies:
@@ -5845,7 +5872,7 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
@@ -5856,7 +5883,7 @@ snapshots:
       '@aws-sdk/types': 3.840.0
       '@smithy/property-provider': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
@@ -5879,14 +5906,14 @@ snapshots:
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
       '@smithy/util-config-provider': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-expect-continue@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-flexible-checksums@3.858.0':
     dependencies:
@@ -5902,33 +5929,33 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-stream': 4.3.1
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-host-header@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-location-constraint@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-logger@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-recursion-detection@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-sdk-s3@3.858.0':
     dependencies:
@@ -5945,13 +5972,13 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-stream': 4.3.1
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-ssec@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/middleware-user-agent@3.858.0':
     dependencies:
@@ -5961,7 +5988,7 @@ snapshots:
       '@smithy/core': 3.11.0
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/nested-clients@3.858.0':
     dependencies:
@@ -6002,7 +6029,7 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-retry': 4.1.1
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
@@ -6013,7 +6040,7 @@ snapshots:
       '@smithy/types': 4.5.0
       '@smithy/util-config-provider': 4.1.0
       '@smithy/util-middleware': 4.1.1
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/signature-v4-multi-region@3.858.0':
     dependencies:
@@ -6022,7 +6049,7 @@ snapshots:
       '@smithy/protocol-http': 5.2.1
       '@smithy/signature-v4': 5.1.2
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/token-providers@3.859.0':
     dependencies:
@@ -6032,18 +6059,18 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - aws-crt
 
   '@aws-sdk/types@3.840.0':
     dependencies:
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/util-arn-parser@3.804.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/util-endpoints@3.848.0':
     dependencies:
@@ -6051,18 +6078,18 @@ snapshots:
       '@smithy/types': 4.5.0
       '@smithy/url-parser': 4.1.1
       '@smithy/util-endpoints': 3.0.6
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/util-locate-window@3.568.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/util-user-agent-browser@3.840.0':
     dependencies:
       '@aws-sdk/types': 3.840.0
       '@smithy/types': 4.5.0
       bowser: 2.11.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/util-user-agent-node@3.858.0':
     dependencies:
@@ -6070,12 +6097,12 @@ snapshots:
       '@aws-sdk/types': 3.840.0
       '@smithy/node-config-provider': 4.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@aws-sdk/xml-builder@3.821.0':
     dependencies:
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@babel/helper-string-parser@7.27.1': {}
 
@@ -6974,7 +7001,7 @@ snapshots:
       canonicalize: 2.1.0
       zod: 3.23.8
 
-  '@milaboratories/pl-model-common@1.21.7':
+  '@milaboratories/pl-model-common@1.21.9':
     dependencies:
       '@milaboratories/pl-error-like': 1.12.5
       canonicalize: 2.1.0
@@ -6994,9 +7021,9 @@ snapshots:
       utility-types: 3.11.0
       zod: 3.23.8
 
-  '@milaboratories/pl-model-middle-layer@1.8.41':
+  '@milaboratories/pl-model-middle-layer@1.8.44':
     dependencies:
-      '@milaboratories/pl-model-common': 1.21.7
+      '@milaboratories/pl-model-common': 1.21.9
       remeda: 2.31.1
       utility-types: 3.11.0
       zod: 3.23.8
@@ -7171,21 +7198,33 @@ snapshots:
 
   '@platforma-open/milaboratories.software-ptabler@1.13.4': {}
 
+  '@platforma-open/milaboratories.software-ptabler@1.13.5': {}
+
   '@platforma-open/milaboratories.software-ptexter@1.2.0': {}
 
   '@platforma-open/milaboratories.software-small-binaries.guided-command@1.1.1': {}
 
+  '@platforma-open/milaboratories.software-small-binaries.guided-command@1.1.2': {}
+
   '@platforma-open/milaboratories.software-small-binaries.hello-world-py@1.0.6': {}
 
+  '@platforma-open/milaboratories.software-small-binaries.hello-world-py@1.0.7': {}
+
   '@platforma-open/milaboratories.software-small-binaries.hello-world@1.1.1': {}
+
+  '@platforma-open/milaboratories.software-small-binaries.hello-world@1.1.2': {}
 
   '@platforma-open/milaboratories.software-small-binaries.java-stub@1.0.4': {}
 
   '@platforma-open/milaboratories.software-small-binaries.mnz-client@1.6.1': {}
 
+  '@platforma-open/milaboratories.software-small-binaries.mnz-client@1.6.2': {}
+
   '@platforma-open/milaboratories.software-small-binaries.python-stub@1.0.4': {}
 
   '@platforma-open/milaboratories.software-small-binaries.read-with-sleep@1.1.1': {}
+
+  '@platforma-open/milaboratories.software-small-binaries.read-with-sleep@1.1.2': {}
 
   '@platforma-open/milaboratories.software-small-binaries.runenv-java-stub@1.0.6': {}
 
@@ -7193,9 +7232,13 @@ snapshots:
 
   '@platforma-open/milaboratories.software-small-binaries.sleep@1.1.1': {}
 
+  '@platforma-open/milaboratories.software-small-binaries.sleep@1.1.2': {}
+
   '@platforma-open/milaboratories.software-small-binaries.small-asset@1.1.4': {}
 
   '@platforma-open/milaboratories.software-small-binaries.table-converter@1.3.1': {}
+
+  '@platforma-open/milaboratories.software-small-binaries.table-converter@1.3.2': {}
 
   '@platforma-open/milaboratories.software-small-binaries@1.15.23':
     dependencies:
@@ -7211,6 +7254,21 @@ snapshots:
       '@platforma-open/milaboratories.software-small-binaries.sleep': 1.1.1
       '@platforma-open/milaboratories.software-small-binaries.small-asset': 1.1.4
       '@platforma-open/milaboratories.software-small-binaries.table-converter': 1.3.1
+
+  '@platforma-open/milaboratories.software-small-binaries@1.15.25':
+    dependencies:
+      '@platforma-open/milaboratories.software-small-binaries.guided-command': 1.1.2
+      '@platforma-open/milaboratories.software-small-binaries.hello-world': 1.1.2
+      '@platforma-open/milaboratories.software-small-binaries.hello-world-py': 1.0.7
+      '@platforma-open/milaboratories.software-small-binaries.java-stub': 1.0.4
+      '@platforma-open/milaboratories.software-small-binaries.mnz-client': 1.6.2
+      '@platforma-open/milaboratories.software-small-binaries.python-stub': 1.0.4
+      '@platforma-open/milaboratories.software-small-binaries.read-with-sleep': 1.1.2
+      '@platforma-open/milaboratories.software-small-binaries.runenv-java-stub': 1.0.6
+      '@platforma-open/milaboratories.software-small-binaries.runenv-python-stub': 1.0.7
+      '@platforma-open/milaboratories.software-small-binaries.sleep': 1.1.2
+      '@platforma-open/milaboratories.software-small-binaries.small-asset': 1.1.4
+      '@platforma-open/milaboratories.software-small-binaries.table-converter': 1.3.2
 
   '@platforma-sdk/block-tools@2.6.21':
     dependencies:
@@ -7234,12 +7292,12 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@platforma-sdk/block-tools@2.6.22':
+  '@platforma-sdk/block-tools@2.6.25':
     dependencies:
       '@aws-sdk/client-s3': 3.859.0
       '@milaboratories/pl-http': 1.2.0
-      '@milaboratories/pl-model-common': 1.21.7
-      '@milaboratories/pl-model-middle-layer': 1.8.41
+      '@milaboratories/pl-model-common': 1.21.9
+      '@milaboratories/pl-model-middle-layer': 1.8.44
       '@milaboratories/resolve-helper': 1.1.1
       '@milaboratories/ts-helpers': 1.5.4
       '@milaboratories/ts-helpers-oclif': 1.1.33
@@ -7438,12 +7496,12 @@ snapshots:
       '@platforma-open/milaboratories.software-ptexter': 1.2.0
       '@platforma-open/milaboratories.software-small-binaries': 1.15.23
 
-  '@platforma-sdk/workflow-tengo@5.6.1':
+  '@platforma-sdk/workflow-tengo@5.6.3':
     dependencies:
       '@milaboratories/software-pframes-conv': 2.2.9
-      '@platforma-open/milaboratories.software-ptabler': 1.13.4
+      '@platforma-open/milaboratories.software-ptabler': 1.13.5
       '@platforma-open/milaboratories.software-ptexter': 1.2.0
-      '@platforma-open/milaboratories.software-small-binaries': 1.15.23
+      '@platforma-open/milaboratories.software-small-binaries': 1.15.25
 
   '@protobuf-ts/grpc-transport@2.11.1(@grpc/grpc-js@1.13.4)':
     dependencies:
@@ -7561,11 +7619,11 @@ snapshots:
   '@smithy/chunked-blob-reader-native@4.0.0':
     dependencies:
       '@smithy/util-base64': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/chunked-blob-reader@5.0.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/config-resolver@4.2.1':
     dependencies:
@@ -7573,7 +7631,7 @@ snapshots:
       '@smithy/types': 4.5.0
       '@smithy/util-config-provider': 4.1.0
       '@smithy/util-middleware': 4.1.1
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/core@3.11.0':
     dependencies:
@@ -7595,37 +7653,37 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/types': 4.5.0
       '@smithy/url-parser': 4.1.1
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/eventstream-codec@4.0.4':
     dependencies:
       '@aws-crypto/crc32': 5.2.0
       '@smithy/types': 4.5.0
       '@smithy/util-hex-encoding': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/eventstream-serde-browser@4.0.4':
     dependencies:
       '@smithy/eventstream-serde-universal': 4.0.4
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/eventstream-serde-config-resolver@4.1.2':
     dependencies:
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/eventstream-serde-node@4.0.4':
     dependencies:
       '@smithy/eventstream-serde-universal': 4.0.4
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/eventstream-serde-universal@4.0.4':
     dependencies:
       '@smithy/eventstream-codec': 4.0.4
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/fetch-http-handler@5.2.1':
     dependencies:
@@ -7640,29 +7698,29 @@ snapshots:
       '@smithy/chunked-blob-reader': 5.0.0
       '@smithy/chunked-blob-reader-native': 4.0.0
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/hash-node@4.0.4':
     dependencies:
       '@smithy/types': 4.5.0
       '@smithy/util-buffer-from': 4.1.0
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/hash-stream-node@4.0.4':
     dependencies:
       '@smithy/types': 4.5.0
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/invalid-dependency@4.0.4':
     dependencies:
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/is-array-buffer@2.2.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/is-array-buffer@4.1.0':
     dependencies:
@@ -7672,13 +7730,13 @@ snapshots:
     dependencies:
       '@smithy/types': 4.5.0
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/middleware-content-length@4.0.4':
     dependencies:
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/middleware-endpoint@4.2.1':
     dependencies:
@@ -7701,7 +7759,7 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-retry': 4.1.1
       '@types/uuid': 9.0.8
-      tslib: 2.6.3
+      tslib: 2.7.0
       uuid: 9.0.1
 
   '@smithy/middleware-serde@4.1.1':
@@ -7769,7 +7827,7 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-uri-escape': 4.1.0
       '@smithy/util-utf8': 4.1.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/smithy-client@4.6.1':
     dependencies:
@@ -7803,12 +7861,12 @@ snapshots:
 
   '@smithy/util-body-length-node@4.0.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-buffer-from@2.2.0':
     dependencies:
       '@smithy/is-array-buffer': 2.2.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-buffer-from@4.1.0':
     dependencies:
@@ -7817,7 +7875,7 @@ snapshots:
 
   '@smithy/util-config-provider@4.1.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-defaults-mode-browser@4.1.1':
     dependencies:
@@ -7825,7 +7883,7 @@ snapshots:
       '@smithy/smithy-client': 4.6.1
       '@smithy/types': 4.5.0
       bowser: 2.11.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-defaults-mode-node@4.1.1':
     dependencies:
@@ -7835,13 +7893,13 @@ snapshots:
       '@smithy/property-provider': 4.1.1
       '@smithy/smithy-client': 4.6.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-endpoints@3.0.6':
     dependencies:
       '@smithy/node-config-provider': 4.2.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-hex-encoding@4.1.0':
     dependencies:
@@ -7856,7 +7914,7 @@ snapshots:
     dependencies:
       '@smithy/service-error-classification': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-stream@4.3.1':
     dependencies:
@@ -7876,7 +7934,7 @@ snapshots:
   '@smithy/util-utf8@2.3.0':
     dependencies:
       '@smithy/util-buffer-from': 2.2.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@smithy/util-utf8@4.1.0':
     dependencies:
@@ -7887,7 +7945,7 @@ snapshots:
     dependencies:
       '@smithy/abort-controller': 4.1.1
       '@smithy/types': 4.5.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@standard-schema/spec@1.0.0': {}
 
