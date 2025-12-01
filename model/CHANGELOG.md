@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.model
 
+## 3.2.2
+
+### Patch Changes
+
+- 571534a: Only take bulk RNAseq count matrix as input
+
 ## 3.2.1
 
 ### Patch Changes
