@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression.workflow
 
+## 3.4.0
+
+### Minor Changes
+
+- e066d8f: Up workflow-tengo version
+
 ## 3.3.2
 
 ### Patch Changes

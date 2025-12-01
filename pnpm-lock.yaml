@@ -24,6 +24,8 @@ catalogs:
     '@platforma-sdk/block-tools':
       specifier: ^2.6.22
       version: 2.6.22
+      specifier: ^2.6.22
+      version: 2.6.22
     '@platforma-sdk/blocks-deps-updater':
       specifier: ^2.0.0
       version: 2.0.0
@@ -46,6 +48,8 @@ catalogs:
       specifier: ^1.45.36
       version: 1.45.36
     '@platforma-sdk/workflow-tengo':
+      specifier: ^5.6.1
+      version: 5.6.1
       specifier: ^5.6.1
       version: 5.6.1
     '@vitejs/plugin-vue':
@@ -105,6 +109,7 @@ importers:
       '@platforma-sdk/block-tools':
         specifier: 'catalog:'
         version: 2.6.22
+        version: 2.6.22
 
   model:
     dependencies:
@@ -117,6 +122,7 @@ importers:
     devDependencies:
       '@platforma-sdk/block-tools':
         specifier: 'catalog:'
+        version: 2.6.22
         version: 2.6.22
       '@platforma-sdk/eslint-config':
         specifier: 'catalog:'
@@ -200,6 +206,7 @@ importers:
         version: link:../software
       '@platforma-sdk/workflow-tengo':
         specifier: 'catalog:'
+        version: 5.6.1
         version: 5.6.1
     devDependencies:
       '@milaboratories/software-pframes-conv':
@@ -1159,6 +1166,9 @@ packages:
 
   '@milaboratories/pl-model-common@1.21.6':
     resolution: {integrity: sha512-PU+LYdpz3bxmdVrZyjGDzxRNBgMn4FJC/D+vxZjNCp+LjxCgQkQ2K9tBy0xlkOVG6pCfAY8QhavZJciZJZZgrQ==}
+
+  '@milaboratories/pl-model-common@1.21.7':
+    resolution: {integrity: sha512-VMekzK2oGPN3e64w10zSgXzxYkMlKyoSSkXWf5AvaqaZvGnQariOFEl1TRJMzNaVKJn82FFrvyxgqJSEDsWsJQ==}
 
   '@milaboratories/pl-model-common@1.21.7':
     resolution: {integrity: sha512-VMekzK2oGPN3e64w10zSgXzxYkMlKyoSSkXWf5AvaqaZvGnQariOFEl1TRJMzNaVKJn82FFrvyxgqJSEDsWsJQ==}
