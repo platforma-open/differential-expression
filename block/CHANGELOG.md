@@ -1,5 +1,12 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.2.24
+
+### Patch Changes
+
+- a7fb992: Bump package-builder to 3.11.4
+- f40f439: Adds dash system dependency
+
 ## 1.2.23
 
 ### Patch Changes
