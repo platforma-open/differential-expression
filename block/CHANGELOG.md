@@ -1,5 +1,11 @@
 # @platforma-open/milaboratories.differential-expression
 
+## 1.2.25
+
+### Patch Changes
+
+- @platforma-open/milaboratories.differential-expression.workflow@3.4.1
+
 ## 1.2.24
 
 ### Patch Changes
